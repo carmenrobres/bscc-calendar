@@ -1056,9 +1056,7 @@ function renderTable() {
       fin    = latest['Fecha exacta (fin)'];
       año    = row.editions.map(e=>e.Año).filter(Boolean).sort().reverse().join(', ');
     }
-    const nameCell = row.URL
-      ? `<a href="${row.URL}" target="_blank">${row.Nombre}</a>`
-      : row.Nombre;
+    const nameCell = `<span style="cursor:pointer;color:var(--bsc-blue);font-weight:500" onclick="openDetailModal('${row.id}')">${row.Nombre}</span>`;
     const recBadge = row.recurrent ? `<span class="recurrent-badge">↺ Recurrente</span>` : '';
     const actions = edit
       ? `<div class="row-actions">
@@ -1162,6 +1160,7 @@ function renderCalendar() {
   const startDow = (firstDay.getDay() + 6) % 7; // Mon=0
 
   // Gather events for this month
+  const now2 = new Date(); now2.setHours(0,0,0,0);
   const events = [];
   D.rows.forEach(row => {
     const rows_to_check = [];
@@ -1173,6 +1172,11 @@ function renderCalendar() {
     rows_to_check.forEach(r => {
       const inicio = r['Fecha exacta (inicio)'];
       const fin    = r['Fecha exacta (fin)'];
+      // hidePast: skip if the end date (or start) is before today
+      if (filt.hidePast) {
+        const checkDate = fin || inicio;
+        if (checkDate && new Date(checkDate + 'T00:00:00') < now2) return;
+      }
       if (inicio) {
         const d = new Date(inicio + 'T00:00:00');
         if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
@@ -1326,72 +1330,69 @@ function openDetailModal(id) {
 
   document.getElementById('modal-title').textContent = row.Nombre;
 
+  // Edition cards for recurrent items — each is an expandable card with full info
   let editionsHtml = '';
   if (row.recurrent && row.editions?.length) {
-    editionsHtml = `<div class="detail-editions">
-      <div class="form-section-title">📅 Ediciones anuales</div>
-      ${row.editions.sort((a,b) => (b.Año||0)-(a.Año||0)).map(ed => `
-        <div class="edition-card" style="margin-bottom:8px">
-          <div class="edition-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
-            <span class="edition-year">${ed.Año}</span>
-            ${estadoBadge(ed.Estado)}
-          </div>
-          <div class="edition-card-body">
-            <div class="form-row">
-              <div class="form-group">
-                <div class="detail-field-label">Inicio</div>
-                <div class="detail-field-value">${formatDate(ed['Fecha exacta (inicio)'])}</div>
-              </div>
-              <div class="form-group">
-                <div class="detail-field-label">Fin / Deadline</div>
-                <div class="detail-field-value">${formatDate(ed['Fecha exacta (fin)'])}</div>
-              </div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field-label">Equipo Líder</div>
-              <div class="detail-field-value">${ed['Equipo Líder']||'—'}</div>
-            </div>
-            ${ed.Notas ? `<div class="detail-field"><div class="detail-field-label">Notas</div><div class="detail-field-value" style="white-space:pre-wrap">${ed.Notas}</div></div>` : ''}
-          </div>
-        </div>`).join('')}
-    </div>`;
+    const sortedEds = [...row.editions].sort((a,b) => (b.Año||0)-(a.Año||0));
+    editionsHtml = '<div class="detail-editions"><div class="form-section-title">📅 Ediciones anuales</div>';
+    sortedEds.forEach((ed, i) => {
+      const edId = 'det-ed-' + i;
+      const attHtml = (ed.attachments||[]).length
+        ? ed.attachments.map(a => '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 ' + (a.name||a) + '</div>').join('')
+        : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>';
+      editionsHtml += '<div class="edition-card" style="margin-bottom:8px">'
+        + '<div class="edition-card-header" onclick="document.getElementById('' + edId + '').classList.toggle('open')">'
+        + '<span class="edition-year">' + (ed.Año||'Sin año') + '</span>'
+        + estadoBadge(ed.Estado)
+        + '</div>'
+        + '<div class="edition-card-body open" id="' + edId + '">'
+        + '<div class="form-row">'
+        + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (inicio)']) + '</div></div>'
+        + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (fin)']) + '</div></div>'
+        + '</div>'
+        + '<div class="form-row"><div class="form-group full"><div class="detail-field-label">Equipo Líder</div><div class="detail-field-value">' + (ed['Equipo Líder']||'—') + '</div></div></div>'
+        + (ed.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas de esta edición</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + ed.Notas + '</div></div>' : '')
+        + '<div class="detail-field"><div class="detail-field-label">Documentos</div><div style="margin-top:4px">' + attHtml + '</div></div>'
+        + '</div></div>';
+    });
+    editionsHtml += '</div>';
   }
 
-  document.getElementById('modal-body').innerHTML = `
-    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-      ${tipoBadge(row.Tipo)}
-      ${row.recurrent ? '<span class="recurrent-badge">↺ Recurrente</span>' : ''}
-      ${!row.recurrent ? estadoBadge(row.Estado) : ''}
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <div class="detail-field-label">Mes habitual</div>
-        <div class="detail-field-value">${row['Mes habitual']||'—'}</div>
-      </div>
-      <div class="form-group">
-        <div class="detail-field-label">Lugar</div>
-        <div class="detail-field-value">${row.Lugar||'—'}</div>
-      </div>
-    </div>
-    ${!row.recurrent ? `<div class="form-row">
-      <div class="form-group">
-        <div class="detail-field-label">Inicio</div>
-        <div class="detail-field-value">${formatDate(row['Fecha exacta (inicio)'])}</div>
-      </div>
-      <div class="form-group">
-        <div class="detail-field-label">Fin / Deadline</div>
-        <div class="detail-field-value">${formatDate(row['Fecha exacta (fin)'])}</div>
-      </div>
-    </div>` : ''}
-    ${row.URL ? `<div class="detail-field"><div class="detail-field-label">URL</div><div class="detail-field-value"><a href="${row.URL}" target="_blank" style="color:var(--accent)">${row.URL}</a></div></div>` : ''}
-    ${row.Notas ? `<div class="detail-field"><div class="detail-field-label">Notas</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px">${row.Notas}</div></div>` : ''}
-    ${editionsHtml}
-  `;
+  // Single-entry info (non-recurrent)
+  const singleInfo = !row.recurrent
+    ? '<div class="form-row">'
+      + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (inicio)']) + '</div></div>'
+      + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (fin)']) + '</div></div>'
+      + '</div>'
+      + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Equipo Líder</div><div class="detail-field-value">' + (row['Equipo Líder']||'—') + '</div></div>'
+      + '<div class="form-group"><div class="detail-field-label">Año</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
+      + '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Documentos</div><div style="margin-top:4px">'
+      + ((row.attachments||[]).length ? row.attachments.map(a=>'<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 '+(a.name||a)+'</div>').join('') : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>')
+      + '</div></div>'
+    : '';
+
+  const urlBtn = row.URL
+    ? '<a href="' + row.URL + '" target="_blank" class="btn btn-secondary btn-sm" style="margin-left:auto;text-decoration:none"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Web oficial</a>'
+    : '';
+
+  document.getElementById('modal-body').innerHTML =
+    '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">'
+    + tipoBadge(row.Tipo)
+    + (row.recurrent ? '<span class="recurrent-badge">↺ Recurrente</span>' : estadoBadge(row.Estado))
+    + urlBtn
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><div class="detail-field-label">Mes habitual</div><div class="detail-field-value">' + (row['Mes habitual']||'—') + '</div></div>'
+    + '<div class="form-group"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
+    + '</div>'
+    + singleInfo
+    + (row.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas generales</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + row.Notas + '</div></div>' : '')
+    + editionsHtml;
 
   document.getElementById('modal-footer').innerHTML = edit
-    ? `<button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
-       <button class="btn btn-primary" onclick="closeModal();openEditModal('${id}')">Editar</button>`
-    : `<button class="btn btn-primary" onclick="closeModal()">Cerrar</button>`;
+    ? '<button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>'
+      + '<button class="btn btn-primary" onclick="closeModal();openEditModal('' + id + '')">Editar</button>'
+    : '<button class="btn btn-primary" onclick="closeModal()">Cerrar</button>';
 
   openModal();
 }
@@ -1690,24 +1691,32 @@ function toggleEdit() {
   if (!edit) {
     // Ask for password
     document.getElementById('modal-title').textContent = 'Acceso de edición';
-    document.getElementById('modal-body').innerHTML = `
-      <p style="color:var(--text-mid);margin-bottom:14px;font-size:13px">Introduce la contraseña para activar el modo edición.</p>
-      <div class="pw-form">
-        <input class="form-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPw()">
-        <div class="pw-error" id="pw-error"></div>
-      </div>`;
-    document.getElementById('modal-footer').innerHTML = `
-      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="checkPw()">Entrar</button>`;
+    document.getElementById('modal-body').innerHTML =
+      '<p style="color:var(--text-mid);margin-bottom:14px;font-size:13px">Introduce la contraseña para activar el modo edición.</p>'
+      + '<div class="pw-form">'
+      + '<input class="form-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPw()">'
+      + '<div class="pw-error" id="pw-error"></div>'
+      + '</div>';
+    document.getElementById('modal-footer').innerHTML =
+      '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'
+      + '<button class="btn btn-primary" onclick="checkPw()">Entrar</button>';
     openModal();
     setTimeout(() => document.getElementById('pw-input')?.focus(), 100);
   } else {
-    edit = false;
-    document.getElementById('edit-toggle').classList.remove('active');
-    document.getElementById('edit-label').textContent = 'Editar';
-    document.getElementById('add-btn').classList.remove('visible');
-    render();
+    // Save and exit edit mode
+    saveAndExitEdit();
   }
+}
+
+async function saveAndExitEdit() {
+  // Exit edit mode first
+  edit = false;
+  document.getElementById('edit-toggle').classList.remove('active');
+  document.getElementById('edit-label').textContent = 'Editar';
+  document.getElementById('add-btn').classList.remove('visible');
+  render();
+  // Then save to GitHub
+  await saveData();
 }
 
 function checkPw() {
@@ -1716,7 +1725,7 @@ function checkPw() {
     edit = true;
     closeModal();
     document.getElementById('edit-toggle').classList.add('active');
-    document.getElementById('edit-label').textContent = 'Editando';
+    document.getElementById('edit-label').textContent = 'Guardar y salir';
     document.getElementById('add-btn').classList.add('visible');
     render();
     showToast('Modo edición activado.', 'success');
