@@ -688,22 +688,59 @@ function updateYearFilter(){
 }
 
 async function load(){
-  try{const r=await fetch('data.json?'+Date.now());D=await r.json();}
-  catch(e){D={rows:[]};}
-  // Restore lastSavedAt from localStorage
-  const savedTs=localStorage.getItem('eventos_last_gh_save');
-  if(savedTs)lastSavedAt=new Date(savedTs);
-  // ensure attachments array on each row
+  // 1. Load from data.json (GitHub Pages)
+  let remoteData = null;
+  try{const r=await fetch('data.json?'+Date.now()); remoteData=await r.json();}
+  catch(e){}
+
+  // 2. Check if localStorage has a newer autosave
+  const autoSaveStr = localStorage.getItem('eventos_autosave');
+  const autoSaveTs  = parseInt(localStorage.getItem('eventos_autosave_ts')||'0');
+  const ghSaveTs    = localStorage.getItem('eventos_last_gh_save');
+
+  if(autoSaveStr && autoSaveTs){
+    // If autosave is newer than the last GitHub save, offer to restore
+    const ghTs = ghSaveTs ? new Date(ghSaveTs).getTime() : 0;
+    if(autoSaveTs > ghTs + 5000){ // 5s buffer
+      try{
+        const localData = JSON.parse(autoSaveStr);
+        const localRows = localData.rows ? localData.rows.length : 0;
+        const remoteRows = remoteData ? remoteData.rows.length : 0;
+        const localDate = new Date(autoSaveTs);
+        const msg = '⚠️ Se encontraron cambios locales sin guardar en GitHub.\n\n'+
+          '• Guardado local: '+localDate.toLocaleString('es-ES')+' ('+localRows+' entradas)\n'+
+          '• Datos remotos: '+(remoteData?remoteRows+' entradas':'no disponibles')+'\n\n'+
+          '¿Recuperar los cambios locales?';
+        if(confirm(msg)){
+          D = localData;
+          unsaved = true; // mark as unsaved since it's not in GitHub yet
+        } else {
+          D = remoteData || {rows:[]};
+          localStorage.removeItem('eventos_autosave');
+          localStorage.removeItem('eventos_autosave_ts');
+        }
+      }catch(e){ D = remoteData || {rows:[]}; }
+    } else {
+      D = remoteData || {rows:[]};
+    }
+  } else {
+    D = remoteData || {rows:[]};
+  }
+
+  // Restore lastSavedAt
+  if(ghSaveTs) lastSavedAt = new Date(ghSaveTs);
+
+  // Ensure attachments array on each row
   D.rows.forEach(r=>{if(!r.attachments)r.attachments=[];});
+
   document.getElementById('gh-tok').value=GH_TOKEN_DEFAULT;
   if(localStorage.getItem('gh_rem')==='1'){
-    document.getElementById('gh-user').value=localStorage.getItem('gh_user')||'';;
-    document.getElementById('gh-repo').value=localStorage.getItem('gh_repo')||'';;
+    document.getElementById('gh-user').value=localStorage.getItem('gh_user')||'';
+    document.getElementById('gh-repo').value=localStorage.getItem('gh_repo')||'';
     document.getElementById('gh-rem').checked=true;
   }
   exReset();updateYearFilter();renderAll();updateSbCounts();
 }
-
 function renderAll(){renderTabla();renderGantt();renderCal();renderExact();updateSbCounts();}
 
 // ── FILTERS ──────────────────────────────────────────
@@ -1293,21 +1330,29 @@ function updateSaveStatus(){
   const bar=document.getElementById('save-status');
   const dot=document.getElementById('ss-dot');
   const txt=document.getElementById('ss-text');
-  if(!edit){bar.style.display='none';return;}
+  if(!bar)return;
+  // Always remove all state classes first
+  bar.classList.remove('unsaved','saved','saving');
+  dot.classList.remove('unsaved','saved','saving');
+  if(!edit){
+    bar.style.display='none';
+    return;
+  }
   if(unsaved){
-    bar.className='save-status unsaved';
-    dot.className='ss-dot unsaved';
+    bar.style.display='flex';
+    bar.classList.add('unsaved');
+    dot.classList.add('unsaved');
     txt.textContent='Cambios sin guardar';
-    bar.style.display='flex';
   }else if(lastSavedAt){
-    bar.className='save-status saved';
-    dot.className='ss-dot saved';
-    txt.textContent='Guardado '+formatTime(lastSavedAt);
     bar.style.display='flex';
+    bar.classList.add('saved');
+    dot.classList.add('saved');
+    txt.textContent='Guardado '+formatTime(lastSavedAt);
   }else{
     bar.style.display='none';
   }
 }
+
 function formatTime(d){
   if(!d)return'nunca';
   const now=new Date();
@@ -1334,12 +1379,13 @@ function openExitModal(){
     badge.className='exit-changes has-changes';
     icon.textContent='⚠️';
     txt.textContent='Tienes cambios sin guardar en esta sesión';
+    // Show save button prominently
+    document.getElementById('exit-save-btn').style.display='flex';
   }else{
     badge.className='exit-changes no-changes';
     icon.textContent='✅';
-    txt.textContent='Todo guardado en GitHub';
-    // If no unsaved changes, just exit directly
-    doExitEdit();return;
+    txt.textContent='Todo guardado correctamente en GitHub';
+    document.getElementById('exit-save-btn').style.display='none';
   }
   modal.classList.add('open');
 }
@@ -1350,10 +1396,11 @@ function exitAnyway(){
 }
 function exitSaveAndLeave(){
   closeExitModal();
+  // Patch saveGh to exit after success
+  exitAfterSave = true;
   openGh();
-  // After successful save, gh modal will close and we stay in edit mode
-  // User can then click exit again - this time no unsaved changes
 }
+let exitAfterSave = false;
 
 function updUI(){
   document.getElementById('echip').classList.toggle('on',edit);
@@ -1487,14 +1534,24 @@ async function saveGh(){
   const content=btoa(unescape(encodeURIComponent(JSON.stringify(D,null,2))));
   try{
     const r=await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{method:'PUT',headers:{Authorization:'token '+tok,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Actualizar datos',content,...(sha?{sha}:{})})});
-    if(r.ok){setSt('✅ Guardado. La web se actualiza en ~1 min.','ok');clearU();setTimeout(closeGh,2400);toast('✅ Guardado en GitHub');}
+    if(r.ok){
+      setSt('✅ Guardado. La web se actualiza en ~1 min.','ok');
+      clearU();
+      if(exitAfterSave){
+        exitAfterSave=false;
+        setTimeout(()=>{closeGh();doExitEdit();},1200);
+      }else{
+        setTimeout(closeGh,2400);
+      }
+      toast('✅ Guardado en GitHub');
+    }
     else{const e=await r.json();setSt('Error: '+(e.message||'desconocido'),'err');}
   }catch(e){setSt('Error de red: '+e.message,'err');}
 }
 function setSt(m,c){const el=document.getElementById('gst');el.textContent=m;el.className='gst'+(c?' '+c:'');}
 function mark(){
   unsaved=true;
-  updateSaveStatus();
+  updateSaveStatus(); // update status bar
   // Autosave to localStorage (debounced 2s)
   clearTimeout(localSaveTimer);
   localSaveTimer=setTimeout(()=>{
@@ -1506,6 +1563,9 @@ function clearU(){
   unsaved=false;
   lastSavedAt=new Date();
   localStorage.setItem('eventos_last_gh_save',lastSavedAt.toISOString());
+  // Remove autosave since it's now in GitHub
+  localStorage.removeItem('eventos_autosave');
+  localStorage.removeItem('eventos_autosave_ts');
   updateSaveStatus();
 }
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
