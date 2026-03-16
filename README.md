@@ -23,12 +23,6 @@ README.md    ← este archivo
 ### Ver contenido
 Abre la web normalmente. Navega entre páginas con el menú lateral.
 
-### Editar
-1. Haz clic en **"Modo edición"** en la parte inferior del sidebar
-2. Introduce la contraseña: **IBD1234**
-3. Edita directamente: haz clic en cualquier texto para modificarlo
-4. Añade bloques con el botón **"＋ Bloque"**
-5. Cuando termines, haz clic en **"Guardar en GitHub"**
 
 ### Guardar en GitHub
 Al guardar necesitarás:
