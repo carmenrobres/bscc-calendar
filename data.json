@@ -1,78 +1,25 @@
 {
   "site": {
-    "title": "Mi Espacio",
-    "icon": "📋",
-    "lastUpdated": "2024-01-15"
+    "title": "Eventos & Funding Calls",
+    "icon": "📅",
+    "lastUpdated": "2025-03-16"
   },
-  "pages": [
-    {
-      "id": "page-1",
-      "icon": "🏠",
-      "title": "Inicio",
-      "blocks": [
-        { "id": "b1", "type": "h1", "content": "Bienvenido a mi espacio" },
-        { "id": "b2", "type": "text", "content": "Esta es mi página principal. Aquí puedes escribir cualquier cosa que necesites recordar o compartir." },
-        { "id": "b3", "type": "h2", "content": "Sobre este espacio" },
-        { "id": "b4", "type": "text", "content": "Usa el panel izquierdo para navegar entre las secciones. Cada sección tiene su propio contenido." },
-        { "id": "b5", "type": "bullet", "items": ["Organiza tus ideas", "Comparte información", "Mantén todo en un lugar"] }
-      ]
-    },
-    {
-      "id": "page-2",
-      "icon": "📝",
-      "title": "Notas",
-      "blocks": [
-        { "id": "b1", "type": "h1", "content": "Mis Notas" },
-        { "id": "b2", "type": "h2", "content": "Notas importantes" },
-        { "id": "b3", "type": "text", "content": "Aquí puedes poner tus notas más importantes del día a día." },
-        { "id": "b4", "type": "h3", "content": "Recordatorios" },
-        { "id": "b5", "type": "numbered", "items": ["Primera tarea pendiente", "Segunda tarea pendiente", "Tercera tarea pendiente"] },
-        { "id": "b6", "type": "h2", "content": "Notas rápidas" },
-        { "id": "b7", "type": "text", "content": "Espacio para ideas rápidas y pensamientos del momento." }
-      ]
-    },
-    {
-      "id": "page-3",
-      "icon": "📊",
-      "title": "Proyectos",
-      "blocks": [
-        { "id": "b1", "type": "h1", "content": "Proyectos" },
-        { "id": "b2", "type": "text", "content": "Seguimiento de todos los proyectos en curso." },
-        {
-          "id": "b3",
-          "type": "table",
-          "headers": ["Proyecto", "Estado", "Prioridad", "Fecha límite"],
-          "rows": [
-            ["Rediseño web", "En progreso", "Alta", "30 Ene"],
-            ["Informe mensual", "Pendiente", "Media", "15 Feb"],
-            ["Reunión equipo", "Completado", "Baja", "10 Ene"]
-          ]
-        },
-        { "id": "b4", "type": "h2", "content": "Próximos pasos" },
-        { "id": "b5", "type": "bullet", "items": ["Revisar el estado de cada proyecto semanalmente", "Actualizar fechas límite si es necesario", "Añadir nuevos proyectos según surjan"] }
-      ]
-    },
-    {
-      "id": "page-4",
-      "icon": "📚",
-      "title": "Recursos",
-      "blocks": [
-        { "id": "b1", "type": "h1", "content": "Recursos útiles" },
-        { "id": "b2", "type": "text", "content": "Colección de recursos, enlaces y referencias que uso frecuentemente." },
-        { "id": "b3", "type": "h2", "content": "Links importantes" },
-        { "id": "b4", "type": "bullet", "items": ["Documentación principal", "Herramientas de trabajo", "Referencias técnicas", "Materiales de formación"] },
-        { "id": "b5", "type": "h2", "content": "Tabla de referencia" },
-        {
-          "id": "b6",
-          "type": "table",
-          "headers": ["Recurso", "Tipo", "Notas"],
-          "rows": [
-            ["Recurso 1", "Documento", "Muy útil"],
-            ["Recurso 2", "Enlace web", "Revisar mensualmente"],
-            ["Recurso 3", "Video", "Tutorial completo"]
-          ]
-        }
-      ]
-    }
+  "columns": ["Nombre", "Tipo", "Mes habitual", "Año", "Fecha exacta (inicio)", "Fecha exacta (fin)", "Estado", "Equipo Líder", "Notas", "URL", "Lugar"],
+  "rows": [
+    {"id":"r1","Nombre":"Smart City Expo World Congress 2026","Tipo":"Evento","Mes habitual":"Noviembre","Año":"2026","Fecha exacta (inicio)":"3 de noviembre de 2026","Fecha exacta (fin)":"5 de noviembre de 2026","Estado":"Sin empezar","Equipo Líder":"","Notas":"Annual global event on smart cities and urban innovation. Held at Fira de Barcelona Gran Via, this event brings together city leaders, policymakers and companies to share solutions across governance, mobility, energy and sustainability","URL":"https://www.smartcityexpo.com/","Lugar":"Barcelona, Cataluña, España"},
+    {"id":"r2","Nombre":"Deep Learning Barcelona Symposium 2025","Tipo":"Evento","Mes habitual":"Diciembre","Año":"2025","Fecha exacta (inicio)":"17 de diciembre de 2025","Fecha exacta (fin)":"17 de diciembre de 2025","Estado":"No tenemos participación","Equipo Líder":"","Notas":"Annual deep learning symposium held in Barcelona. Focus on research presentations from local and international groups. The 2025 edition takes place at Cosmocaixa Barcelona.","URL":"https://sites.google.com/view/dlbcn2025","Lugar":"Barcelona, Cataluña, España"},
+    {"id":"r3","Nombre":"Tech Spirit Barcelona 2025","Tipo":"Evento","Mes habitual":"Diciembre","Año":"2025","Fecha exacta (inicio)":"10 de diciembre de 2025","Fecha exacta (fin)":"11 de diciembre de 2025","Estado":"Listo","Equipo Líder":"I-BD@bsc.es","Notas":"Evento de dos dias en Casa Llotja de Mar. Reune a founders, inversores y actores del ecosistema tech con keynotes, paneles y networking","URL":"https://www.techspirit.barcelona/","Lugar":"Barcelona, Cataluña, España"},
+    {"id":"r4","Nombre":"MWC 2026 (Mobile World Congress)","Tipo":"Evento","Mes habitual":"Marzo","Año":"2026","Fecha exacta (inicio)":"2 de marzo de 2026","Fecha exacta (fin)":"5 de marzo de 2026","Estado":"En progreso","Equipo Líder":"Dissemination@bsc.es","Notas":"Feria global de tecnologia y telecom, estamos en 4YFN. Revisar opciones de stand y agenda de reuniones. Apertura de registro varios meses antes.","URL":"https://www.mwcbarcelona.com/","Lugar":"Barcelona, Cataluña, España"},
+    {"id":"r5","Nombre":"Web Summit Lisbon 2026","Tipo":"Evento","Mes habitual":"Noviembre","Año":"2026","Fecha exacta (inicio)":"9 de noviembre de 2026","Fecha exacta (fin)":"12 de noviembre de 2026","Estado":"Sin empezar","Equipo Líder":"I-BD@bsc.es","Notas":"Annual technology conference in Lisbon drawing startups, investors, corporates and policymakers. It covers topics across technology, innovation and venture. Held at MEO Arena and Lisbon Exhibition & Congress Centre.","URL":"https://websummit.com/","Lugar":"Lisboa, Portugal"},
+    {"id":"r6","Nombre":"EuroHPC Summit 2026","Tipo":"Evento","Mes habitual":"Marzo","Año":"2026","Fecha exacta (inicio)":"10 de marzo de 2026","Fecha exacta (fin)":"12 de marzo de 2026","Estado":"Sin empezar","Equipo Líder":"","Notas":"Annual European high-performance computing summit, gathering HPC providers, users and policy makers across Europe.","URL":"","Lugar":""},
+    {"id":"r7","Nombre":"MareNostrum Hackathon 2026","Tipo":"Evento","Mes habitual":"Octubre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"Barcelona Supercomputing Center hackathon around MareNostrum resources. Update dates when official confirmation is published.","URL":"","Lugar":"Barcelona, Cataluña, España"},
+    {"id":"r8","Nombre":"Supercomputing SC26 (SC '26)","Tipo":"Evento","Mes habitual":"Noviembre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"Global HPC event with exhibition and technical program for high performance computing and related fields. Official SC26 dates should be published mid-2025.","URL":"","Lugar":"Chicago, IL, Estados Unidos"},
+    {"id":"r9","Nombre":"EIC Pathfinder","Tipo":"Funding call","Mes habitual":"Mayo","Año":"2026","Fecha exacta (inicio)":"12 de mayo de 2026","Fecha exacta (fin)":"28 de octubre de 2026","Estado":"Sin empezar","Equipo Líder":"I-BD@bsc.es","Notas":"Supports deep tech research at early TRL (1–4). Eligible are research teams or consortia with legal entities in EU Member States or Horizon Europe Associated Countries. Offers grants up to ~€4M per project. Eligible: research organisations, universities, SMEs, startups, consortia. Region: EU + Horizon Europe Associated Countries. Amount: up to ~€4M (varies by sub-call)","URL":"https://eic.ec.europa.eu/eic-funding-opportunities/eic-pathfinder_en","Lugar":""},
+    {"id":"r10","Nombre":"EIC Transition","Tipo":"Funding call","Mes habitual":"Septiembre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"12 de septiembre de 2026","Estado":"Sin empezar","Equipo Líder":"I-BD@bsc.es","Notas":"Aims to help projects that have proven results move towards commercial validation and business planning. Projects must be based on results from EIC Pathfinder, ERC Proof of Concept or other eligible Horizon Europe projects. Offers grants up to ~€2.5M. Eligible: start-ups, SMEs, research organisations and small consortia. Region: EU + Associated Countries. Amount: up to ~€2.5M","URL":"https://eic.ec.europa.eu/eic-funding-opportunities/eic-transition_en","Lugar":""},
+    {"id":"r11","Nombre":"Cervera (Spanish national programme)","Tipo":"Funding call","Mes habitual":"Septiembre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"I-BD@bsc.es","Notas":"Spanish national programme for technological innovation programmes led by technology centres. Must be a grouping of Technology Centres (4–7 entities) coordinated by a centre. Eligible: technology centres grouped in consortia. Region: Spain. Amount: typical eligible project size ~€2M–€6M","URL":"https://www.cdti.es/ayudas/proyectos-de-id-de-transferencia-tecnologica-cervera-0","Lugar":""},
+    {"id":"r12","Nombre":"EIC Accelerator","Tipo":"Funding call","Mes habitual":"Septiembre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"Supports start-ups and SMEs to develop and scale deep tech innovations. Combines grants (up to ~€2.5M) and equity investments (typically €0.5M–€10M). Higher equity funding possible via STEP Scale Up. Eligible: SMEs and start-ups established in EU or associated countries. Region: EU + Associated Countries. Amount: grant up to ~€2.5M plus possible equity investment","URL":"https://eic.ec.europa.eu/eic-funding-opportunities/eic-accelerator_en","Lugar":""},
+    {"id":"r13","Nombre":"PIC: Llavor (A) 2026","Tipo":"Funding call","Mes habitual":"Marzo","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"Eligible region: Regional. Amount: €20.000. Requirements: The research team must be responsible for the work and hold the rights to the results used in the project.","URL":"https://agaur.gencat.cat/es/beques-i-ajuts/convocatories-per-temes/02-21429-IdC-Producte","Lugar":""},
+    {"id":"r14","Nombre":"PIC: Producte (B)","Tipo":"Funding call","Mes habitual":"Mayo","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"Eligible region: Regional. Amount: €30.000. Requirements: The project must have a defined product or service scope.","URL":"https://agaur.gencat.cat/en/beques-i-ajuts/convocatories-per-temes/01-21430-IdC-LLavor","Lugar":""},
+    {"id":"r15","Nombre":"PIC: Innovadors (C)","Tipo":"Funding call","Mes habitual":"Septiembre","Año":"2026","Fecha exacta (inicio)":"","Fecha exacta (fin)":"","Estado":"Sin empezar","Equipo Líder":"","Notas":"","URL":"https://agaur.gencat.cat/es/beques-i-ajuts/convocatories-per-temes/03-21892-IdC-Innovadors","Lugar":""}
   ]
 }

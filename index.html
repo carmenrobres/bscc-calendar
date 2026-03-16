@@ -3,1315 +3,452 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Espacio</title>
+<title>Eventos & Funding Calls</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #ffffff;
-    --bg-secondary: #f7f7f5;
-    --bg-hover: #efefed;
-    --bg-active: #e9e9e7;
-    --sidebar-bg: #f7f7f5;
-    --text: #1a1a1a;
-    --text-muted: #787774;
-    --text-light: #a8a29e;
-    --border: #e7e7e5;
-    --accent: #2383e2;
-    --accent-light: #e9f3fd;
-    --red: #e03e3e;
-    --green: #0f9960;
-    --yellow: #dfab01;
-    --sidebar-width: 240px;
-    --font: 'DM Sans', sans-serif;
-    --font-mono: 'DM Mono', monospace;
-  }
+:root {
+  --bg:#ffffff;--bg2:#f7f7f5;--bg3:#efefed;--bg4:#e9e9e7;
+  --text:#1a1a1a;--text2:#787774;--text3:#a8a29e;
+  --border:rgba(55,53,47,.09);--border2:rgba(55,53,47,.16);
+  --accent:#2383e2;--accent-bg:#e9f3fd;
+  --sb:220px;--f:'Inter',sans-serif;
+  --s-sin:#787774;--s-sin-bg:#f1f1ef;
+  --s-prog:#2383e2;--s-prog-bg:#e9f3fd;
+  --s-listo:#0f9960;--s-listo-bg:#e6f4ef;
+  --s-no:#e03e3e;--s-no-bg:#fde8e8;
+  --t-ev:#7c5cc4;--t-ev-bg:#f3effc;
+  --t-fu:#d97706;--t-fu-bg:#fef3e2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;display:flex;height:100vh;overflow:hidden}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* SIDEBAR */
+#sb{width:var(--sb);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh}
+.sb-head{padding:14px 12px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.sb-emoji{font-size:22px;line-height:1}
+.sb-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.sb-body{flex:1;overflow-y:auto;padding:10px 8px}
+.sb-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:6px 8px 3px}
+.sb-item{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--text2);transition:background .1s,color .1s;margin-bottom:1px}
+.sb-item:hover{background:var(--bg3);color:var(--text)}
+.sb-item.active{background:var(--bg4);color:var(--text);font-weight:500}
+.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-foot{padding:10px 8px;border-top:1px solid var(--border)}
+.edit-badge{display:none;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--s-listo);background:var(--s-listo-bg);padding:5px 9px;border-radius:5px;margin-bottom:7px}
+.edit-badge.on{display:flex}
+.edot{width:6px;height:6px;border-radius:50%;background:var(--s-listo);flex-shrink:0}
+.btn-mode{width:100%;padding:6px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text2);font-family:var(--f);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:background .1s}
+.btn-mode:hover{background:var(--bg3);color:var(--text)}
 
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-    font-size: 15px;
-    line-height: 1.6;
-  }
+/* MAIN */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:44px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:600;flex:1}
+.topbar-ico{font-size:20px}
+.topbar-right{display:flex;align-items:center;gap:8px}
 
-  /* ── SIDEBAR ── */
-  #sidebar {
-    width: var(--sidebar-width);
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    height: 100vh;
-    overflow: hidden;
-  }
+.toolbar{padding:9px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0}
+.fl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+select.fsel{padding:5px 26px 5px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23787774' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 8px center;font-family:var(--f);font-size:12px;color:var(--text);cursor:pointer;outline:none;appearance:none}
+select.fsel:focus{border-color:var(--accent)}
+.sw{position:relative}
+.sw input{padding:5px 10px 5px 28px;border:1px solid var(--border2);border-radius:6px;background:var(--bg);font-family:var(--f);font-size:12px;color:var(--text);outline:none;width:200px}
+.sw input:focus{border-color:var(--accent)}
+.sw svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3)}
+.cnt{margin-left:auto;font-size:11px;color:var(--text3);font-weight:500}
 
-  .sidebar-header {
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+/* TABLE */
+#twrap{flex:1;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{position:sticky;top:0;z-index:10;background:var(--bg2)}
+th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border2);white-space:nowrap;user-select:none;cursor:pointer}
+th:hover{color:var(--text)}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg2)}
+tr.sel td{background:var(--accent-bg)!important}
+.tnombre{font-weight:500;color:var(--text)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;white-space:nowrap}
+.bdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.b-ev{background:var(--t-ev-bg);color:var(--t-ev)}
+.b-fu{background:var(--t-fu-bg);color:var(--t-fu)}
+.b-sin{background:var(--s-sin-bg);color:var(--s-sin)}
+.b-prog{background:var(--s-prog-bg);color:var(--s-prog)}
+.b-listo{background:var(--s-listo-bg);color:var(--s-listo)}
+.b-no{background:var(--s-no-bg);color:var(--s-no)}
+.tdnotas{max-width:280px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;color:var(--text2);font-size:12px;line-height:1.4}
+.tdurl a{color:var(--accent);text-decoration:none;font-size:12px}
+.tdurl a:hover{text-decoration:underline}
+.tdm{color:var(--text2);white-space:nowrap;font-size:12px}
+.rbtn{border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:2px 5px;border-radius:4px;color:var(--text3);font-size:15px;transition:background .1s,color .1s}
+.rbtn:hover{background:var(--s-no-bg);color:var(--s-no)}
+.btn-ar{margin:12px 20px;display:none;align-items:center;gap:6px;padding:6px 14px;border:1px dashed var(--border2);border-radius:6px;background:none;font-family:var(--f);font-size:13px;color:var(--text2);cursor:pointer;transition:background .1s}
+.btn-ar:hover{background:var(--bg2);color:var(--text)}
+.btn-ar.on{display:flex}
 
-  .workspace-icon {
-    width: 28px; height: 28px;
-    background: var(--text);
-    color: white;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
+/* DETAIL */
+#det{width:380px;flex-shrink:0;border-left:1px solid var(--border2);display:none;flex-direction:column;background:var(--bg);overflow:hidden}
+#det.open{display:flex}
+.det-head{padding:16px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px}
+.det-title{font-size:16px;font-weight:600;line-height:1.3;word-break:break-word;outline:none;flex:1}
+.det-title[contenteditable=true]:focus{background:var(--accent-bg);border-radius:3px}
+.det-x{border:none;background:none;cursor:pointer;color:var(--text3);font-size:18px;padding:2px 5px;border-radius:4px;transition:background .1s;line-height:1}
+.det-x:hover{background:var(--bg3);color:var(--text)}
+.det-body{flex:1;overflow-y:auto;padding:12px 16px}
+.dfield{margin-bottom:14px}
+.dlbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.dval{font-size:13px;color:var(--text);min-height:20px;word-break:break-word}
+.dval[contenteditable=true]{outline:none;padding:3px 6px;border-radius:4px;background:var(--bg2);border:1px solid transparent;transition:border-color .15s}
+.dval[contenteditable=true]:focus{background:var(--bg);border-color:var(--accent)}
+.dta{font-size:13px;color:var(--text2);line-height:1.6;white-space:pre-wrap;word-break:break-word;min-height:60px}
+.dta[contenteditable=true]{outline:none;padding:5px;border-radius:4px;background:var(--bg2);border:1px solid transparent}
+.dta[contenteditable=true]:focus{background:var(--bg);border-color:var(--accent)}
+.dsel{padding:4px 8px;border:1px solid var(--border2);border-radius:5px;background:var(--bg);font-family:var(--f);font-size:13px;color:var(--text);outline:none;cursor:pointer}
+.dsel:focus{border-color:var(--accent)}
+.det-foot{padding:10px 16px;border-top:1px solid var(--border);display:none}
+.det-foot.on{display:block}
 
-  .workspace-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+/* MODALS */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.mbox{background:var(--bg);border-radius:12px;box-shadow:0 12px 48px rgba(0,0,0,.18)}
+.pw-box{padding:28px 24px;width:300px;text-align:center}
+.pw-ico{font-size:32px;margin-bottom:10px}
+.pw-box h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.pw-box p{font-size:12px;color:var(--text2);margin-bottom:18px}
+.pw-inp{width:100%;padding:9px 12px;border:1px solid var(--border2);border-radius:7px;font-family:var(--f);font-size:15px;text-align:center;letter-spacing:2px;margin-bottom:10px;outline:none;background:var(--bg2);color:var(--text)}
+.pw-inp:focus{border-color:var(--accent);background:var(--bg)}
+.pw-err{font-size:11px;color:var(--s-no);min-height:15px;margin-bottom:8px}
+.pw-ok{width:100%;padding:9px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.pw-ok:hover{opacity:.9}
+.pw-cl{width:100%;padding:7px;border:1px solid var(--border2);border-radius:7px;background:none;font-family:var(--f);font-size:12px;color:var(--text2);cursor:pointer}
+.pw-cl:hover{background:var(--bg2)}
 
-  .sidebar-nav {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 0;
-  }
+.gh-box{padding:24px 22px;width:380px}
+.gh-box h3{font-size:15px;font-weight:600;margin-bottom:5px}
+.gh-box>p{font-size:12px;color:var(--text2);margin-bottom:16px}
+.glbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;margin-top:10px}
+.ginp{width:100%;padding:8px 10px;border:1px solid var(--border2);border-radius:6px;font-family:monospace;font-size:13px;background:var(--bg2);color:var(--text);outline:none}
+.ginp:focus{border-color:var(--accent);background:var(--bg)}
+.grem{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);margin-top:10px}
+.grem input{width:auto}
+.gst{font-size:12px;margin:10px 0 4px;min-height:16px}
+.gst.ok{color:var(--s-listo)}.gst.err{color:var(--s-no)}
+.gact{display:flex;gap:8px;margin-top:4px}
 
-  .sidebar-section-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 8px 16px 4px;
-  }
+.btn{padding:6px 14px;border-radius:6px;font-family:var(--f);font-size:13px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s}
+.btn:hover{opacity:.88}
+.btn-blue{background:var(--accent);color:#fff}
+.btn-green{background:var(--s-listo);color:#fff}
+.btn-ghost{background:var(--bg2);color:var(--text2);border:1px solid var(--border2)}
 
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px;
-    cursor: pointer;
-    border-radius: 6px;
-    margin: 1px 6px;
-    color: var(--text-muted);
-    font-size: 14px;
-    transition: background 0.1s, color 0.1s;
-    user-select: none;
-  }
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:#2b2b2b;color:#fff;padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:300}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#udot{display:none;width:7px;height:7px;background:#dfab01;border-radius:50%}
+#udot.on{display:inline-block}
 
-  .sidebar-item:hover { background: var(--bg-hover); color: var(--text); }
-  .sidebar-item.active { background: var(--bg-active); color: var(--text); font-weight: 500; }
-
-  .sidebar-item-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
-  .sidebar-item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .sidebar-footer {
-    padding: 12px;
-    border-top: 1px solid var(--border);
-  }
-
-  /* edit mode indicator in sidebar */
-  #edit-badge {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--green);
-    padding: 6px 10px;
-    background: #e8f5ee;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    font-weight: 500;
-  }
-  #edit-badge.visible { display: flex; }
-  .edit-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-
-  .btn-lock {
-    width: 100%;
-    padding: 7px 10px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background: var(--bg);
-    color: var(--text-muted);
-    font-family: var(--font);
-    font-size: 13px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 7px;
-    transition: background 0.1s;
-  }
-  .btn-lock:hover { background: var(--bg-hover); color: var(--text); }
-
-  /* ── MAIN CONTENT ── */
-  #main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .topbar {
-    height: 44px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .breadcrumb {
-    font-size: 13px;
-    color: var(--text-muted);
-    display: flex; align-items: center; gap: 4px;
-  }
-  .breadcrumb span { color: var(--text); font-weight: 500; }
-
-  .topbar-actions {
-    margin-left: auto;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .btn-add-block {
-    display: none;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 12px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .btn-add-block:hover { opacity: 0.88; }
-  .btn-add-block.visible { display: flex; }
-
-  .btn-save-gh {
-    display: none;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 12px;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .btn-save-gh:hover { opacity: 0.88; }
-  .btn-save-gh.visible { display: flex; }
-
-  /* ── PAGE CONTENT ── */
-  #page-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 60px 0;
-  }
-
-  .page-inner {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 60px;
-  }
-
-  .page-icon { font-size: 56px; margin-bottom: 12px; line-height: 1; }
-
-  .page-title-wrap { margin-bottom: 32px; }
-
-  .page-title {
-    font-size: 38px;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    outline: none;
-    word-break: break-word;
-  }
-  .page-title[contenteditable="true"] {
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.15s;
-    padding-bottom: 4px;
-  }
-  .page-title[contenteditable="true"]:focus {
-    border-bottom-color: var(--accent);
-  }
-
-  /* ── BLOCKS ── */
-  .block { position: relative; margin-bottom: 3px; }
-
-  .block-wrap {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    border-radius: 4px;
-    padding: 2px 0;
-  }
-
-  .block-handle {
-    display: none;
-    flex-shrink: 0;
-    width: 22px;
-    padding-top: 3px;
-    cursor: grab;
-    color: var(--text-light);
-    font-size: 13px;
-    opacity: 0;
-    transition: opacity 0.15s;
-    user-select: none;
-    justify-content: center;
-  }
-  .edit-mode .block:hover .block-handle { opacity: 1; display: flex; }
-
-  .block-body { flex: 1; min-width: 0; }
-
-  /* Block type toolbar (appears on hover in edit mode) */
-  .block-toolbar {
-    display: none;
-    position: absolute;
-    left: -32px;
-    top: 50%;
-    transform: translateY(-50%);
-    gap: 2px;
-    align-items: center;
-  }
-  .edit-mode .block:hover .block-toolbar { display: flex; }
-
-  .block-btn {
-    width: 24px; height: 24px;
-    border: none; background: none;
-    color: var(--text-light);
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    transition: background 0.1s, color 0.1s;
-  }
-  .block-btn:hover { background: var(--bg-hover); color: var(--text); }
-
-  /* Editable content */
-  [contenteditable="true"] {
-    outline: none;
-    caret-color: var(--accent);
-  }
-  [contenteditable="true"]:focus {
-    background: var(--accent-light);
-    border-radius: 3px;
-  }
-
-  /* Block types */
-  .block-h1 { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-top: 28px; margin-bottom: 4px; }
-  .block-h2 { font-size: 22px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; margin-top: 20px; margin-bottom: 2px; }
-  .block-h3 { font-size: 18px; font-weight: 600; color: var(--text); margin-top: 16px; margin-bottom: 2px; }
-  .block-text { font-size: 15px; color: var(--text); min-height: 1.6em; }
-  .block-text:empty::before {
-    content: attr(data-placeholder);
-    color: var(--text-light);
-  }
-
-  /* Bullet & numbered lists */
-  .block-bullet, .block-numbered { list-style: none; padding: 0; }
-  .block-bullet li, .block-numbered li {
-    display: flex; align-items: flex-start; gap: 8px;
-    font-size: 15px; color: var(--text);
-    padding: 1px 0;
-  }
-  .block-bullet li::before { content: "•"; color: var(--text-muted); flex-shrink: 0; margin-top: 1px; }
-  .block-numbered li .num { color: var(--text-muted); flex-shrink: 0; font-variant-numeric: tabular-nums; min-width: 18px; }
-  .list-item-text { flex: 1; }
-
-  /* Table */
-  .block-table-wrap { overflow-x: auto; margin: 8px 0; }
-  .block-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .block-table th {
-    background: var(--bg-secondary);
-    padding: 8px 14px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--border);
-  }
-  .block-table td {
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-    vertical-align: top;
-  }
-  .block-table tr:last-child td { border-bottom: none; }
-  .block-table tr:hover td { background: var(--bg-secondary); }
-  .block-table td[contenteditable="true"]:focus { background: var(--accent-light); }
-
-  /* Table row/col controls in edit mode */
-  .table-controls { display: none; margin-top: 6px; gap: 6px; }
-  .edit-mode .table-controls { display: flex; }
-  .table-ctrl-btn {
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    background: var(--bg);
-    color: var(--text-muted);
-    font-family: var(--font);
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.1s, color 0.1s;
-  }
-  .table-ctrl-btn:hover { background: var(--bg-hover); color: var(--text); }
-
-  /* Delete block button */
-  .btn-delete-block {
-    position: absolute;
-    right: -30px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none;
-    width: 22px; height: 22px;
-    border: none;
-    background: none;
-    color: var(--text-light);
-    cursor: pointer;
-    border-radius: 4px;
-    align-items: center; justify-content: center;
-    font-size: 14px;
-    transition: background 0.1s, color 0.1s;
-  }
-  .edit-mode .block:hover .btn-delete-block { display: flex; }
-  .btn-delete-block:hover { background: #fde8e8; color: var(--red); }
-
-  /* ── ADD BLOCK PANEL ── */
-  #add-block-panel {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.14);
-    padding: 20px;
-    z-index: 100;
-    width: 360px;
-  }
-  #add-block-panel h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 14px;
-    color: var(--text);
-  }
-  .block-type-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .block-type-btn {
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-secondary);
-    cursor: pointer;
-    text-align: left;
-    font-family: var(--font);
-    display: flex; flex-direction: column; gap: 2px;
-    transition: background 0.1s, border-color 0.1s;
-  }
-  .block-type-btn:hover { background: var(--accent-light); border-color: var(--accent); }
-  .block-type-btn .btb-icon { font-size: 18px; }
-  .block-type-btn .btb-label { font-size: 13px; font-weight: 500; color: var(--text); }
-  .block-type-btn .btb-desc { font-size: 11px; color: var(--text-muted); }
-  .panel-cancel {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background: none;
-    font-family: var(--font);
-    font-size: 13px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: background 0.1s;
-  }
-  .panel-cancel:hover { background: var(--bg-hover); }
-
-  /* Add page panel */
-  #add-page-panel {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.14);
-    padding: 20px;
-    z-index: 100;
-    width: 320px;
-  }
-  #add-page-panel h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-  #add-page-panel input, #add-page-panel select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-family: var(--font);
-    font-size: 14px;
-    margin-bottom: 10px;
-    background: var(--bg);
-    color: var(--text);
-    outline: none;
-  }
-  #add-page-panel input:focus, #add-page-panel select:focus { border-color: var(--accent); }
-  .panel-actions { display: flex; gap: 8px; }
-  .btn-primary {
-    flex: 1; padding: 8px; background: var(--accent); color: white;
-    border: none; border-radius: 7px; font-family: var(--font); font-size: 14px;
-    font-weight: 500; cursor: pointer; transition: opacity 0.15s;
-  }
-  .btn-primary:hover { opacity: 0.88; }
-
-  /* Overlay */
-  #overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 90;
-  }
-
-  /* ── PASSWORD MODAL ── */
-  #pw-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  #pw-modal.open { display: flex; }
-
-  .pw-box {
-    background: var(--bg);
-    border-radius: 14px;
-    padding: 32px 28px;
-    width: 320px;
-    box-shadow: 0 16px 60px rgba(0,0,0,0.2);
-    text-align: center;
-  }
-  .pw-icon { font-size: 36px; margin-bottom: 12px; }
-  .pw-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-  .pw-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
-  .pw-input {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: var(--font);
-    font-size: 15px;
-    text-align: center;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    outline: none;
-    background: var(--bg-secondary);
-    color: var(--text);
-  }
-  .pw-input:focus { border-color: var(--accent); background: var(--bg); }
-  .pw-error { font-size: 12px; color: var(--red); margin-bottom: 10px; min-height: 16px; }
-  .pw-submit {
-    width: 100%;
-    padding: 10px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-family: var(--font);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 10px;
-    transition: opacity 0.15s;
-  }
-  .pw-submit:hover { opacity: 0.88; }
-  .pw-cancel {
-    width: 100%;
-    padding: 8px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: var(--font);
-    font-size: 13px;
-    color: var(--text-muted);
-    cursor: pointer;
-  }
-  .pw-cancel:hover { background: var(--bg-hover); }
-
-  /* ── GITHUB SAVE MODAL ── */
-  #gh-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  #gh-modal.open { display: flex; }
-
-  .gh-box {
-    background: var(--bg);
-    border-radius: 14px;
-    padding: 28px 24px;
-    width: 400px;
-    box-shadow: 0 16px 60px rgba(0,0,0,0.2);
-  }
-  .gh-box h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-  .gh-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
-  .gh-field { margin-bottom: 12px; }
-  .gh-field label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .gh-field input {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    background: var(--bg-secondary);
-    color: var(--text);
-    outline: none;
-  }
-  .gh-field input:focus { border-color: var(--accent); background: var(--bg); }
-  .gh-status { font-size: 13px; min-height: 18px; margin-bottom: 12px; }
-  .gh-status.ok { color: var(--green); }
-  .gh-status.err { color: var(--red); }
-  .gh-actions { display: flex; gap: 8px; }
-  .gh-remember { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .gh-remember input { width: auto; padding: 0; }
-
-  /* Unsaved indicator */
-  #unsaved-dot {
-    display: none;
-    width: 7px; height: 7px;
-    background: var(--yellow);
-    border-radius: 50%;
-    margin-left: 4px;
-  }
-  #unsaved-dot.visible { display: inline-block; }
-
-  /* ── TOAST ── */
-  #toast {
-    position: fixed;
-    bottom: 28px; left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background: #2b2b2b;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s, transform 0.2s;
-    z-index: 300;
-    white-space: nowrap;
-  }
-  #toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
-
-  @media (max-width: 700px) {
-    #sidebar { display: none; }
-    .page-inner { padding: 0 20px; }
-  }
+.empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty div{font-size:32px;margin-bottom:10px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside id="sidebar">
-  <div class="sidebar-header">
-    <div class="workspace-icon" id="ws-icon">M</div>
-    <div class="workspace-name" id="ws-name">Mi Espacio</div>
+<aside id="sb">
+  <div class="sb-head">
+    <span class="sb-emoji">📅</span>
+    <span class="sb-title">Eventos & Funding</span>
   </div>
-  <nav class="sidebar-nav">
-    <div class="sidebar-section-label">Páginas</div>
-    <div id="page-list"></div>
-    <div id="add-page-btn" style="display:none; margin:4px 6px 0;">
-      <div class="sidebar-item" onclick="openAddPage()" style="color:var(--accent); font-size:13px;">
-        <span class="sidebar-item-icon">+</span>
-        <span class="sidebar-item-name">Nueva página</span>
-      </div>
+  <div class="sb-body">
+    <div class="sb-lbl">Vista</div>
+    <div class="sb-item active" onclick="setView('all',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width="1.2"/></svg>
+      Todos
     </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div id="edit-badge"><span class="edit-dot"></span> Modo edición activo</div>
-    <button class="btn-lock" onclick="openPwModal()">
-      <span id="lock-icon">🔒</span>
-      <span id="lock-label">Modo edición</span>
+    <div class="sb-item" onclick="setView('Evento',this)">
+      <span class="sb-dot" style="background:var(--t-ev)"></span>Eventos
+    </div>
+    <div class="sb-item" onclick="setView('Funding call',this)">
+      <span class="sb-dot" style="background:var(--t-fu)"></span>Funding Calls
+    </div>
+    <div class="sb-lbl" style="margin-top:8px">Estado</div>
+    <div class="sb-item" onclick="setStatus('En progreso',this)"><span class="sb-dot" style="background:var(--s-prog)"></span>En progreso</div>
+    <div class="sb-item" onclick="setStatus('Listo',this)"><span class="sb-dot" style="background:var(--s-listo)"></span>Listo</div>
+    <div class="sb-item" onclick="setStatus('Sin empezar',this)"><span class="sb-dot" style="background:var(--s-sin)"></span>Sin empezar</div>
+  </div>
+  <div class="sb-foot">
+    <div class="edit-badge" id="ebadge"><span class="edot"></span>Modo edición</div>
+    <button class="btn-mode" onclick="clickMode()">
+      <span id="lico">🔒</span><span id="llbl">Modo edición</span>
     </button>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main id="main">
   <div class="topbar">
-    <div class="breadcrumb">
-      <span id="bc-title">—</span>
-      <span id="unsaved-dot"></span>
-    </div>
-    <div class="topbar-actions">
-      <button class="btn-add-block" id="btn-add-block" onclick="openAddBlock()">＋ Bloque</button>
-      <button class="btn-save-gh" id="btn-save-gh" onclick="openGhModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+    <span class="topbar-ico">📅</span>
+    <span class="topbar-title">Eventos & Funding Calls</span>
+    <span id="udot" title="Cambios sin guardar"></span>
+    <div class="topbar-right">
+      <button class="btn btn-green" id="btn-gh" style="display:none" onclick="openGh()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
         Guardar en GitHub
       </button>
     </div>
   </div>
-  <div id="page-content">
-    <div class="page-inner" id="page-inner">
-      <div style="color:var(--text-light); font-size:15px; margin-top:40px;">Cargando...</div>
+
+  <div class="toolbar">
+    <span class="fl">Tipo</span>
+    <select class="fsel" id="f-tipo" onchange="applyF()">
+      <option value="">Todos</option>
+      <option value="Evento">Evento</option>
+      <option value="Funding call">Funding call</option>
+    </select>
+    <span class="fl">Estado</span>
+    <select class="fsel" id="f-est" onchange="applyF()">
+      <option value="">Todos</option>
+      <option value="Sin empezar">Sin empezar</option>
+      <option value="En progreso">En progreso</option>
+      <option value="Listo">Listo</option>
+      <option value="No tenemos participación">Sin participación</option>
+    </select>
+    <span class="fl">Año</span>
+    <select class="fsel" id="f-año" onchange="applyF()">
+      <option value="">Todos</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+    </select>
+    <div class="sw">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input type="text" id="fsearch" placeholder="Buscar…" oninput="applyF()">
     </div>
+    <span class="cnt" id="cnt">— entradas</span>
+  </div>
+
+  <div id="twrap">
+    <table id="tbl">
+      <thead><tr>
+        <th onclick="srt('Nombre')">Nombre</th>
+        <th onclick="srt('Tipo')">Tipo</th>
+        <th onclick="srt('Mes habitual')">Mes</th>
+        <th onclick="srt('Año')">Año</th>
+        <th>Fechas</th>
+        <th onclick="srt('Estado')">Estado</th>
+        <th>Equipo</th>
+        <th>Notas</th>
+        <th>URL</th>
+        <th>Lugar</th>
+        <th id="thd" style="width:32px;display:none"></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <button class="btn-ar" id="btn-ar" onclick="addRow()">+ Nueva fila</button>
   </div>
 </main>
 
-<!-- PASSWORD MODAL -->
-<div id="pw-modal">
-  <div class="pw-box">
-    <div class="pw-icon" id="pw-icon">🔒</div>
-    <div class="pw-title" id="pw-title">Modo edición</div>
-    <div class="pw-desc" id="pw-desc">Introduce la contraseña para editar el contenido</div>
-    <input class="pw-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')submitPw()">
-    <div class="pw-error" id="pw-error"></div>
-    <button class="pw-submit" onclick="submitPw()">Entrar</button>
-    <button class="pw-cancel" onclick="closePwModal()">Cancelar</button>
+<div id="det">
+  <div class="det-head">
+    <div class="det-title" id="det-title">—</div>
+    <button class="det-x" onclick="closeDet()">×</button>
+  </div>
+  <div class="det-body" id="det-body"></div>
+  <div class="det-foot" id="det-foot">
+    <button class="btn btn-ghost" style="color:var(--s-no);font-size:13px" onclick="delCurrent()">🗑 Eliminar fila</button>
   </div>
 </div>
 
-<!-- GITHUB MODAL -->
-<div id="gh-modal">
-  <div class="gh-box">
+<div class="modal" id="pw-modal">
+  <div class="mbox pw-box">
+    <div class="pw-ico">🔒</div>
+    <h3>Modo edición</h3>
+    <p>Introduce la contraseña para editar</p>
+    <input class="pw-inp" id="pw-inp" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')subPw()">
+    <div class="pw-err" id="pw-err"></div>
+    <button class="pw-ok" onclick="subPw()">Entrar</button>
+    <button class="pw-cl" onclick="closePw()">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal" id="gh-modal">
+  <div class="mbox gh-box">
     <h3>💾 Guardar en GitHub</h3>
-    <p>Los cambios se guardarán en el archivo <code>data.json</code> de tu repositorio y la web se actualizará automáticamente.</p>
-    <div class="gh-field">
-      <label>Usuario GitHub</label>
-      <input type="text" id="gh-user" placeholder="tu-usuario">
-    </div>
-    <div class="gh-field">
-      <label>Nombre del repositorio</label>
-      <input type="text" id="gh-repo" placeholder="mi-notion">
-    </div>
-    <div class="gh-field">
-      <label>Personal Access Token</label>
-      <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxx">
-    </div>
-    <div class="gh-remember">
-      <input type="checkbox" id="gh-remember-chk"> Recordar en este navegador
-    </div>
-    <div class="gh-status" id="gh-status"></div>
-    <div class="gh-actions">
-      <button class="btn-primary" onclick="saveToGithub()">Guardar ahora</button>
-      <button class="panel-cancel" style="flex:0.5" onclick="closeGhModal()">Cancelar</button>
+    <p>Los cambios se publicarán en <code>data.json</code> y la web se actualizará automáticamente.</p>
+    <label class="glbl">Usuario GitHub</label>
+    <input class="ginp" id="gh-user" placeholder="tu-usuario">
+    <label class="glbl">Repositorio</label>
+    <input class="ginp" id="gh-repo" placeholder="mi-notion">
+    <label class="glbl">Personal Access Token</label>
+    <input class="ginp" id="gh-tok" type="password" placeholder="ghp_…">
+    <div class="grem"><input type="checkbox" id="gh-rem"> Recordar en este navegador</div>
+    <div class="gst" id="gst"></div>
+    <div class="gact">
+      <button class="btn btn-green" style="flex:1" onclick="saveGh()">Guardar</button>
+      <button class="btn btn-ghost" onclick="closeGh()">Cancelar</button>
     </div>
   </div>
 </div>
 
-<!-- ADD BLOCK PANEL -->
-<div id="overlay" onclick="closeAllPanels()"></div>
-<div id="add-block-panel">
-  <h3>Añadir bloque</h3>
-  <div class="block-type-grid">
-    <button class="block-type-btn" onclick="addBlock('text')">
-      <span class="btb-icon">¶</span>
-      <span class="btb-label">Texto</span>
-      <span class="btb-desc">Párrafo normal</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('h1')">
-      <span class="btb-icon">H1</span>
-      <span class="btb-label">Título 1</span>
-      <span class="btb-desc">Cabecera grande</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('h2')">
-      <span class="btb-icon">H2</span>
-      <span class="btb-label">Título 2</span>
-      <span class="btb-desc">Cabecera mediana</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('h3')">
-      <span class="btb-icon">H3</span>
-      <span class="btb-label">Título 3</span>
-      <span class="btb-desc">Cabecera pequeña</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('bullet')">
-      <span class="btb-icon">•</span>
-      <span class="btb-label">Lista</span>
-      <span class="btb-desc">Puntos con viñeta</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('numbered')">
-      <span class="btb-icon">1.</span>
-      <span class="btb-label">Numerada</span>
-      <span class="btb-desc">Lista numerada</span>
-    </button>
-    <button class="block-type-btn" onclick="addBlock('table')">
-      <span class="btb-icon">⊞</span>
-      <span class="btb-label">Tabla</span>
-      <span class="btb-desc">Filas y columnas</span>
-    </button>
-  </div>
-  <button class="panel-cancel" onclick="closeAllPanels()">Cancelar</button>
-</div>
-
-<!-- ADD PAGE PANEL -->
-<div id="add-page-panel">
-  <h3>Nueva página</h3>
-  <input type="text" id="new-page-icon" placeholder="Icono (emoji) ej: 📝" maxlength="4" value="📄">
-  <input type="text" id="new-page-title" placeholder="Nombre de la página">
-  <div class="panel-actions">
-    <button class="btn-primary" onclick="addPage()">Crear página</button>
-    <button class="panel-cancel" style="flex:0.5" onclick="closeAddPage()">Cancelar</button>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────
-const PASSWORD = "IBD1234";
-let data = null;
-let currentPageId = null;
-let editMode = false;
-let unsaved = false;
+const PW="IBD1234";
+const GH_TOKEN_DEFAULT="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";
+const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const ESTADOS=["Sin empezar","En progreso","Listo","No tenemos participación"];
+const TIPOS=["Evento","Funding call"];
+let D=null,edit=false,unsaved=false,selId=null,sc=null,sd=1;
+let filt={tipo:'',est:'',año:'',q:''};
 
-// ─── LOAD DATA ───────────────────────────────────────────────
-async function loadData() {
-  try {
-    const r = await fetch('data.json?' + Date.now());
-    data = await r.json();
-  } catch(e) {
-    // Fallback: use embedded empty structure
-    data = { site: { title: "Mi Espacio", icon: "📋" }, pages: [] };
+async function load(){
+  try{const r=await fetch('data.json?'+Date.now());D=await r.json();}
+  catch(e){D={site:{title:"Eventos & Funding Calls",icon:"📅"},rows:[]};}
+  document.getElementById('gh-tok').value=GH_TOKEN_DEFAULT;
+  if(localStorage.getItem('gh_rem')==='1'){
+    document.getElementById('gh-user').value=localStorage.getItem('gh_user')||'';
+    document.getElementById('gh-repo').value=localStorage.getItem('gh_repo')||'';
+    document.getElementById('gh-rem').checked=true;
   }
-  init();
+  render();
 }
 
-function init() {
-  // Site title
-  document.getElementById('ws-name').textContent = data.site.title;
-  document.getElementById('ws-icon').textContent = data.site.icon || data.site.title[0].toUpperCase();
-  document.title = data.site.title;
-  // Load saved GitHub credentials
-  if (localStorage.getItem('gh_remember') === '1') {
-    document.getElementById('gh-user').value = localStorage.getItem('gh_user') || '';
-    document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
-    document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
-    document.getElementById('gh-remember-chk').checked = true;
-  }
-  renderSidebar();
-  // Auto-select first page
-  if (data.pages.length > 0) loadPage(data.pages[0].id);
-}
-
-// ─── SIDEBAR ─────────────────────────────────────────────────
-function renderSidebar() {
-  const list = document.getElementById('page-list');
-  list.innerHTML = '';
-  data.pages.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'sidebar-item' + (p.id === currentPageId ? ' active' : '');
-    div.dataset.id = p.id;
-    div.innerHTML = `<span class="sidebar-item-icon">${p.icon || '📄'}</span><span class="sidebar-item-name">${esc(p.title)}</span>`;
-    div.onclick = () => loadPage(p.id);
-    list.appendChild(div);
+function render(){
+  let rows=D.rows.slice();
+  if(filt.tipo) rows=rows.filter(r=>r.Tipo===filt.tipo);
+  if(filt.est)  rows=rows.filter(r=>r.Estado===filt.est);
+  if(filt.año)  rows=rows.filter(r=>r.Año===filt.año);
+  if(filt.q){const q=filt.q.toLowerCase();rows=rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));}
+  if(sc) rows.sort((a,b)=>{const va=String(a[sc]||'').toLowerCase(),vb=String(b[sc]||'').toLowerCase();return va<vb?-sd:va>vb?sd:0;});
+  document.getElementById('cnt').textContent=rows.length+' entradas';
+  const tb=document.getElementById('tbody');tb.innerHTML='';
+  document.getElementById('thd').style.display=edit?'table-cell':'none';
+  document.getElementById('btn-ar').classList.toggle('on',edit);
+  if(!rows.length){tb.innerHTML='<tr><td colspan="11"><div class="empty"><div>🔍</div>Sin resultados</div></td></tr>';return;}
+  rows.forEach(row=>{
+    const tr=document.createElement('tr');
+    tr.dataset.id=row.id;
+    if(row.id===selId)tr.classList.add('sel');
+    tr.onclick=e=>{if(e.target.closest('.rbtn'))return;openDet(row.id);};
+    const f=[row['Fecha exacta (inicio)'],row['Fecha exacta (fin)']].filter(Boolean).join(' → ');
+    tr.innerHTML=`
+      <td class="tnombre">${esc(row.Nombre)}</td>
+      <td>${tbadge(row.Tipo)}</td>
+      <td class="tdm">${esc(row['Mes habitual']||'')}</td>
+      <td class="tdm">${esc(row.Año||'')}</td>
+      <td class="tdm" style="font-size:12px">${esc(f)}</td>
+      <td>${sbadge(row.Estado)}</td>
+      <td class="tdm">${esc(row['Equipo Líder']||'')}</td>
+      <td><div class="tdnotas">${esc(row.Notas||'')}</div></td>
+      <td class="tdurl">${row.URL?`<a href="${esc(row.URL)}" target="_blank" rel="noopener">↗ Ver</a>`:''}</td>
+      <td class="tdm">${esc(row.Lugar||'')}</td>
+      <td style="display:${edit?'table-cell':'none'}"><button class="rbtn" onclick="delRow('${row.id}')">×</button></td>
+    `;
+    tb.appendChild(tr);
   });
 }
 
-// ─── LOAD PAGE ───────────────────────────────────────────────
-function loadPage(pageId) {
-  currentPageId = pageId;
-  const page = data.pages.find(p => p.id === pageId);
-  if (!page) return;
-  document.getElementById('bc-title').textContent = page.title;
-  // Update sidebar active
-  document.querySelectorAll('.sidebar-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.id === pageId);
+function tbadge(t){if(!t)return'';return`<span class="badge ${t==='Evento'?'b-ev':'b-fu'}">${esc(t)}</span>`;}
+function sbadge(s){if(!s)return'';let c='b-sin';if(s==='En progreso')c='b-prog';else if(s==='Listo')c='b-listo';else if(s==='No tenemos participación')c='b-no';const d=c.replace('b-','');return`<span class="badge ${c}"><span class="bdot" style="background:var(--s-${d.split('-')[0]})"></span>${esc(s)}</span>`;}
+
+function openDet(id){
+  selId=id;const row=D.rows.find(r=>r.id===id);if(!row)return;
+  document.getElementById('det').classList.add('open');
+  renderDet(row);
+  document.querySelectorAll('#tbody tr').forEach(tr=>tr.classList.toggle('sel',tr.dataset.id===id));
+}
+function closeDet(){document.getElementById('det').classList.remove('open');selId=null;document.querySelectorAll('#tbody tr').forEach(tr=>tr.classList.remove('sel'));}
+
+function renderDet(row){
+  const t=document.getElementById('det-title');
+  t.textContent=row.Nombre;t.contentEditable=edit?'true':'false';
+  t.oninput=edit?()=>{row.Nombre=t.textContent;mark();render();}:null;
+  const body=document.getElementById('det-body');body.innerHTML='';
+  const fields=[
+    {k:'Tipo',l:'Tipo',tp:'sel',opts:TIPOS},
+    {k:'Estado',l:'Estado',tp:'sel',opts:ESTADOS},
+    {k:'Mes habitual',l:'Mes habitual',tp:'sel',opts:MESES},
+    {k:'Año',l:'Año',tp:'txt'},
+    {k:'Fecha exacta (inicio)',l:'Fecha inicio',tp:'txt'},
+    {k:'Fecha exacta (fin)',l:'Fecha fin',tp:'txt'},
+    {k:'Equipo Líder',l:'Equipo Líder',tp:'txt'},
+    {k:'URL',l:'URL',tp:'url'},
+    {k:'Lugar',l:'Lugar',tp:'txt'},
+    {k:'Notas',l:'Notas',tp:'ta'},
+  ];
+  fields.forEach(f=>{
+    const div=document.createElement('div');div.className='dfield';
+    div.innerHTML=`<div class="dlbl">${f.l}</div>`;
+    if(f.tp==='sel'&&edit){
+      const s=document.createElement('select');s.className='dsel';
+      f.opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;if(o===row[f.k])op.selected=true;s.appendChild(op);});
+      s.onchange=()=>{row[f.k]=s.value;mark();render();renderDet(row);};div.appendChild(s);
+    }else if(f.tp==='sel'){
+      const v=document.createElement('div');v.className='dval';
+      if(f.k==='Tipo')v.innerHTML=tbadge(row[f.k]);
+      else if(f.k==='Estado')v.innerHTML=sbadge(row[f.k]);
+      else v.textContent=row[f.k]||'—';div.appendChild(v);
+    }else if(f.tp==='ta'){
+      const ta=document.createElement('div');ta.className='dta';ta.textContent=row[f.k]||'';
+      if(edit){ta.contentEditable='true';ta.oninput=()=>{row[f.k]=ta.textContent;mark();};}
+      div.appendChild(ta);
+    }else if(f.tp==='url'){
+      if(edit){const v=document.createElement('div');v.className='dval';v.contentEditable='true';v.textContent=row[f.k]||'';v.oninput=()=>{row[f.k]=v.textContent.trim();mark();render();};div.appendChild(v);}
+      else{const v=document.createElement('div');v.className='dval';v.innerHTML=row[f.k]?`<a href="${esc(row[f.k])}" target="_blank" rel="noopener">${esc(row[f.k])}</a>`:'<span style="color:var(--text3)">—</span>';div.appendChild(v);}
+    }else{
+      const v=document.createElement('div');v.className='dval';v.textContent=row[f.k]||'';
+      if(edit){v.contentEditable='true';v.oninput=()=>{row[f.k]=v.textContent;mark();render();};}
+      else if(!row[f.k]){v.style.color='var(--text3)';v.textContent='—';}
+      div.appendChild(v);
+    }
+    body.appendChild(div);
   });
-  renderPage(page);
+  document.getElementById('det-foot').classList.toggle('on',edit);
 }
 
-function renderPage(page) {
-  const inner = document.getElementById('page-inner');
-  inner.innerHTML = '';
-  // Icon
-  const iconEl = document.createElement('div');
-  iconEl.className = 'page-icon';
-  iconEl.textContent = page.icon || '📄';
-  if (editMode) {
-    iconEl.title = 'Clic para cambiar icono';
-    iconEl.style.cursor = 'pointer';
-    iconEl.onclick = () => changePageIcon(page);
-  }
-  inner.appendChild(iconEl);
-  // Title
-  const titleWrap = document.createElement('div');
-  titleWrap.className = 'page-title-wrap';
-  const titleEl = document.createElement('div');
-  titleEl.className = 'page-title';
-  titleEl.textContent = page.title;
-  if (editMode) {
-    titleEl.contentEditable = 'true';
-    titleEl.oninput = () => {
-      page.title = titleEl.textContent;
-      document.getElementById('bc-title').textContent = page.title;
-      renderSidebar();
-      markUnsaved();
-    };
-  }
-  titleWrap.appendChild(titleEl);
-  inner.appendChild(titleWrap);
-  // Blocks
-  page.blocks.forEach(block => inner.appendChild(renderBlock(block, page)));
+function delCurrent(){if(!selId||!edit)return;if(!confirm('¿Eliminar esta fila?'))return;D.rows=D.rows.filter(r=>r.id!==selId);closeDet();mark();render();}
+function delRow(id){if(!confirm('¿Eliminar esta fila?'))return;D.rows=D.rows.filter(r=>r.id!==id);if(selId===id)closeDet();mark();render();}
+function addRow(){const id='r'+Date.now();D.rows.push({id,Nombre:'Nueva entrada',Tipo:'Evento','Mes habitual':'Enero',Año:'2026','Fecha exacta (inicio)':'','Fecha exacta (fin)':'',Estado:'Sin empezar','Equipo Líder':'',Notas:'',URL:'',Lugar:''});mark();render();openDet(id);}
+
+function applyF(){filt.tipo=document.getElementById('f-tipo').value;filt.est=document.getElementById('f-est').value;filt.año=document.getElementById('f-año').value;filt.q=document.getElementById('fsearch').value.trim();render();}
+function setView(v,el){document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('f-tipo').value=v==='all'?'':v;document.getElementById('f-est').value='';applyF();}
+function setStatus(s,el){document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('f-tipo').value='';document.getElementById('f-est').value=s;applyF();}
+function srt(c){if(sc===c)sd=-sd;else{sc=c;sd=1;}render();}
+
+function clickMode(){if(edit){edit=false;updUI();if(selId){const row=D.rows.find(r=>r.id===selId);if(row)renderDet(row);}render();toast('🔒 Edición desactivada');}else openPw();}
+function updUI(){document.getElementById('ebadge').classList.toggle('on',edit);document.getElementById('btn-gh').style.display=edit?'flex':'none';document.getElementById('lico').textContent=edit?'🔓':'🔒';document.getElementById('llbl').textContent=edit?'Salir de edición':'Modo edición';document.getElementById('thd').style.display=edit?'table-cell':'none';}
+
+function openPw(){document.getElementById('pw-modal').classList.add('open');document.getElementById('pw-inp').value='';document.getElementById('pw-err').textContent='';setTimeout(()=>document.getElementById('pw-inp').focus(),60);}
+function closePw(){document.getElementById('pw-modal').classList.remove('open');}
+function subPw(){if(document.getElementById('pw-inp').value===PW){closePw();edit=true;updUI();if(selId){const row=D.rows.find(r=>r.id===selId);if(row)renderDet(row);}render();toast('✏️ Modo edición activado');}else{document.getElementById('pw-err').textContent='Contraseña incorrecta';document.getElementById('pw-inp').value='';}}
+
+function openGh(){document.getElementById('gh-modal').classList.add('open');document.getElementById('gst').textContent='';}
+function closeGh(){document.getElementById('gh-modal').classList.remove('open');}
+async function saveGh(){
+  const user=document.getElementById('gh-user').value.trim();
+  const repo=document.getElementById('gh-repo').value.trim();
+  const tok=document.getElementById('gh-tok').value.trim();
+  if(!user||!repo||!tok){setSt('Rellena todos los campos','err');return;}
+  if(document.getElementById('gh-rem').checked){localStorage.setItem('gh_rem','1');localStorage.setItem('gh_user',user);localStorage.setItem('gh_repo',repo);}
+  setSt('Conectando…','');
+  let sha=null;
+  try{const r=await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{headers:{Authorization:'token '+tok,Accept:'application/vnd.github.v3+json'}});if(r.ok){const d=await r.json();sha=d.sha;}}catch(e){}
+  setSt('Guardando…','');
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(D,null,2))));
+  try{
+    const r=await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{method:'PUT',headers:{Authorization:'token '+tok,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Actualizar datos',content,...(sha?{sha}:{})})});
+    if(r.ok){setSt('✅ Guardado. La web se actualiza en ~1 min.','ok');clearU();setTimeout(closeGh,2400);toast('✅ Guardado en GitHub');}
+    else{const e=await r.json();setSt('Error: '+(e.message||'desconocido'),'err');}
+  }catch(e){setSt('Error de red: '+e.message,'err');}
 }
+function setSt(m,c){const el=document.getElementById('gst');el.textContent=m;el.className='gst'+(c?' '+c:'');}
 
-// ─── RENDER BLOCK ────────────────────────────────────────────
-function renderBlock(block, page) {
-  const div = document.createElement('div');
-  div.className = 'block';
-  div.dataset.id = block.id;
-
-  if (block.type === 'table') {
-    div.appendChild(renderTable(block, page));
-    return div;
-  }
-
-  const wrap = document.createElement('div');
-  wrap.className = 'block-wrap';
-
-  const body = document.createElement('div');
-  body.className = 'block-body';
-
-  if (block.type === 'bullet' || block.type === 'numbered') {
-    const ul = document.createElement(block.type === 'numbered' ? 'ol' : 'ul');
-    ul.className = 'block-' + block.type;
-    (block.items || []).forEach((item, idx) => {
-      const li = document.createElement('li');
-      if (block.type === 'numbered') {
-        const num = document.createElement('span');
-        num.className = 'num';
-        num.textContent = (idx + 1) + '.';
-        li.appendChild(num);
-      }
-      const span = document.createElement('span');
-      span.className = 'list-item-text';
-      span.textContent = item;
-      if (editMode) {
-        span.contentEditable = 'true';
-        span.oninput = () => { block.items[idx] = span.textContent; markUnsaved(); };
-      }
-      li.appendChild(span);
-
-      if (editMode) {
-        // Add item button at end
-        const addBtn = document.createElement('button');
-        addBtn.className = 'block-btn';
-        addBtn.title = 'Añadir elemento';
-        addBtn.textContent = '+';
-        addBtn.style.marginLeft = 'auto';
-        addBtn.onclick = () => {
-          block.items.splice(idx + 1, 0, 'Nuevo elemento');
-          markUnsaved();
-          loadPage(currentPageId);
-        };
-        li.appendChild(addBtn);
-        // Remove item
-        const delBtn = document.createElement('button');
-        delBtn.className = 'block-btn';
-        delBtn.style.color = 'var(--red)';
-        delBtn.title = 'Eliminar elemento';
-        delBtn.textContent = '×';
-        delBtn.onclick = () => {
-          if (block.items.length > 1) { block.items.splice(idx, 1); markUnsaved(); loadPage(currentPageId); }
-        };
-        li.appendChild(delBtn);
-      }
-      ul.appendChild(li);
-    });
-    // Add new item button (bottom)
-    if (editMode) {
-      const addLi = document.createElement('li');
-      const addBtn = document.createElement('button');
-      addBtn.style.cssText = 'padding:2px 8px;border:1px dashed var(--border);border-radius:5px;background:none;font-family:var(--font);font-size:12px;color:var(--text-muted);cursor:pointer;margin-top:4px;';
-      addBtn.textContent = '+ Añadir elemento';
-      addBtn.onclick = () => {
-        block.items.push('Nuevo elemento');
-        markUnsaved();
-        loadPage(currentPageId);
-      };
-      addLi.appendChild(addBtn);
-      ul.appendChild(addLi);
-    }
-    body.appendChild(ul);
-  } else {
-    const el = document.createElement('div');
-    el.className = 'block-' + block.type;
-    el.textContent = block.content || '';
-    if (editMode) {
-      el.contentEditable = 'true';
-      el.dataset.placeholder = 'Escribe aquí...';
-      el.oninput = () => { block.content = el.textContent; markUnsaved(); };
-    }
-    body.appendChild(el);
-  }
-
-  wrap.appendChild(body);
-  div.appendChild(wrap);
-
-  if (editMode) {
-    const delBtn = document.createElement('button');
-    delBtn.className = 'btn-delete-block';
-    delBtn.title = 'Eliminar bloque';
-    delBtn.innerHTML = '×';
-    delBtn.onclick = () => deleteBlock(block.id, page);
-    div.appendChild(delBtn);
-  }
-
-  return div;
-}
-
-function renderTable(block, page) {
-  const wrap = document.createElement('div');
-  const tableWrap = document.createElement('div');
-  tableWrap.className = 'block-table-wrap';
-
-  const table = document.createElement('table');
-  table.className = 'block-table';
-
-  // Header
-  const thead = document.createElement('thead');
-  const headRow = document.createElement('tr');
-  (block.headers || []).forEach((h, ci) => {
-    const th = document.createElement('th');
-    th.textContent = h;
-    if (editMode) {
-      th.contentEditable = 'true';
-      th.oninput = () => { block.headers[ci] = th.textContent; markUnsaved(); };
-    }
-    headRow.appendChild(th);
-  });
-  thead.appendChild(headRow);
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement('tbody');
-  (block.rows || []).forEach((row, ri) => {
-    const tr = document.createElement('tr');
-    row.forEach((cell, ci) => {
-      const td = document.createElement('td');
-      td.textContent = cell;
-      if (editMode) {
-        td.contentEditable = 'true';
-        td.oninput = () => { block.rows[ri][ci] = td.textContent; markUnsaved(); };
-      }
-      tr.appendChild(td);
-    });
-    // Delete row
-    if (editMode) {
-      const tdDel = document.createElement('td');
-      tdDel.style.cssText = 'width:24px;padding:4px;';
-      const btn = document.createElement('button');
-      btn.style.cssText = 'border:none;background:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:2px;border-radius:3px;';
-      btn.textContent = '×';
-      btn.title = 'Eliminar fila';
-      btn.onmouseenter = () => { btn.style.color='var(--red)'; btn.style.background='#fde8e8'; };
-      btn.onmouseleave = () => { btn.style.color='var(--text-light)'; btn.style.background='none'; };
-      btn.onclick = () => { block.rows.splice(ri, 1); markUnsaved(); loadPage(currentPageId); };
-      tdDel.appendChild(btn);
-      tr.appendChild(tdDel);
-    }
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-  tableWrap.appendChild(table);
-  wrap.appendChild(tableWrap);
-
-  // Table controls
-  if (editMode) {
-    const ctrl = document.createElement('div');
-    ctrl.className = 'table-controls';
-
-    const addRow = document.createElement('button');
-    addRow.className = 'table-ctrl-btn';
-    addRow.textContent = '+ Fila';
-    addRow.onclick = () => {
-      block.rows.push(block.headers.map(() => ''));
-      markUnsaved(); loadPage(currentPageId);
-    };
-
-    const addCol = document.createElement('button');
-    addCol.className = 'table-ctrl-btn';
-    addCol.textContent = '+ Columna';
-    addCol.onclick = () => {
-      block.headers.push('Nueva columna');
-      block.rows.forEach(r => r.push(''));
-      markUnsaved(); loadPage(currentPageId);
-    };
-
-    const delBlock = document.createElement('button');
-    delBlock.className = 'table-ctrl-btn';
-    delBlock.style.color = 'var(--red)';
-    delBlock.textContent = 'Eliminar tabla';
-    delBlock.onclick = () => deleteBlock(block.id, page);
-
-    ctrl.appendChild(addRow);
-    ctrl.appendChild(addCol);
-    ctrl.appendChild(delBlock);
-    wrap.appendChild(ctrl);
-  }
-
-  return wrap;
-}
-
-// ─── EDIT MODE ───────────────────────────────────────────────
-function setEditMode(on) {
-  editMode = on;
-  document.body.classList.toggle('edit-mode', on);
-  document.getElementById('edit-badge').classList.toggle('visible', on);
-  document.getElementById('btn-add-block').classList.toggle('visible', on);
-  document.getElementById('btn-save-gh').classList.toggle('visible', on);
-  document.getElementById('add-page-btn').style.display = on ? 'block' : 'none';
-  document.getElementById('lock-icon').textContent = on ? '🔓' : '🔒';
-  document.getElementById('lock-label').textContent = on ? 'Salir de edición' : 'Modo edición';
-  if (currentPageId) loadPage(currentPageId);
-}
-
-// ─── PASSWORD ────────────────────────────────────────────────
-function openPwModal() {
-  if (editMode) { setEditMode(false); return; }
-  document.getElementById('pw-modal').classList.add('open');
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-error').textContent = '';
-  setTimeout(() => document.getElementById('pw-input').focus(), 50);
-}
-function closePwModal() {
-  document.getElementById('pw-modal').classList.remove('open');
-}
-function submitPw() {
-  const val = document.getElementById('pw-input').value;
-  if (val === PASSWORD) {
-    closePwModal();
-    setEditMode(true);
-    showToast('✏️ Modo edición activado');
-  } else {
-    document.getElementById('pw-error').textContent = 'Contraseña incorrecta';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-  }
-}
-
-// ─── BLOCK MANAGEMENT ────────────────────────────────────────
-function openAddBlock() {
-  document.getElementById('add-block-panel').style.display = 'block';
-  document.getElementById('overlay').style.display = 'block';
-}
-function closeAllPanels() {
-  document.getElementById('add-block-panel').style.display = 'none';
-  document.getElementById('add-page-panel').style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-}
-function addBlock(type) {
-  closeAllPanels();
-  const page = data.pages.find(p => p.id === currentPageId);
-  if (!page) return;
-  const id = 'b' + Date.now();
-  let block = { id, type };
-  if (type === 'bullet' || type === 'numbered') block.items = ['Nuevo elemento'];
-  else if (type === 'table') {
-    block.headers = ['Columna 1', 'Columna 2', 'Columna 3'];
-    block.rows = [['', '', ''], ['', '', '']];
-  } else block.content = '';
-  page.blocks.push(block);
-  markUnsaved();
-  loadPage(currentPageId);
-  // Scroll to bottom
-  setTimeout(() => {
-    const pc = document.getElementById('page-content');
-    pc.scrollTop = pc.scrollHeight;
-  }, 50);
-}
-function deleteBlock(blockId, page) {
-  const idx = page.blocks.findIndex(b => b.id === blockId);
-  if (idx >= 0) { page.blocks.splice(idx, 1); markUnsaved(); loadPage(currentPageId); }
-}
-
-// ─── PAGE MANAGEMENT ─────────────────────────────────────────
-function openAddPage() {
-  closeAllPanels();
-  document.getElementById('add-page-panel').style.display = 'block';
-  document.getElementById('overlay').style.display = 'block';
-  document.getElementById('new-page-title').focus();
-}
-function closeAddPage() {
-  document.getElementById('add-page-panel').style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-}
-function addPage() {
-  const icon = document.getElementById('new-page-icon').value.trim() || '📄';
-  const title = document.getElementById('new-page-title').value.trim();
-  if (!title) { showToast('⚠️ Escribe un nombre para la página'); return; }
-  const id = 'page-' + Date.now();
-  data.pages.push({ id, icon, title, blocks: [
-    { id: 'b1', type: 'h1', content: title },
-    { id: 'b2', type: 'text', content: '' }
-  ]});
-  closeAddPage();
-  markUnsaved();
-  renderSidebar();
-  loadPage(id);
-}
-
-function changePageIcon(page) {
-  const newIcon = prompt('Nuevo icono (emoji):', page.icon || '📄');
-  if (newIcon !== null) {
-    page.icon = newIcon.trim() || '📄';
-    markUnsaved();
-    loadPage(currentPageId);
-  }
-}
-
-// ─── UNSAVED ─────────────────────────────────────────────────
-function markUnsaved() {
-  unsaved = true;
-  document.getElementById('unsaved-dot').classList.add('visible');
-}
-function clearUnsaved() {
-  unsaved = false;
-  document.getElementById('unsaved-dot').classList.remove('visible');
-}
-
-// ─── GITHUB SAVE ─────────────────────────────────────────────
-function openGhModal() { document.getElementById('gh-modal').classList.add('open'); }
-function closeGhModal() { document.getElementById('gh-modal').classList.remove('open'); document.getElementById('gh-status').textContent = ''; document.getElementById('gh-status').className = 'gh-status'; }
-
-async function saveToGithub() {
-  const user  = document.getElementById('gh-user').value.trim();
-  const repo  = document.getElementById('gh-repo').value.trim();
-  const token = document.getElementById('gh-token').value.trim();
-  const remember = document.getElementById('gh-remember-chk').checked;
-
-  if (!user || !repo || !token) {
-    setGhStatus('Rellena todos los campos', 'err');
-    return;
-  }
-
-  if (remember) {
-    localStorage.setItem('gh_remember', '1');
-    localStorage.setItem('gh_user', user);
-    localStorage.setItem('gh_repo', repo);
-    localStorage.setItem('gh_token', token);
-  } else {
-    localStorage.removeItem('gh_remember');
-    localStorage.removeItem('gh_user');
-    localStorage.removeItem('gh_repo');
-    localStorage.removeItem('gh_token');
-  }
-
-  setGhStatus('Conectando con GitHub...', '');
-
-  // Get current file SHA
-  let sha = null;
-  try {
-    const r = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`, {
-      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (r.ok) { const d = await r.json(); sha = d.sha; }
-  } catch(e) {}
-
-  // Encode content
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-
-  setGhStatus('Guardando...', '');
-
-  try {
-    const body = { message: 'Actualizar contenido', content, ...(sha ? { sha } : {}) };
-    const r = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`, {
-      method: 'PUT',
-      headers: {
-        Authorization: 'token ' + token,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-    if (r.ok) {
-      setGhStatus('✅ ¡Guardado! La web se actualizará en ~1 min.', 'ok');
-      clearUnsaved();
-      setTimeout(closeGhModal, 2500);
-      showToast('✅ Guardado en GitHub');
-    } else {
-      const err = await r.json();
-      setGhStatus('Error: ' + (err.message || 'Desconocido'), 'err');
-    }
-  } catch(e) {
-    setGhStatus('Error de red: ' + e.message, 'err');
-  }
-}
-
-function setGhStatus(msg, cls) {
-  const el = document.getElementById('gh-status');
-  el.textContent = msg;
-  el.className = 'gh-status' + (cls ? ' ' + cls : '');
-}
-
-// ─── TOAST ───────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-// ─── UTILS ───────────────────────────────────────────────────
-function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// Keyboard shortcut: Escape closes modals
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closePwModal();
-    closeGhModal();
-    closeAllPanels();
-  }
-});
-
-// ─── BOOT ────────────────────────────────────────────────────
-loadData();
+function mark(){unsaved=true;document.getElementById('udot').classList.add('on');}
+function clearU(){unsaved=false;document.getElementById('udot').classList.remove('on');}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePw();closeGh();closeDet();}});
+load();
 </script>
 </body>
 </html>
