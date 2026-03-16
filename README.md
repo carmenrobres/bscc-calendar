@@ -8,7 +8,7 @@ Asegúrate de tener en el repo:
 - `data.json`  
 - `.github/workflows/update-data.yml`
 
-### 2. Crea el GitHub Secret
+### 2. Crea el GitHub Secret 
 Ve a: **Settings → Secrets and variables → Actions → New repository secret**
 
 - Nombre: `DATA_TOKEN`
