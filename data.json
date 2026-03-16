@@ -1,0 +1,78 @@
+{
+  "site": {
+    "title": "Mi Espacio",
+    "icon": "📋",
+    "lastUpdated": "2024-01-15"
+  },
+  "pages": [
+    {
+      "id": "page-1",
+      "icon": "🏠",
+      "title": "Inicio",
+      "blocks": [
+        { "id": "b1", "type": "h1", "content": "Bienvenido a mi espacio" },
+        { "id": "b2", "type": "text", "content": "Esta es mi página principal. Aquí puedes escribir cualquier cosa que necesites recordar o compartir." },
+        { "id": "b3", "type": "h2", "content": "Sobre este espacio" },
+        { "id": "b4", "type": "text", "content": "Usa el panel izquierdo para navegar entre las secciones. Cada sección tiene su propio contenido." },
+        { "id": "b5", "type": "bullet", "items": ["Organiza tus ideas", "Comparte información", "Mantén todo en un lugar"] }
+      ]
+    },
+    {
+      "id": "page-2",
+      "icon": "📝",
+      "title": "Notas",
+      "blocks": [
+        { "id": "b1", "type": "h1", "content": "Mis Notas" },
+        { "id": "b2", "type": "h2", "content": "Notas importantes" },
+        { "id": "b3", "type": "text", "content": "Aquí puedes poner tus notas más importantes del día a día." },
+        { "id": "b4", "type": "h3", "content": "Recordatorios" },
+        { "id": "b5", "type": "numbered", "items": ["Primera tarea pendiente", "Segunda tarea pendiente", "Tercera tarea pendiente"] },
+        { "id": "b6", "type": "h2", "content": "Notas rápidas" },
+        { "id": "b7", "type": "text", "content": "Espacio para ideas rápidas y pensamientos del momento." }
+      ]
+    },
+    {
+      "id": "page-3",
+      "icon": "📊",
+      "title": "Proyectos",
+      "blocks": [
+        { "id": "b1", "type": "h1", "content": "Proyectos" },
+        { "id": "b2", "type": "text", "content": "Seguimiento de todos los proyectos en curso." },
+        {
+          "id": "b3",
+          "type": "table",
+          "headers": ["Proyecto", "Estado", "Prioridad", "Fecha límite"],
+          "rows": [
+            ["Rediseño web", "En progreso", "Alta", "30 Ene"],
+            ["Informe mensual", "Pendiente", "Media", "15 Feb"],
+            ["Reunión equipo", "Completado", "Baja", "10 Ene"]
+          ]
+        },
+        { "id": "b4", "type": "h2", "content": "Próximos pasos" },
+        { "id": "b5", "type": "bullet", "items": ["Revisar el estado de cada proyecto semanalmente", "Actualizar fechas límite si es necesario", "Añadir nuevos proyectos según surjan"] }
+      ]
+    },
+    {
+      "id": "page-4",
+      "icon": "📚",
+      "title": "Recursos",
+      "blocks": [
+        { "id": "b1", "type": "h1", "content": "Recursos útiles" },
+        { "id": "b2", "type": "text", "content": "Colección de recursos, enlaces y referencias que uso frecuentemente." },
+        { "id": "b3", "type": "h2", "content": "Links importantes" },
+        { "id": "b4", "type": "bullet", "items": ["Documentación principal", "Herramientas de trabajo", "Referencias técnicas", "Materiales de formación"] },
+        { "id": "b5", "type": "h2", "content": "Tabla de referencia" },
+        {
+          "id": "b6",
+          "type": "table",
+          "headers": ["Recurso", "Tipo", "Notas"],
+          "rows": [
+            ["Recurso 1", "Documento", "Muy útil"],
+            ["Recurso 2", "Enlace web", "Revisar mensualmente"],
+            ["Recurso 3", "Video", "Tutorial completo"]
+          ]
+        }
+      ]
+    }
+  ]
+}
