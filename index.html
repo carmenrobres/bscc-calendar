@@ -772,7 +772,9 @@ function sbTogglePast(el){
     btn.classList.remove('active');
     btn.childNodes.forEach(n=>{ if(n.nodeType===3&&n.textContent.trim()) n.textContent=' Ocultar pasados '; });
   }
-  document.querySelector('.sb-item[onclick*="sbFilter('all'"]')&&document.querySelector('.sb-item[onclick*="sbFilter('all'"]').classList.add('active');
+  // Restore Todos active state
+  const todosItem=document.querySelector('#sidebar .sb-item');
+  if(todosItem) todosItem.classList.add('active');
   renderAll(); updateSbCounts();
 }
 
