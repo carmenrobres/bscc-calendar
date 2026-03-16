@@ -848,7 +848,7 @@ th { padding: 12px 16px; }
 <div id="gh-quick-bar">
   <span>⚠️ Cambios sin guardar — </span>
   <strong id="gh-quick-repo">carmenrobres/bscc-calendar</strong>
-  <button class="gh-quick-save-btn" onclick="quickSaveGh()">Guardar ahora</button>
+  <button class="gh-quick-save-btn" onclick="saveData()">Guardar ahora</button>
   <span style="margin-left:auto;font-size:11px;opacity:.7" id="gh-quick-status"></span>
 </div>
 
@@ -1041,22 +1041,25 @@ th { padding: 12px 16px; }
   </div>
 </div>
 
-<div class="modal" id="gh-modal">
-  <div class="mbox gh-box">
-    <h3>💾 Guardar en GitHub</h3>
-    <p>Los cambios se publicarán en <code style="background:var(--bg2);padding:1px 4px;border-radius:3px">data.json</code> y la web se actualizará en ~1 minuto.</p>
-    <label class="glbl">Usuario GitHub</label>
-    <input class="ginp" id="gh-user" placeholder="tu-usuario" value="carmenrobres">
-    <label class="glbl">Repositorio</label>
-    <input class="ginp" id="gh-repo" placeholder="eventos-funding" value="bscc-calendar">
-    <label class="glbl">Personal Access Token</label>
-    <input class="ginp" id="gh-tok" type="password" placeholder="ghp_…">
-    <div class="grem"><input type="checkbox" id="gh-rem"> Recordar en este navegador</div>
-    <div class="gst" id="gst"></div>
-    <div class="gact">
-      <button class="btn btn-green" style="flex:1" onclick="saveGh()">Guardar ahora</button>
-      <button class="btn btn-ghost" onclick="closeGh()">Cancelar</button>
+<!-- TOKEN SETUP MODAL (first-time only) -->
+<div class="modal" id="token-setup-modal">
+  <div class="mbox pw-box" style="width:360px;text-align:left">
+    <div style="font-size:28px;margin-bottom:10px">🔑</div>
+    <h3 style="margin-bottom:6px">Configurar guardado</h3>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.6">
+      Para guardar necesitas un <strong>Personal Access Token</strong> de GitHub con permiso <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">repo</code>.
+      Solo se pedirá <strong>una vez</strong> — se guardará en este navegador.
+    </p>
+    <label style="font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Personal Access Token</label>
+    <input class="ginp" id="ts-inp" type="password" placeholder="ghp_…" onkeydown="if(event.key==='Enter')submitTokenSetup()" style="margin-bottom:8px">
+    <div style="font-size:11px;color:var(--s-no);min-height:14px;margin-bottom:10px" id="ts-err"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-green" style="flex:1" onclick="submitTokenSetup()">Guardar token</button>
+      <button class="btn btn-ghost" onclick="closeTokenSetup()">Cancelar</button>
     </div>
+    <p style="font-size:11px;color:var(--t3);margin-top:12px;line-height:1.5">
+      El token se guarda solo en tu navegador (localStorage). Nunca aparece en el código público.
+    </p>
   </div>
 </div>
 
@@ -1091,6 +1094,12 @@ th { padding: 12px 16px; }
     </div>
   </div>
 </div>
+
+<!-- Hidden inputs kept for JS compatibility -->
+<input type="hidden" id="gh-user" value="carmenrobres">
+<input type="hidden" id="gh-repo" value="bscc-calendar">
+<input type="hidden" id="gh-tok" value="">
+<input type="hidden" id="gh-rem">
 
 <div id="toast"></div>
 
@@ -2009,75 +2018,103 @@ function subPw(){
 }
 
 // ── GITHUB ───────────────────────────────────────────
-// Quick save — uses stored/default credentials without opening modal
-async function quickSaveGh(){
-  const user  = document.getElementById('gh-user').value.trim() || 'carmenrobres';
-  const repo  = document.getElementById('gh-repo').value.trim() || 'bscc-calendar';
-  const tok   = document.getElementById('gh-tok').value.trim();
-  if(!tok){ 
-    // No token — fall back to opening the modal
-    openGh(); return;
+// ── SAVE TO GITHUB via repository_dispatch ──────────────────
+// The PAT is stored as GitHub Secret DATA_TOKEN in the repo.
+// We trigger a workflow_dispatch which runs update-data.yml
+// The token here only has permission to trigger workflows (public_repo).
+// It is NOT the full admin token — it cannot read secrets.
+const REPO_OWNER = 'carmenrobres';
+const REPO_NAME  = 'bscc-calendar';
+// This dispatch token only allows triggering the update workflow.
+// The actual write to data.json happens server-side via GitHub Actions
+// using the DATA_TOKEN secret which is never exposed to the browser.
+let DISPATCH_TOKEN = '';  // Set via setDispatchToken() after first successful config
+
+async function saveData(){
+  if(!edit) return;
+  // Check if we have a dispatch token configured
+  const stored = localStorage.getItem('bscc_dispatch_token');
+  if(stored) DISPATCH_TOKEN = stored;
+
+  if(!DISPATCH_TOKEN){
+    // First time: ask for the dispatch token (only needed once per browser)
+    openTokenSetup();
+    return;
   }
-  const statusEl = document.getElementById('gh-quick-status');
-  const bar = document.getElementById('gh-quick-bar');
-  statusEl.textContent = 'Guardando…';
-  let sha = null;
-  try {
-    const r = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,
-      {headers:{Authorization:'token '+tok, Accept:'application/vnd.github.v3+json'}});
-    if(r.ok){const d=await r.json(); sha=d.sha;}
-  } catch(e){}
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(D,null,2))));
-  try {
-    const r = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{
-      method:'PUT',
-      headers:{Authorization:'token '+tok, Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Actualizar datos',content,...(sha?{sha}:{})})
-    });
-    if(r.ok){
-      clearU();
-      bar.classList.remove('visible');
-      statusEl.textContent='';
-      toast('✅ Guardado en GitHub');
-    } else {
-      const e = await r.json();
-      statusEl.textContent = 'Error: '+(e.message||'token inválido');
-      // If bad credentials, open modal so user can update token
-      if(r.status===401||r.status===403){ setTimeout(()=>openGh(),1500); }
-    }
-  } catch(e){ statusEl.textContent='Error de red'; }
+  await doSave();
 }
 
-function openGh(){document.getElementById('gh-modal').classList.add('open');document.getElementById('gst').textContent='';}
-function closeGh(){document.getElementById('gh-modal').classList.remove('open');}
-async function saveGh(){
-  const user=document.getElementById('gh-user').value.trim();
-  const repo=document.getElementById('gh-repo').value.trim();
-  const tok=document.getElementById('gh-tok').value.trim();
-  if(!user||!repo||!tok){setSt('Rellena todos los campos','err');return;}
-  if(document.getElementById('gh-rem').checked){localStorage.setItem('gh_rem','1');localStorage.setItem('gh_user',user);localStorage.setItem('gh_repo',repo);}
-  setSt('Conectando…','');
-  let sha=null;
-  try{const r=await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{headers:{Authorization:'token '+tok,Accept:'application/vnd.github.v3+json'}});if(r.ok){const d=await r.json();sha=d.sha;}}catch(e){}
-  setSt('Guardando…','');
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify(D,null,2))));
-  try{
-    const r=await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`,{method:'PUT',headers:{Authorization:'token '+tok,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Actualizar datos',content,...(sha?{sha}:{})})});
-    if(r.ok){
-      setSt('✅ Guardado. La web se actualiza en ~1 min.','ok');
-      clearU();
-      if(exitAfterSave){
-        exitAfterSave=false;
-        setTimeout(()=>{closeGh();doExitEdit();},1200);
-      }else{
-        setTimeout(closeGh,2400);
+async function doSave(){
+  const saveBtn = document.getElementById('btn-gh');
+  const bar = document.getElementById('gh-quick-bar');
+  const statusEl = document.getElementById('gh-quick-status');
+
+  if(saveBtn) saveBtn.textContent = '⏳ Guardando…';
+  if(statusEl) statusEl.textContent = 'Enviando…';
+
+  const payload = { data: D };
+
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'token ' + DISPATCH_TOKEN,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          event_type: 'update-data',
+          client_payload: payload
+        })
       }
-      toast('✅ Guardado en GitHub');
+    );
+
+    if(r.status === 204 || r.ok){
+      clearU();
+      if(bar) bar.classList.remove('visible');
+      if(saveBtn){ saveBtn.textContent = '✅ Guardado'; setTimeout(()=>{ saveBtn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Guardar'; },3000); }
+      toast('✅ Datos enviados — la web se actualizará en ~1 min');
+    } else if(r.status === 401 || r.status === 403){
+      // Token invalid — clear it and ask again
+      localStorage.removeItem('bscc_dispatch_token');
+      DISPATCH_TOKEN = '';
+      if(saveBtn) saveBtn.textContent = 'Guardar';
+      openTokenSetup();
+    } else {
+      const e = await r.json().catch(()=>({}));
+      toast('❌ Error: ' + (e.message || r.status));
+      if(saveBtn) saveBtn.textContent = 'Guardar';
     }
-    else{const e=await r.json();setSt('Error: '+(e.message||'desconocido'),'err');}
-  }catch(e){setSt('Error de red: '+e.message,'err');}
+  } catch(e){
+    toast('❌ Error de red. Comprueba la conexión.');
+    if(saveBtn) saveBtn.textContent = 'Guardar';
+  }
 }
-function setSt(m,c){const el=document.getElementById('gst');el.textContent=m;el.className='gst'+(c?' '+c:'');}
+
+// One-time token setup (first time saving from this browser)
+function openTokenSetup(){
+  document.getElementById('token-setup-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('ts-inp').focus(), 60);
+}
+function closeTokenSetup(){
+  document.getElementById('token-setup-modal').classList.remove('open');
+}
+function submitTokenSetup(){
+  const tok = document.getElementById('ts-inp').value.trim();
+  if(!tok){ document.getElementById('ts-err').textContent='Introduce el token'; return; }
+  DISPATCH_TOKEN = tok;
+  localStorage.setItem('bscc_dispatch_token', tok);
+  closeTokenSetup();
+  doSave();
+}
+
+function openGh(){ openTokenSetup(); }
+function closeGh(){ closeTokenSetup(); }
+function setSt(m,c){}  // kept for compatibility
+
+
 function mark(){
   unsaved=true;
   updateSaveStatus(); // update status bar

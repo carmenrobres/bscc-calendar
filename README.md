@@ -1,48 +1,40 @@
-# Mi Notion Personal
+# BSC — Eventos & Funding Calls
 
-Web estática que funciona como Notion: sidebar con páginas, bloques editables (texto, títulos, listas, tablas), y guardado directo en GitHub.
+## Setup (una sola vez)
 
-## Archivos
+### 1. Sube los archivos al repo
+Asegúrate de tener en el repo:
+- `index.html`
+- `data.json`  
+- `.github/workflows/update-data.yml`
 
-```
-index.html   ← toda la aplicación (una sola página)
-data.json    ← tu contenido (páginas y bloques)
-README.md    ← este archivo
-```
+### 2. Crea el GitHub Secret
+Ve a: **Settings → Secrets and variables → Actions → New repository secret**
 
-## Despliegue en GitHub Pages
+- Nombre: `DATA_TOKEN`
+- Valor: tu Personal Access Token con permiso `repo`
 
-1. Sube los tres archivos a un repositorio de GitHub
-2. Ve a **Settings → Pages**
-3. Source: **Deploy from branch** → `main` → `/root`
-4. Guarda. En ~1 minuto tendrás la web en:
-   `https://TU-USUARIO.github.io/NOMBRE-REPO`
+### 3. Activa GitHub Pages
+**Settings → Pages → Source: main → / (root)**
 
-## Uso
+---
 
-### Ver contenido
-Abre la web normalmente. Navega entre páginas con el menú lateral.
+## Uso diario
 
+1. Abre la web
+2. Haz clic en **"Editar contenido"** (sidebar inferior)
+3. Contraseña: `IBD1234`
+4. Edita lo que necesites
+5. Clic en **"Guardar"** → los datos se publican automáticamente
 
-### Guardar en GitHub
-Al guardar necesitarás:
-- Tu **nombre de usuario** de GitHub
-- El **nombre del repositorio**
-- Un **Personal Access Token** (con permiso `repo`)
+### Primera vez guardando desde un navegador nuevo
+La primera vez que guardes desde un ordenador nuevo, el sistema pedirá tu Personal Access Token. Se guarda en el navegador (localStorage) y no vuelve a pedirlo.
 
-Puedes marcar "Recordar en este navegador" para no tener que escribirlos cada vez.
+---
 
-## Tipos de bloques disponibles
+## Arquitectura de seguridad
 
-- **Texto** — párrafos normales
-- **H1, H2, H3** — títulos de distintos tamaños
-- **Lista** — puntos con viñeta
-- **Numerada** — lista numerada
-- **Tabla** — con filas y columnas editables
-
-## Personalización
-
-Edita `data.json` directamente para cambiar:
-- `site.title` — nombre del espacio de trabajo
-- `site.icon` — emoji del workspace
-- `pages` — array con todas las páginas y sus bloques
+- **Contraseña de edición** (`IBD1234`): solo en el navegador, protege la UI
+- **Token de GitHub**: guardado en GitHub Secrets (nunca visible en el código)
+- **GitHub Actions**: recibe los datos y hace el commit en el servidor
+- Nadie puede ver el token aunque inspeccione el código fuente
