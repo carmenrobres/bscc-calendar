@@ -26,7 +26,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject token into HTML
-        run: sed -i 's/__DATA_TOKEN__/${{ secrets.DATA_TOKEN }}/g' index.html
+        env:
+          DATA_TOKEN: ${{ secrets.DATA_TOKEN }}
+        run: sed -i "s/__DATA_TOKEN__/${DATA_TOKEN}/g" index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
