@@ -1694,7 +1694,7 @@ function toggleEdit() {
     document.getElementById('modal-body').innerHTML =
       '<p style="color:var(--text-mid);margin-bottom:14px;font-size:13px">Introduce la contraseña para activar el modo edición.</p>'
       + '<div class="pw-form">'
-      + '<input class="form-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==&quot;Enter&quot;)checkPw()"
+      + '<input class="form-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==\"Enter\")checkPw()">'
       + '<div class="pw-error" id="pw-error"></div>'
       + '</div>';
     document.getElementById('modal-footer').innerHTML =
