@@ -133,16 +133,18 @@ tr.tsel td{background:var(--accent-bg)!important}
 .gl-dot{width:9px;height:9px;border-radius:50%}
 
 /* EXACT */
-#v-exact{overflow:auto;padding:16px 16px 40px}
-.exact-ctrl{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+#v-exact{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.exact-ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;padding:12px 16px;border-bottom:1px solid var(--border)}
 .exact-ctrl label{font-size:12px;color:var(--t2);font-weight:500}
 .exact-ctrl input[type=date]{padding:4px 7px;border:1px solid var(--border2);border-radius:5px;font-family:var(--f);font-size:12px;color:var(--text);outline:none;background:var(--bg)}
 .exact-ctrl input[type=date]:focus{border-color:var(--accent)}
-.exact-header{display:flex;border-bottom:2px solid var(--border2);position:sticky;top:0;background:var(--bg);z-index:6}
+#exact-scroll-area{flex:1;overflow:auto;position:relative}
+.exact-outer{min-width:100%;display:inline-block;min-height:100%}
+.exact-header{display:flex;border-bottom:2px solid var(--border2);position:sticky;top:0;background:var(--bg);z-index:6;min-width:100%}
 .exact-name-col{width:220px;flex-shrink:0;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;padding:6px 7px}
 .exact-timeline{flex:1;position:relative;display:flex;overflow:hidden}
 .exact-month-hdr{flex-shrink:0;font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.03em;padding:6px 5px;border-left:1px solid var(--border2);background:var(--bg2)}
-.exact-row{display:flex;border-bottom:1px solid var(--border);align-items:center;min-height:34px;cursor:pointer;transition:background .1s}
+.exact-row{display:flex;border-bottom:1px solid var(--border);align-items:center;min-height:34px;cursor:pointer;transition:background .1s;min-width:100%}
 .exact-row:hover{background:var(--bg2)}
 .exact-row-name{width:220px;flex-shrink:0;font-size:11px;font-weight:500;padding:4px 7px 4px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .exact-row-cells{flex:1;position:relative;height:34px}
@@ -150,7 +152,7 @@ tr.tsel td{background:var(--accent-bg)!important}
 .exact-bar:hover{opacity:.82}
 .exact-bar-dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;transform:translateY(-50%)}
 .today-vline{position:absolute;top:0;bottom:0;width:2px;background:rgba(224,62,62,.55);z-index:5;pointer-events:none}
-.exact-group-hdr{display:flex;align-items:center;padding:8px 0 3px;border-bottom:1px solid var(--border)}
+.exact-group-hdr{display:flex;align-items:center;padding:8px 0 3px;border-bottom:1px solid var(--border);min-width:100%;position:sticky;top:37px;background:var(--bg2);z-index:5}
 .exact-group-name-col{width:220px;flex-shrink:0}
 
 /* CALENDAR */
@@ -252,6 +254,85 @@ tr.tsel td{background:var(--accent-bg)!important}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── SAVE STATUS BAR ── */
+#save-status{
+  display:none;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:6px;font-size:11px;font-weight:500;
+  transition:all .3s;white-space:nowrap;
+}
+#save-status.unsaved{display:flex;background:#fef9e7;color:#92610a;border:1px solid #f5d87a}
+#save-status.saved{display:flex;background:var(--s-listo-bg);color:var(--s-listo);border:1px solid #a8dfc5}
+#save-status.saving{display:flex;background:var(--accent-bg);color:var(--accent);border:1px solid #a3c9f5}
+.ss-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ss-dot.unsaved{background:#dfab01;animation:pulse 1.4s ease-in-out infinite}
+.ss-dot.saved{background:var(--s-listo)}
+.ss-dot.saving{background:var(--accent);animation:pulse .8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── EXIT WARNING MODAL ── */
+#exit-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;align-items:center;justify-content:center}
+#exit-modal.open{display:flex}
+.exit-box{background:var(--bg);border-radius:14px;box-shadow:0 20px 70px rgba(0,0,0,.22);width:420px;overflow:hidden}
+.exit-header{background:linear-gradient(135deg,#fff8e1 0%,#fff3cd 100%);padding:20px 22px 16px;border-bottom:1px solid #f5d87a}
+.exit-icon{font-size:32px;margin-bottom:8px}
+.exit-header h3{font-size:16px;font-weight:700;color:#7c4f06;margin-bottom:4px}
+.exit-header p{font-size:12px;color:#92610a;line-height:1.5}
+.exit-body{padding:18px 22px}
+.exit-last-save{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border-radius:8px;border:1px solid var(--border2);margin-bottom:16px}
+.exit-last-save-icon{font-size:18px;flex-shrink:0}
+.exit-last-save-text{flex:1}
+.exit-last-save-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.exit-last-save-val{font-size:13px;font-weight:600;color:var(--text)}
+.exit-changes{display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:7px;font-size:12px;margin-bottom:16px}
+.exit-changes.has-changes{background:#fef3e2;color:#7c4f06;border:1px solid #f5c842}
+.exit-changes.no-changes{background:var(--s-listo-bg);color:var(--s-listo);border:1px solid #a8dfc5}
+.exit-actions{display:flex;flex-direction:column;gap:8px}
+.exit-btn-gh{width:100%;padding:11px;background:var(--s-listo);color:white;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .15s}
+.exit-btn-gh:hover{opacity:.88}
+.exit-btn-anyway{width:100%;padding:9px;background:none;border:1px solid var(--border2);border-radius:8px;font-family:var(--f);font-size:12px;color:var(--t2);cursor:pointer;transition:background .1s}
+.exit-btn-anyway:hover{background:var(--bg3);color:var(--text)}
+.exit-btn-cancel{width:100%;padding:8px;background:none;border:none;font-family:var(--f);font-size:12px;color:var(--t3);cursor:pointer}
+.exit-btn-cancel:hover{color:var(--text)}
+
+/* ── AUTOSAVE BADGE on GH modal ── */
+.autosave-note{font-size:11px;color:var(--s-listo);background:var(--s-listo-bg);padding:6px 10px;border-radius:6px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+/* ── SHOW PAST TOGGLE ── */
+.toggle-past{
+  display:flex;align-items:center;gap:6px;padding:4px 10px;
+  border:1px solid var(--border2);border-radius:6px;background:var(--bg);
+  font-family:var(--f);font-size:12px;color:var(--t2);cursor:pointer;
+  transition:background .1s,color .1s,border-color .1s;user-select:none;
+}
+.toggle-past:hover{background:var(--bg3);color:var(--text)}
+.toggle-past.active{background:#fff8e1;color:#7c4f06;border-color:#f5d87a;font-weight:600}
+.toggle-past svg{flex-shrink:0;transition:transform .2s}
+
+/* ── RECURRING badge in detail panel ── */
+.recurring-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;background:#e8f4fd;color:#1a6fa0;
+  border-radius:4px;font-size:11px;font-weight:600;border:1px solid #b3d9f5;
+}
+
+/* ── GANTT recurring row ── */
+.gr-recurring{opacity:.75}
+.gr-recurring .gr-name{font-style:italic;color:var(--t2)}
+.gantt-bar-recurring{
+  position:absolute;top:8px;height:18px;border-radius:4px;
+  display:flex;align-items:center;padding:0 5px;
+  font-size:10px;font-weight:500;color:white;overflow:hidden;white-space:nowrap;
+  opacity:.6;cursor:pointer;border:2px dashed rgba(255,255,255,.5);
+}
+
+/* ── PAST row dim ── */
+tr.row-past td{opacity:.45}
+tr.row-past:hover td{opacity:.75}
+.gantt-row.row-past{opacity:.4}
+.gantt-row.row-past:hover{opacity:.7}
+.exact-row.row-past{opacity:.4}
+.exact-row.row-past:hover{opacity:.7}
 </style>
 </head>
 <body>
@@ -280,7 +361,10 @@ tr.tsel td{background:var(--accent-bg)!important}
     </button>
   </div>
   <div class="h-right">
-    <span id="udot"></span>
+    <div id="save-status">
+      <span class="ss-dot" id="ss-dot"></span>
+      <span id="ss-text"></span>
+    </div>
     <div class="edit-chip" id="echip"><span class="echip-dot"></span>Editando</div>
     <button class="btn btn-green" id="btn-gh" style="display:none" onclick="openGh()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -314,6 +398,10 @@ tr.tsel td{background:var(--accent-bg)!important}
     <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="#a8a29e" stroke-width="1.3"/><line x1="8.5" y1="8.5" x2="11.5" y2="11.5" stroke="#a8a29e" stroke-width="1.3" stroke-linecap="round"/></svg>
     <input type="text" id="fsearch" placeholder="Buscar…" oninput="applyF()">
   </div>
+  <button class="toggle-past" id="btn-toggle-past" onclick="togglePast()" title="Mostrar/ocultar eventos pasados">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.2"/><line x1="6.5" y1="3" x2="6.5" y2="6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="6.5" x2="9" y2="9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Ocultar pasados
+  </button>
   <span class="cnt" id="cnt"></span>
 </div>
 
@@ -330,7 +418,13 @@ tr.tsel td{background:var(--accent-bg)!important}
         <span class="sb-count" id="sb-count-all">—</span>
       </div>
 
-      <div class="sb-sec">Tipo</div>
+      <div class="sb-sec" style="margin-top:8px">Visibilidad</div>
+      <div class="sb-item" id="sb-past-item" onclick="sbTogglePast(this)">
+        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.2"/><line x1="6.5" y1="3" x2="6.5" y2="6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="6.5" x2="9" y2="9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Mostrar pasados
+        <span class="sb-count" id="sb-count-past">—</span>
+      </div>
+      <div class="sb-sec" style="margin-top:4px">Tipo</div>
       <div class="sb-item" onclick="sbFilter('tipo:Evento',this)">
         <span class="sb-dot" style="background:var(--ev)"></span>
         Eventos
@@ -383,8 +477,7 @@ tr.tsel td{background:var(--accent-bg)!important}
       <div style="padding:16px 16px 0;display:flex;align-items:center;gap:8px">
         <span style="font-size:12px;font-weight:700;color:var(--t2)">Año:</span>
         <select class="gantt-year-sel" id="gantt-year" onchange="renderGantt()">
-          <option value="2025">2025</option>
-          <option value="2026" selected>2026</option>
+          <!-- populated by updateYearFilter() -->
         </select>
       </div>
       <div style="padding:10px 16px 40px;overflow:auto">
@@ -416,8 +509,11 @@ tr.tsel td{background:var(--accent-bg)!important}
         <label>Hasta</label>
         <input type="date" id="ex-to" onchange="renderExact()">
         <button class="btn btn-ghost" style="padding:3px 9px;font-size:11px" onclick="exReset()">Resetear</button>
+        <span style="font-size:11px;color:var(--t3);margin-left:6px">← desplázate horizontalmente →</span>
       </div>
-      <div id="exact-wrap"></div>
+      <div id="exact-scroll-area">
+        <div class="exact-outer" id="exact-wrap"></div>
+      </div>
     </div>
 
     <!-- TABLA -->
@@ -503,6 +599,38 @@ tr.tsel td{background:var(--accent-bg)!important}
   </div>
 </div>
 
+<!-- EXIT WARNING MODAL -->
+<div id="exit-modal">
+  <div class="exit-box">
+    <div class="exit-header">
+      <div class="exit-icon">⚠️</div>
+      <h3>¿Salir del modo edición?</h3>
+      <p>Los cambios <strong>solo se guardan si clicas "Guardar en GitHub"</strong>. Si sales sin guardar, los datos no se publicarán en la web.</p>
+    </div>
+    <div class="exit-body">
+      <div class="exit-last-save">
+        <span class="exit-last-save-icon">🕐</span>
+        <div class="exit-last-save-text">
+          <div class="exit-last-save-label">Último guardado en GitHub</div>
+          <div class="exit-last-save-val" id="exit-last-save-val">Nunca en esta sesión</div>
+        </div>
+      </div>
+      <div class="exit-changes" id="exit-changes-badge">
+        <span id="exit-changes-icon">⚠️</span>
+        <span id="exit-changes-text">Tienes cambios sin guardar</span>
+      </div>
+      <div class="exit-actions">
+        <button class="exit-btn-gh" id="exit-save-btn" onclick="exitSaveAndLeave()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          Guardar en GitHub y salir
+        </button>
+        <button class="exit-btn-anyway" onclick="exitAnyway()">Salir sin guardar</button>
+        <button class="exit-btn-cancel" onclick="closeExitModal()">Cancelar — seguir editando</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -515,34 +643,36 @@ const TIPOS=["Evento","Funding call"];
 const S_COLOR={"Sin empezar":"var(--s-sin)","En progreso":"var(--s-prog)","Listo":"var(--s-listo)","No tenemos participación":"var(--s-no)"};
 
 let D=null, edit=false, unsaved=false, selId=null, sc=null, sd=1;
-let filt={tipo:'',est:'',año:'',q:''};
+let lastSavedAt=null; // timestamp of last GitHub save
+let localSaveTimer=null; // debounce for localStorage autosave
+let filt={tipo:'',est:'',año:'',q:'',showPast:false};
 let curView='gantt';
 let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
 
 function updateYearFilter(){
   if(!D)return;
   const years=[...new Set(D.rows.map(r=>r.Año).filter(Boolean))].sort();
+  // Toolbar year select
   const sel=document.getElementById('f-año');
   const cur=sel.value;
   sel.innerHTML='<option value="">Todos</option>';
   years.forEach(y=>{const op=document.createElement('option');op.value=y;op.textContent=y;if(y===cur)op.selected=true;sel.appendChild(op);});
-  // also update gantt year selector
+  // Gantt year selector
   const gsel=document.getElementById('gantt-year');
   if(gsel){
-    const gcur=gsel.value;
+    const gcur=gsel.value||years[years.length-1];
     gsel.innerHTML='';
     years.forEach(y=>{const op=document.createElement('option');op.value=y;op.textContent=y;if(y===gcur)op.selected=true;gsel.appendChild(op);});
     if(!gsel.value&&years.length)gsel.value=years[years.length-1];
   }
-  // update sb year items dynamically
+  // Sidebar dynamic year list
   const sbYearWrap=document.getElementById('sb-years-dynamic');
   if(sbYearWrap){
     sbYearWrap.innerHTML='';
     years.forEach(y=>{
       const cnt=D.rows.filter(r=>r.Año===y).length;
-      const item=document.createElement('div');
-      item.className='sb-item';
-      item.onclick=()=>{
+      const item=document.createElement('div');item.className='sb-item';
+      item.onclick=(e)=>{
         document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
         item.classList.add('active');
         filt.tipo='';filt.est='';filt.año=y;
@@ -560,6 +690,9 @@ function updateYearFilter(){
 async function load(){
   try{const r=await fetch('data.json?'+Date.now());D=await r.json();}
   catch(e){D={rows:[]};}
+  // Restore lastSavedAt from localStorage
+  const savedTs=localStorage.getItem('eventos_last_gh_save');
+  if(savedTs)lastSavedAt=new Date(savedTs);
   // ensure attachments array on each row
   D.rows.forEach(r=>{if(!r.attachments)r.attachments=[];});
   document.getElementById('gh-tok').value=GH_TOKEN_DEFAULT;
@@ -574,6 +707,38 @@ async function load(){
 function renderAll(){renderTabla();renderGantt();renderCal();renderExact();updateSbCounts();}
 
 // ── FILTERS ──────────────────────────────────────────
+function togglePast(){
+  filt.showPast=!filt.showPast;
+  const btn=document.getElementById('btn-toggle-past');
+  const sbItem=document.getElementById('sb-past-item');
+  if(filt.showPast){
+    btn.classList.add('active');
+    btn.querySelector('svg+span, span:last-child') && (btn.lastChild.textContent=' Ocultar pasados');
+    btn.innerHTML=btn.innerHTML.replace('Mostrar pasados','Ocultar pasados');
+    sbItem&&sbItem.classList.add('active');
+  }else{
+    btn.classList.remove('active');
+    btn.innerHTML=btn.innerHTML.replace('Ocultar pasados','Mostrar pasados');
+    sbItem&&sbItem.classList.remove('active');
+  }
+  renderAll(); updateSbCounts();
+}
+function sbTogglePast(el){
+  filt.showPast=!filt.showPast;
+  document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
+  if(filt.showPast){
+    el.classList.add('active');
+    document.getElementById('btn-toggle-past').classList.add('active');
+    document.getElementById('btn-toggle-past').innerHTML=document.getElementById('btn-toggle-past').innerHTML.replace('Mostrar pasados','Ocultar pasados');
+  }else{
+    document.getElementById('btn-toggle-past').classList.remove('active');
+    document.getElementById('btn-toggle-past').innerHTML=document.getElementById('btn-toggle-past').innerHTML.replace('Ocultar pasados','Mostrar pasados');
+  }
+  // Restore the "Todos" active state in Vista rápida
+  document.querySelector('.sb-item[onclick*="sbFilter('all'"]')&&document.querySelector('.sb-item[onclick*="sbFilter('all'"]').classList.add('active');
+  renderAll(); updateSbCounts();
+}
+
 function applyF(){
   filt.tipo=document.getElementById('f-tipo').value;
   filt.est=document.getElementById('f-est').value;
@@ -581,7 +746,37 @@ function applyF(){
   filt.q=document.getElementById('fsearch').value.trim();
   renderAll();
 }
+// Returns true if a row is fully in the past
+function isPast(row){
+  const today=new Date(); today.setHours(0,0,0,0);
+  // Use exact end date if available
+  const ff=parseDate(row['Fecha exacta (fin)']);
+  if(ff) return ff < today;
+  const fi=parseDate(row['Fecha exacta (inicio)']);
+  if(fi) return fi < today;
+  // Fallback: use Año + Mes habitual
+  const año=parseInt(row.Año);
+  if(!año) return false;
+  const mes=MESES.indexOf(row['Mes habitual']);
+  if(mes<0) return año < today.getFullYear();
+  const endOfMonth=new Date(año,mes+1,0);
+  return endOfMonth < today;
+}
+
+
 function filtered(){
+  let rows=D.rows.slice();
+  if(filt.tipo) rows=rows.filter(r=>r.Tipo===filt.tipo);
+  if(filt.est)  rows=rows.filter(r=>r.Estado===filt.est);
+  if(filt.año)  rows=rows.filter(r=>r.Año===filt.año);
+  if(filt.q){const q=filt.q.toLowerCase();rows=rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));}
+  // Hide past items unless showPast is true
+  if(!filt.showPast) rows=rows.filter(r=>!isPast(r));
+  return rows;
+}
+
+// filteredAll = ignores showPast (used for counts)
+function filteredAll(){
   let rows=D.rows.slice();
   if(filt.tipo) rows=rows.filter(r=>r.Tipo===filt.tipo);
   if(filt.est)  rows=rows.filter(r=>r.Estado===filt.est);
@@ -589,10 +784,22 @@ function filtered(){
   if(filt.q){const q=filt.q.toLowerCase();rows=rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));}
   return rows;
 }
-function updateCount(n){document.getElementById('cnt').textContent=n+' entrada'+(n===1?'':'s');}
+function updateCount(n){
+  const all=filteredAll();
+  const pastCount=all.filter(r=>isPast(r)).length;
+  const el=document.getElementById('cnt');
+  if(!filt.showPast&&pastCount>0){
+    el.innerHTML=n+' entrada'+(n===1?'':'s')+' <span style="color:var(--t3);font-size:10px">(+'+pastCount+' anteriores ocultos)</span>';
+  }else{
+    el.textContent=n+' entrada'+(n===1?'':'s');
+  }
+}
 function updateSbCounts(){
   if(!D)return;
   const rows=D.rows;
+  // Past count
+  const pastEl=document.getElementById('sb-count-past');
+  if(pastEl) pastEl.textContent=rows.filter(r=>isPast(r)).length;
   const s=(sel,fn)=>{const el=document.getElementById(sel);if(el)el.textContent=rows.filter(fn).length;};
   s('sb-count-all',()=>true);
   s('sb-count-ev',r=>r.Tipo==='Evento');
@@ -655,6 +862,7 @@ function renderTabla(){
   rows.forEach(row=>{
     const tr=document.createElement('tr');tr.dataset.id=row.id;
     if(row.id===selId)tr.classList.add('tsel');
+    if(isPast(row))tr.classList.add('row-past');
     tr.onclick=e=>{if(e.target.closest('.rbtn'))return;openDet(row.id);};
     const fi=row['Fecha exacta (inicio)'],ff=row['Fecha exacta (fin)'];
     const fechas=[fi&&fmtDate(fi),ff&&fmtDate(ff)].filter(Boolean).join(' → ');
@@ -681,7 +889,11 @@ function srt(c){if(sc===c)sd=-sd;else{sc=c;sd=1;}renderTabla();}
 // ── GANTT ────────────────────────────────────────────
 function renderGantt(){
   const year=parseInt(document.getElementById('gantt-year').value);
-  const rows=filtered();
+  // For gantt: use ALL rows (not showPast filtered) but separate current from recurring-past
+  const allRows=filteredAll();
+  const rows=filt.showPast ? allRows : allRows.filter(r=>!isPast(r));
+  // Recurring rows: past events that have a Mes habitual — shown as ghost in current/future years
+  const recurringRows=allRows.filter(r=>isPast(r)&&r['Mes habitual']&&r.Tipo==='Evento');
   const today=new Date();
   const wrap=document.getElementById('gantt-wrap');wrap.innerHTML='';
   const hdr=document.createElement('div');hdr.className='gantt-head';
@@ -719,6 +931,38 @@ function renderGantt(){
       }
     });
   });
+  // Recurring events section — shown for years after their last entry
+  const shownInThisYear=allRows.map(r=>r.Nombre.replace(/\s+\d{4}$/,'').toLowerCase());
+  const uniqueRecurring=[];
+  const seen=new Set();
+  recurringRows.forEach(r=>{
+    // Check: is there already a row for this event in the selected year?
+    const baseName=r.Nombre.replace(/\s+\d{4}$/,'').toLowerCase();
+    const hasCurrentYear=allRows.some(x=>x.Nombre.replace(/\s+\d{4}$/,'').toLowerCase()===baseName&&x.Año===String(year));
+    if(!hasCurrentYear&&!seen.has(baseName)){seen.add(baseName);uniqueRecurring.push(r);}
+  });
+  if(uniqueRecurring.length>0){
+    const recHdr=document.createElement('div');recHdr.className='gantt-group-hdr';
+    recHdr.innerHTML='<span style="font-style:italic;opacity:.6">📅 Recurrentes orientativos</span>';
+    wrap.appendChild(recHdr);
+    uniqueRecurring.forEach(row=>{
+      const gr=document.createElement('div');gr.className='gantt-row gr-recurring';gr.onclick=()=>openDet(row.id);
+      gr.innerHTML=`<div class="gr-name" title="${esc(row.Nombre)} (orientativo)">${esc(row.Nombre.replace(/\s+\d{4}$/,''))} <span style="font-size:9px;background:var(--bg3);padding:1px 5px;border-radius:3px;color:var(--t3);vertical-align:middle">recurrente</span></div>`+Array.from({length:12},(_,m)=>`<div class="gr-cell" data-row="${row.id}" data-m="${m}"></div>`).join('');
+      wrap.appendChild(gr);
+      const mes=MESES.indexOf(row['Mes habitual']);
+      if(mes>=0){
+        const cell=gr.querySelector(`[data-m="${mes}"]`);
+        if(cell){
+          const bar=document.createElement('div');bar.className='gantt-bar-recurring';
+          bar.style.cssText=`left:5%;width:90%;background:${rowColor(row)};`;
+          bar.textContent=row.Nombre.replace(/\s+\d{4}$/,'');
+          bar.title='Orientativo — suele ser en '+row['Mes habitual']+'. Ficha: '+row.Nombre;
+          cell.appendChild(bar);
+        }
+      }
+    });
+  }
+
   if(today.getFullYear()===year){
     const m=today.getMonth(),dim=new Date(year,m+1,0).getDate();
     const pct=(today.getDate()-1)/dim*100;
@@ -820,6 +1064,7 @@ function renderExact(){
   const DAY=13;
   const rows=filtered();
   const today=new Date();today.setHours(0,0,0,0);
+  const scrollArea=document.getElementById('exact-scroll-area');
   const wrap=document.getElementById('exact-wrap');wrap.innerHTML='';
   const totalW=totalDays*DAY;
   let mhdr='';let cur=new Date(fromD);
@@ -831,12 +1076,16 @@ function renderExact(){
     cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);
   }
   const hdr=document.createElement('div');hdr.className='exact-header';
-  hdr.innerHTML=`<div class="exact-name-col">Nombre</div><div style="display:flex;overflow:hidden">${mhdr}</div>`;
+  hdr.style.width=(220+totalW)+'px';
+  hdr.innerHTML=`<div class="exact-name-col" style="flex-shrink:0">Nombre</div><div style="display:flex;width:${totalW}px;flex-shrink:0">${mhdr}</div>`;
   wrap.appendChild(hdr);
+  // Set outer width so horizontal scroll works
+  wrap.style.width=(220+totalW)+'px';
   ['Evento','Funding call'].forEach(tipo=>{
     const group=rows.filter(r=>r.Tipo===tipo);if(!group.length)return;
     const ghdr=document.createElement('div');ghdr.className='exact-group-hdr';
-    ghdr.innerHTML=`<div class="exact-group-name-col"></div><div>${tbadge(tipo)}</div>`;
+    ghdr.style.width=(220+totalW)+'px';
+    ghdr.innerHTML=`<div class="exact-group-name-col" style="flex-shrink:0"></div><div>${tbadge(tipo)}</div>`;
     wrap.appendChild(ghdr);
     group.forEach(row=>{
       const isFunding = row.Tipo === 'Funding call';
@@ -846,7 +1095,7 @@ function renderExact(){
       if(isFunding && !ff) return;
 
       const rowEl=document.createElement('div');rowEl.className='exact-row';rowEl.onclick=()=>openDet(row.id);
-      rowEl.innerHTML=`<div class="exact-row-name" title="${esc(row.Nombre)}">${esc(row.Nombre)}</div><div class="exact-row-cells" style="width:${totalW}px"></div>`;
+      rowEl.style.width=(220+totalW)+'px';rowEl.innerHTML=`<div class="exact-row-name" title="${esc(row.Nombre)}">${esc(row.Nombre)}</div><div class="exact-row-cells" style="width:${totalW}px;flex-shrink:0"></div>`;
       wrap.appendChild(rowEl);
       const cells=rowEl.querySelector('.exact-row-cells');
       const color=rowColor(row);
@@ -910,7 +1159,9 @@ function renderDet(row){
   const t=document.getElementById('det-title');t.textContent=row.Nombre;t.contentEditable=edit?'true':'false';
   t.oninput=edit?()=>{row.Nombre=t.textContent;mark();renderAll();}:null;
   renderDetInfo(row);renderDetDocs(row);
-  document.getElementById('det-foot').classList.toggle('on',edit);
+  const foot=document.getElementById('det-foot');
+  foot.classList.toggle('on',edit);
+  if(edit) foot.innerHTML=`<button class="btn btn-ghost" style="color:var(--s-no);font-size:11px" onclick="delCurrent()">🗑 Eliminar</button>`;
 }
 
 function renderDetInfo(row){
@@ -957,6 +1208,17 @@ function renderDetInfo(row){
     }
     body.appendChild(div);
   });
+  // Show past / recurring indicator
+  if(isPast(row)){
+    const recDiv=document.createElement('div');
+    recDiv.className='df';
+    const isRecurring=row['Mes habitual']&&row.Tipo==='Evento';
+    recDiv.innerHTML=`<div class="df-lbl">Estado temporal</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px">
+      <span class="badge b-no">📅 Evento pasado</span>
+      ${isRecurring?'<span class="recurring-badge">🔄 Orientativo en Diagrama</span>':''}
+    </div>${isRecurring?'<div style="font-size:11px;color:var(--t3);margin-top:5px">Este evento aparece en el <strong>Diagrama Orientativo</strong> como recurrente en <em>'+row['Mes habitual']+'</em> de cada año.</div>':''}`;
+    body.appendChild(recDiv);
+  }
 }
 
 function renderDetDocs(row){
@@ -1013,9 +1275,86 @@ function delAttach(rowId,idx){
 
 // ── EDIT MODE ────────────────────────────────────────
 function clickMode(){
-  if(edit){edit=false;updUI();if(selId){const r=D.rows.find(x=>x.id===selId);if(r)renderDet(r);}renderAll();toast('🔒 Edición desactivada');}
-  else openPw();
+  if(edit){
+    // Show exit warning if unsaved changes
+    if(unsaved){ openExitModal(); return; }
+    doExitEdit();
+  } else openPw();
 }
+function doExitEdit(){
+  edit=false;
+  updUI();
+  if(selId){const r=D.rows.find(x=>x.id===selId);if(r)renderDet(r);}
+  renderAll();
+  updateSaveStatus();
+  toast('🔒 Modo edición desactivado');
+}
+function updateSaveStatus(){
+  const bar=document.getElementById('save-status');
+  const dot=document.getElementById('ss-dot');
+  const txt=document.getElementById('ss-text');
+  if(!edit){bar.style.display='none';return;}
+  if(unsaved){
+    bar.className='save-status unsaved';
+    dot.className='ss-dot unsaved';
+    txt.textContent='Cambios sin guardar';
+    bar.style.display='flex';
+  }else if(lastSavedAt){
+    bar.className='save-status saved';
+    dot.className='ss-dot saved';
+    txt.textContent='Guardado '+formatTime(lastSavedAt);
+    bar.style.display='flex';
+  }else{
+    bar.style.display='none';
+  }
+}
+function formatTime(d){
+  if(!d)return'nunca';
+  const now=new Date();
+  const diff=Math.floor((now-d)/1000);
+  if(diff<60)return'hace '+diff+'s';
+  if(diff<3600)return'hace '+Math.floor(diff/60)+'min';
+  return d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+}
+function fmtFullDate(d){
+  if(!d)return'Nunca en esta sesión';
+  return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})+' a las '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+}
+function openExitModal(){
+  const modal=document.getElementById('exit-modal');
+  // Update last save info
+  const lsVal=document.getElementById('exit-last-save-val');
+  const savedStr=localStorage.getItem('eventos_last_gh_save');
+  lsVal.textContent=savedStr?fmtFullDate(new Date(savedStr)):'Nunca en esta sesión';
+  // Update changes badge
+  const badge=document.getElementById('exit-changes-badge');
+  const icon=document.getElementById('exit-changes-icon');
+  const txt=document.getElementById('exit-changes-text');
+  if(unsaved){
+    badge.className='exit-changes has-changes';
+    icon.textContent='⚠️';
+    txt.textContent='Tienes cambios sin guardar en esta sesión';
+  }else{
+    badge.className='exit-changes no-changes';
+    icon.textContent='✅';
+    txt.textContent='Todo guardado en GitHub';
+    // If no unsaved changes, just exit directly
+    doExitEdit();return;
+  }
+  modal.classList.add('open');
+}
+function closeExitModal(){document.getElementById('exit-modal').classList.remove('open');}
+function exitAnyway(){
+  closeExitModal();
+  doExitEdit();
+}
+function exitSaveAndLeave(){
+  closeExitModal();
+  openGh();
+  // After successful save, gh modal will close and we stay in edit mode
+  // User can then click exit again - this time no unsaved changes
+}
+
 function updUI(){
   document.getElementById('echip').classList.toggle('on',edit);
   document.getElementById('ebadge').classList.toggle('on',edit);
@@ -1026,10 +1365,97 @@ function updUI(){
   document.getElementById('del-th').style.display=edit?'table-cell':'none';
   document.getElementById('btn-add-row').className=edit?'on':'';
 }
+// pendingRow holds a new row not yet committed to D.rows
+let pendingRow = null;
+
 function addRow(){
   const id='r'+Date.now();
-  D.rows.push({id,Nombre:'Nuevo elemento',Tipo:'Evento','Mes habitual':'Enero',Año:String(new Date().getFullYear()+1),'Fecha exacta (inicio)':'','Fecha exacta (fin)':'',Estado:'Sin empezar','Equipo Líder':'',Notas:'',URL:'',Lugar:'',attachments:[]});
-  mark();updateYearFilter();renderAll();openDet(id);updateSbCounts();
+  pendingRow = {id,Nombre:'Nuevo elemento',Tipo:'Evento','Mes habitual':'Enero',Año:String(new Date().getFullYear()+1),'Fecha exacta (inicio)':'','Fecha exacta (fin)':'',Estado:'Sin empezar','Equipo Líder':'',Notas:'',URL:'',Lugar:'',attachments:[]};
+  // Open detail panel in "new" mode
+  openDetNew(pendingRow);
+}
+
+function openDetNew(row){
+  selId = null; // not yet in data
+  document.getElementById('det').classList.add('open');
+  document.getElementById('det-icon').textContent = rowIcon(row);
+  const t = document.getElementById('det-title');
+  t.textContent = row.Nombre;
+  t.contentEditable = 'true';
+  t.oninput = () => { row.Nombre = t.textContent; };
+  renderDetInfoNew(row);
+  // Show save/cancel footer
+  const foot = document.getElementById('det-foot');
+  foot.classList.add('on');
+  foot.innerHTML = `
+    <button class="btn btn-blue" style="flex:1" onclick="commitNewRow()">✅ Guardar entrada</button>
+    <button class="btn btn-ghost" onclick="cancelNewRow()">Cancelar</button>
+  `;
+}
+
+function commitNewRow(){
+  if(!pendingRow) return;
+  D.rows.push(pendingRow);
+  const id = pendingRow.id;
+  pendingRow = null;
+  mark(); updateYearFilter(); renderAll(); updateSbCounts();
+  // Now open it normally
+  openDet(id);
+  toast('✅ Entrada añadida');
+}
+
+function cancelNewRow(){
+  pendingRow = null;
+  closeDet();
+  toast('Cancelado');
+}
+
+function renderDetInfoNew(row){
+  // Reuse renderDetInfo but with the pending row
+  const body = document.getElementById('dp-info');
+  body.innerHTML = '';
+  // Switch to info tab
+  document.querySelectorAll('.det-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.det-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.det-tab').classList.add('active');
+  document.getElementById('dp-info').classList.add('active');
+  
+  const fields=[
+    {k:'Tipo',l:'Tipo',tp:'sel',opts:TIPOS},
+    {k:'Estado',l:'Estado',tp:'sel',opts:ESTADOS},
+    {k:'Año',l:'Año',tp:'txt'},
+    {k:'Mes habitual',l:'Mes habitual',tp:'sel',opts:MESES},
+    {k:'Fecha exacta (inicio)',l:'Fecha inicio',tp:'date'},
+    {k:'Fecha exacta (fin)',l:'Fecha fin',tp:'date'},
+    {k:'Equipo Líder',l:'Equipo Líder',tp:'txt'},
+    {k:'URL',l:'URL del evento',tp:'url'},
+    {k:'Lugar',l:'Lugar',tp:'txt'},
+    {k:'Notas',l:'Notas',tp:'ta'},
+  ];
+  fields.forEach(f=>{
+    const div=document.createElement('div');div.className='df';
+    div.innerHTML=`<div class="df-lbl">${f.l}</div>`;
+    if(f.tp==='sel'){
+      const s=document.createElement('select');s.className='df-sel';
+      f.opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;if(o===row[f.k])op.selected=true;s.appendChild(op);});
+      s.onchange=()=>{row[f.k]=s.value;document.getElementById('det-icon').textContent=rowIcon(row);};
+      div.appendChild(s);
+    }else if(f.tp==='ta'){
+      const ta=document.createElement('div');ta.className='df-ta';ta.textContent=row[f.k]||'';ta.contentEditable='true';
+      ta.oninput=()=>{row[f.k]=ta.textContent;};div.appendChild(ta);
+    }else if(f.tp==='url'){
+      const v=document.createElement('div');v.className='df-val';v.contentEditable='true';v.textContent=row[f.k]||'';
+      v.oninput=()=>{row[f.k]=v.textContent.trim();};div.appendChild(v);
+    }else if(f.tp==='date'){
+      const inp=document.createElement('input');inp.type='date';inp.value=row[f.k]||'';
+      inp.style.cssText='padding:5px 7px;border:1px solid var(--border2);border-radius:5px;font-family:var(--f);font-size:12px;width:100%;outline:none;background:var(--bg);color:var(--text)';
+      inp.onchange=()=>{row[f.k]=inp.value;};div.appendChild(inp);
+    }else{
+      const v=document.createElement('div');v.className='df-val';v.textContent=row[f.k]||'';v.contentEditable='true';
+      v.oninput=()=>{row[f.k]=v.textContent;};div.appendChild(v);
+    }
+    body.appendChild(div);
+  });
 }
 function delRow(id){if(!confirm('¿Eliminar?'))return;D.rows=D.rows.filter(r=>r.id!==id);if(selId===id)closeDet();mark();updateYearFilter();renderAll();updateSbCounts();}
 function delCurrent(){if(!selId||!edit)return;if(!confirm('¿Eliminar?'))return;D.rows=D.rows.filter(r=>r.id!==selId);closeDet();mark();updateYearFilter();renderAll();updateSbCounts();}
@@ -1039,7 +1465,7 @@ function openPw(){document.getElementById('pw-modal').classList.add('open');docu
 function closePw(){document.getElementById('pw-modal').classList.remove('open');}
 function subPw(){
   if(document.getElementById('pw-inp').value===PASSWORD){
-    closePw();edit=true;updUI();
+    closePw();edit=true;updUI();updateSaveStatus();
     if(selId){const r=D.rows.find(x=>x.id===selId);if(r)renderDet(r);}
     renderAll();toast('✏️ Modo edición activado');
   }else{document.getElementById('pw-err').textContent='Contraseña incorrecta';document.getElementById('pw-inp').value='';}
@@ -1066,8 +1492,22 @@ async function saveGh(){
   }catch(e){setSt('Error de red: '+e.message,'err');}
 }
 function setSt(m,c){const el=document.getElementById('gst');el.textContent=m;el.className='gst'+(c?' '+c:'');}
-function mark(){unsaved=true;document.getElementById('udot').classList.add('on');}
-function clearU(){unsaved=false;document.getElementById('udot').classList.remove('on');}
+function mark(){
+  unsaved=true;
+  updateSaveStatus();
+  // Autosave to localStorage (debounced 2s)
+  clearTimeout(localSaveTimer);
+  localSaveTimer=setTimeout(()=>{
+    try{localStorage.setItem('eventos_autosave',JSON.stringify(D));localStorage.setItem('eventos_autosave_ts',Date.now());}
+    catch(e){}
+  },2000);
+}
+function clearU(){
+  unsaved=false;
+  lastSavedAt=new Date();
+  localStorage.setItem('eventos_last_gh_save',lastSavedAt.toISOString());
+  updateSaveStatus();
+}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePw();closeGh();closeDet();}});
 load();
