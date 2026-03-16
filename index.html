@@ -1391,7 +1391,7 @@ function openDetailModal(id) {
 
   document.getElementById('modal-footer').innerHTML = edit
     ? '<button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>'
-      + '<button class="btn btn-primary" onclick="closeModal();openEditModal('' + id + '')">Editar</button>'
+      + '<button class="btn btn-primary" onclick="closeModal();openEditModal(\'' + id + '\')">Editar</button>'
     : '<button class="btn btn-primary" onclick="closeModal()">Cerrar</button>';
 
   openModal();
