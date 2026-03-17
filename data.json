@@ -258,6 +258,45 @@
       ],
       "id": "rsnt4pmea",
       "recurrent": true
+    },
+    {
+      "Año": "2027",
+      "Equipo Líder": "",
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "",
+      "Fecha exacta (inicio)": "",
+      "Lugar": "",
+      "Mes habitual": "",
+      "Nombre": "TESTEST",
+      "Notas": "",
+      "Tipo": "Evento",
+      "URL": "",
+      "attachments": [],
+      "editions": [],
+      "id": "r4nkwgs63",
+      "recurrent": false
+    },
+    {
+      "Lugar": "",
+      "Mes habitual": "Febrero",
+      "Nombre": "tech",
+      "Notas": "",
+      "Tipo": "Evento",
+      "URL": "",
+      "attachments": [],
+      "editions": [
+        {
+          "Año": "",
+          "Equipo Líder": "",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "",
+          "Fecha exacta (inicio)": "2026-10-01",
+          "Notas": "",
+          "attachments": []
+        }
+      ],
+      "id": "rl3080ht7",
+      "recurrent": true
     }
   ]
 }
