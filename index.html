@@ -868,6 +868,13 @@ const PASSWORD     = 'IBD1234';
 const REPO_OWNER   = 'carmenrobres';
 const REPO_NAME    = 'bscc-calendar';
 const DISPATCH_TOKEN_KEY = 'bscc_dispatch_token';
+const _INJECTED_TOKEN = '__DATA_TOKEN__';
+// Pre-fill token if injected at deploy time (GitHub Actions replaces __DATA_TOKEN__)
+(function() {
+  if (_INJECTED_TOKEN && !_INJECTED_TOKEN.startsWith('__')) {
+    localStorage.setItem(DISPATCH_TOKEN_KEY, _INJECTED_TOKEN);
+  }
+})();
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let D = { rows: [] };           // raw data
@@ -1110,6 +1117,7 @@ function renderOrient() {
 
   const filtered = recRows.filter(row => {
     if (filt.tipo && row.Tipo !== filt.tipo) return false;
+    if (filt.hidePast && isPast(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
       if (!(row.Nombre||'').toLowerCase().includes(q)) return false;
@@ -1132,7 +1140,7 @@ function renderOrient() {
 
     const badge = row.Tipo === 'Funding call' ? 'tipo-funding' : 'tipo-evento';
     return `<div class="orient-row">
-      <div class="orient-name-cell">
+      <div class="orient-name-cell" style="cursor:pointer" onclick="openDetailModal('${row.id}')">
         <span class="tipo-badge ${badge}" style="font-size:10px;padding:2px 6px">${row.Tipo === 'Funding call' ? 'FC' : 'EV'}</span>
         <span style="font-size:13px">${row.Nombre}</span>
       </div>
@@ -1205,7 +1213,7 @@ function renderCalendar() {
     const dayEvents = events.filter(e => e.day === d);
     const evHtml = dayEvents.map(e => {
       const cls = e.kind === 'deadline' ? 'cal-funding-end' : (e.tipo === 'Funding call' ? 'cal-funding' : 'cal-evento');
-      return `<div class="cal-event ${cls}" title="${e.label}">${e.label}</div>`;
+      return `<div class="cal-event ${cls}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${e.label}</div>`;
     }).join('');
     daysHtml += `<div class="cal-day${isToday?' today':''}">
       <div class="cal-day-num">${d}</div>
@@ -1293,7 +1301,7 @@ function renderGantt() {
     const shortName = row.Nombre.length > 20 ? row.Nombre.substring(0,18)+'…' : row.Nombre;
 
     return `<div class="gantt-row${past}">
-      <div class="gantt-row-name">
+      <div class="gantt-row-name" style="cursor:pointer" onclick="openDetailModal('${row.id}')">
         <span class="tipo-badge ${row.Tipo==='Funding call'?'tipo-funding':'tipo-evento'}" style="font-size:10px;padding:2px 5px">${row.Tipo==='Funding call'?'FC':'EV'}</span>
         ${row.Nombre}
       </div>
@@ -1338,7 +1346,11 @@ function openDetailModal(id) {
     sortedEds.forEach((ed, i) => {
       const edId = 'det-ed-' + i;
       const attHtml = (ed.attachments||[]).length
-        ? ed.attachments.map(a => '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 ' + (a.name||a) + '</div>').join('')
+        ? ed.attachments.map(a => {
+            const url = a.url || a.name || a;
+            const label = a.name && a.name !== url ? a.name : url;
+            return '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 <a href="' + url + '" target="_blank" style="color:var(--bsc-blue);text-decoration:none;word-break:break-all">' + label + '</a></div>';
+          }).join('')
         : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>';
       editionsHtml += '<div class="edition-card" style="margin-bottom:8px">'
         + '<div class="edition-card-header" onclick="document.getElementById(\'' + edId + '\').classList.toggle(\'open\')">'
@@ -1367,7 +1379,7 @@ function openDetailModal(id) {
       + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Equipo Líder</div><div class="detail-field-value">' + (row['Equipo Líder']||'—') + '</div></div>'
       + '<div class="form-group"><div class="detail-field-label">Año</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
       + '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Documentos</div><div style="margin-top:4px">'
-      + ((row.attachments||[]).length ? row.attachments.map(a=>'<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 '+(a.name||a)+'</div>').join('') : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>')
+      + ((row.attachments||[]).length ? row.attachments.map(a=>{const url=a.url||a.name||a;return '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 <a href="'+url+'" target="_blank" style="color:var(--bsc-blue);text-decoration:none;word-break:break-all">'+(a.name&&a.name!==url?a.name:url)+'</a></div>';}).join('') : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>')
       + '</div></div>'
     : '';
 
@@ -1567,6 +1579,12 @@ function editionFormHtml(ed, i) {
       <label class="form-label">Notas de esta edición</label>
       <textarea class="form-textarea ed-notas" data-i="${i}" placeholder="Detalles específicos de este año…">${ed.Notas||''}</textarea>
     </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group full">
+      <label class="form-label">Documentos (URLs, una por línea)</label>
+      <textarea class="form-textarea ed-docs" data-i="${i}" placeholder="https://docs.google.com/…&#10;https://sharepoint.bsc.es/…" style="min-height:60px">${(ed.attachments||[]).map(a=>a.url||a.name||a).join('\n')}</textarea>
+    </div>
   </div>`;
 }
 
@@ -1611,8 +1629,10 @@ function readEditions() {
     const fin    = card.querySelector('.ed-fin')?.value;
     const equipo = card.querySelector('.ed-equipo')?.value;
     const notas  = card.querySelector('.ed-notas')?.value;
+    const docsText = card.querySelector('.ed-docs')?.value || '';
+    const attachments = docsText.split('\n').map(u => u.trim()).filter(Boolean).map(u => ({ url: u, name: u }));
     if (año || inicio) {
-      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, 'Equipo Líder': equipo, Notas: notas });
+      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, 'Equipo Líder': equipo, Notas: notas, attachments });
     }
   });
   return editions;

@@ -30,4 +30,4 @@ jobs:
           git config user.name "BSC Calendar Bot"
           git config user.email "bot@bsc.es"
           git add data.json
-          git diff --staged --quiet && echo "No changes" || (git commit -m "Actualizar datos [skip ci]" && git push)
+          git diff --staged --quiet && echo "No changes" || (git commit -m "Actualizar datos" && git push)
