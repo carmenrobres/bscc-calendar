@@ -258,22 +258,6 @@
       ],
       "id": "rsnt4pmea",
       "recurrent": true
-    },
-    {
-      "Año": "2027",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "",
-      "Mes habitual": "",
-      "Nombre": "TESTEST",
-      "Notas": "",
-      "Tipo": "Evento",
-      "URL": "",
-      "attachments": [],
-      "id": "r4nkwgs63",
-      "recurrent": false
     }
   ]
 }
