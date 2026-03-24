@@ -1026,7 +1026,7 @@ function filteredRows() {
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
-      const hay = (row.Nombre||'') + (row.Notas||'') + (row['Equipo Líder']||'') + (row.Lugar||'');
+      const hay = (row.Nombre||'') + (row.Notas||'') + (row.Lugar||'');
       if (!hay.toLowerCase().includes(q)) return false;
     }
     return true;
@@ -1168,9 +1168,9 @@ function renderTable() {
     return `<th class="${isSorted?'sorted':''}" onclick="sortTable('${key}')">${label} <span class="sort-icon">${icon}</span></th>`;
   };
 
-  // Eventos table: Nombre | Recurrente | Año | Estado | Inicio | Fin | Lugar | Equipo BSC | Público | Equipo Líder | Actions
-  // Funding table: Nombre | Recurrente | Año | Estado | Inicio | Deadline | Equipo BSC | Público | Equipo Líder | Actions
-  // All table: Nombre | Tipo | Año | Estado | Inicio | Fin/Deadline | Equipo BSC | Público | Equipo Líder | Actions
+  // Eventos table: Nombre | Recurrente | Año | Estado | Inicio | Fin | Lugar | Equipo BSC | Público | Actions
+  // Funding table: Nombre | Recurrente | Año | Estado | Inicio | Deadline | Equipo BSC | Público | Actions
+  // All table: Nombre | Tipo | Año | Estado | Inicio | Fin/Deadline | Equipo BSC | Público | Actions
 
   const isEventos = tableTab === 'eventos';
   const isFunding = tableTab === 'funding';
@@ -1211,7 +1211,6 @@ function renderTable() {
       ${lugarCol}
       <td style="font-size:11px">${teamTags(row)}</td>
       <td style="font-size:11px">${publicTags(row)}</td>
-      <td style="font-size:12px;color:var(--text-light)">${row['Equipo Líder']||'<span class="nodata">—</span>'}</td>
       <td>${actions}</td>
     </tr>`;
   }).join('');
@@ -1233,7 +1232,6 @@ function renderTable() {
         ${lugarHeader}
         <th>Equipo BSC</th>
         <th>Público Objetivo</th>
-        ${th('Equipo Líder','Resp.')}
         <th></th>
       </tr></thead>
       <tbody>${rows_html}</tbody>
@@ -1492,13 +1490,6 @@ function openDetailModal(id) {
     editionsHtml = '<div class="detail-editions"><div class="form-section-title">📅 Ediciones anuales</div>';
     sortedEds.forEach((ed, i) => {
       const edId = 'det-ed-' + i;
-      const attHtml = (ed.attachments||[]).length
-        ? ed.attachments.map(a => {
-            const url = a.url || a.name || a;
-            const label = a.name && a.name !== url ? a.name : url;
-            return '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 <a href="' + url + '" target="_blank" style="color:var(--bsc-blue);text-decoration:none;word-break:break-all">' + label + '</a></div>';
-          }).join('')
-        : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>';
       editionsHtml += '<div class="edition-card" style="margin-bottom:8px">'
         + '<div class="edition-card-header" onclick="document.getElementById(\'' + edId + '\').classList.toggle(\'open\')">'
         + '<span class="edition-year">' + (ed.Año||'Sin año') + '</span>'
@@ -1509,9 +1500,7 @@ function openDetailModal(id) {
         + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (inicio)']) + '</div></div>'
         + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (fin)']) + '</div></div>'
         + '</div>'
-        + '<div class="form-row"><div class="form-group full"><div class="detail-field-label">Equipo Líder</div><div class="detail-field-value">' + (ed['Equipo Líder']||'—') + '</div></div></div>'
         + (ed.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas de esta edición</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + ed.Notas + '</div></div>' : '')
-        + '<div class="detail-field"><div class="detail-field-label">Documentos</div><div style="margin-top:4px">' + attHtml + '</div></div>'
         + '</div></div>';
     });
     editionsHtml += '</div>';
@@ -1523,11 +1512,7 @@ function openDetailModal(id) {
       + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (inicio)']) + '</div></div>'
       + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (fin)']) + '</div></div>'
       + '</div>'
-      + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Equipo Líder</div><div class="detail-field-value">' + (row['Equipo Líder']||'—') + '</div></div>'
-      + '<div class="form-group"><div class="detail-field-label">Año</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
-      + '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Documentos</div><div style="margin-top:4px">'
-      + ((row.attachments||[]).length ? row.attachments.map(a=>{const url=a.url||a.name||a;return '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--grey-border)">📎 <a href="'+url+'" target="_blank" style="color:var(--bsc-blue);text-decoration:none;word-break:break-all">'+(a.name&&a.name!==url?a.name:url)+'</a></div>';}).join('') : '<span style="font-size:12px;color:var(--text-light)">Sin documentos adjuntos</span>')
-      + '</div></div>'
+      + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Año</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
     : '';
 
   const urlBtn = row.URL
@@ -1697,12 +1682,6 @@ function renderForm(row) {
           <input class="form-input" id="f-fin" type="date" value="${row?.['Fecha exacta (fin)']||''}">
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group full">
-          <label class="form-label">Equipo Líder</label>
-          <input class="form-input" id="f-equipo" value="${row?.['Equipo Líder']||''}" placeholder="email@bsc.es">
-        </div>
-      </div>
     </div>
 
     <!-- RECURRENT EDITIONS -->
@@ -1750,20 +1729,8 @@ function editionFormHtml(ed, i) {
   </div>
   <div class="form-row">
     <div class="form-group full">
-      <label class="form-label">Equipo Líder</label>
-      <input class="form-input ed-equipo" data-i="${i}" value="${ed['Equipo Líder']||''}" placeholder="email@bsc.es">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group full">
       <label class="form-label">Notas de esta edición</label>
       <textarea class="form-textarea ed-notas" data-i="${i}" placeholder="Detalles específicos de este año…">${ed.Notas||''}</textarea>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group full">
-      <label class="form-label">Documentos (URLs, una por línea)</label>
-      <textarea class="form-textarea ed-docs" data-i="${i}" placeholder="https://docs.google.com/…&#10;https://sharepoint.bsc.es/…" style="min-height:60px">${(ed.attachments||[]).map(a=>a.url||a.name||a).join('\n')}</textarea>
     </div>
   </div>`;
 }
@@ -1807,12 +1774,9 @@ function readEditions() {
     const estado = card.querySelector('.ed-estado')?.value;
     const inicio = card.querySelector('.ed-inicio')?.value;
     const fin    = card.querySelector('.ed-fin')?.value;
-    const equipo = card.querySelector('.ed-equipo')?.value;
     const notas  = card.querySelector('.ed-notas')?.value;
-    const docsText = card.querySelector('.ed-docs')?.value || '';
-    const attachments = docsText.split('\n').map(u => u.trim()).filter(Boolean).map(u => ({ url: u, name: u }));
     if (año || inicio) {
-      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, 'Equipo Líder': equipo, Notas: notas, attachments });
+      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, Notas: notas });
     }
   });
   return editions;
@@ -1838,7 +1802,6 @@ function saveForm() {
     Equipo: equipoSel,
     PublicObjectiu: publicSel,
     recurrent: isRecurrent,
-    attachments: [],
   };
 
   if (isRecurrent) {
@@ -1846,13 +1809,11 @@ function saveForm() {
     // Clear non-recurrent fields
     delete base.Año; delete base.Estado;
     delete base['Fecha exacta (inicio)']; delete base['Fecha exacta (fin)'];
-    delete base['Equipo Líder'];
   } else {
     base.Año = document.getElementById('f-año').value;
     base.Estado = document.getElementById('f-estado').value;
     base['Fecha exacta (inicio)'] = document.getElementById('f-inicio').value;
     base['Fecha exacta (fin)']    = document.getElementById('f-fin').value;
-    base['Equipo Líder'] = document.getElementById('f-equipo').value;
   }
 
   if (editingId) {
