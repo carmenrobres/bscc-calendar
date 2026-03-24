@@ -1266,12 +1266,25 @@ function renderOrient() {
 
   if (!filtered.length) return emptyState('No hay elementos recurrentes que coincidan.');
 
+  // Sort by earliest typical month (January first)
+  filtered.sort((a, b) => {
+    const getMinIdx = row => {
+      const m = row['Mes habitual'];
+      const arr = Array.isArray(m) ? m : (m ? [m] : []);
+      const idxs = arr.map(x => MONTHS.indexOf(x)).filter(i => i >= 0);
+      return idxs.length ? Math.min(...idxs) : 12;
+    };
+    return getMinIdx(a) - getMinIdx(b);
+  });
+
   const monthHeaders = MONTHS_SHORT.map(m => `<div class="orient-header-cell">${m}</div>`).join('');
   const rowsHtml = filtered.map(row => {
-    const mesIdx = MONTHS.indexOf(row['Mes habitual']);
+    const mesHabitual = row['Mes habitual'];
+    const mesIdxs = (Array.isArray(mesHabitual) ? mesHabitual : (mesHabitual ? [mesHabitual] : []))
+      .map(m => MONTHS.indexOf(m)).filter(i => i >= 0);
     const oc = getEquipoColor(row);
     const cells = MONTHS.map((_, i) => {
-      if (i === mesIdx) {
+      if (mesIdxs.includes(i)) {
         const icon = row.Tipo === 'Funding call' ? '💰' : '📅';
         return `<div class="orient-month-cell"><div class="orient-pill" style="background:${oc.bg};color:${oc.text}">${icon}</div></div>`;
       }
@@ -1422,6 +1435,9 @@ function renderGantt() {
     return true;
   });
 
+  // Sort by start date ascending (January first)
+  filtered.sort((a, b) => (a['Fecha exacta (inicio)']||'').localeCompare(b['Fecha exacta (inicio)']||''));
+
   if (!filtered.length) return `<div class="gantt-nav">
       <button class="cal-btn" onclick="ganttYear--;render()">‹</button>
       <span class="gantt-year-label">${ganttYear}</span>
@@ -1500,6 +1516,7 @@ function openDetailModal(id) {
         + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (inicio)']) + '</div></div>'
         + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (fin)']) + '</div></div>'
         + '</div>'
+        + (ed.Lugar ? '<div class="form-row"><div class="form-group full"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + ed.Lugar + '</div></div></div>' : '')
         + (ed.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas de esta edición</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + ed.Notas + '</div></div>' : '')
         + '</div></div>';
     });
@@ -1533,7 +1550,7 @@ function openDetailModal(id) {
     + urlBtn
     + '</div>'
     + '<div class="form-row">'
-    + '<div class="form-group"><div class="detail-field-label">Mes habitual</div><div class="detail-field-value">' + (row['Mes habitual']||'—') + '</div></div>'
+    + '<div class="form-group"><div class="detail-field-label">Mes habitual</div><div class="detail-field-value">' + (Array.isArray(row['Mes habitual']) ? (row['Mes habitual'].join(', ')||'—') : (row['Mes habitual']||'—')) + '</div></div>'
     + '<div class="form-group"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
     + '</div>'
     + '<div class="form-row">'
@@ -1610,12 +1627,16 @@ function renderForm(row) {
           <option value="Funding call" ${row?.Tipo==='Funding call'?'selected':''}>Funding call</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Mes habitual</label>
-        <select class="form-select" id="f-mes">
-          <option value="">— Sin mes habitual —</option>
-          ${MONTHS.map(m => `<option value="${m}" ${row?.['Mes habitual']===m?'selected':''}>${m}</option>`).join('')}
-        </select>
+      <div class="form-group full">
+        <label class="form-label">Mes habitual <span style="font-size:11px;color:var(--text-light);font-weight:400">(puede seleccionar varios)</span></label>
+        <div class="tag-group" id="f-mes-tags">
+          ${MONTHS.map(m => {
+            const mesHabitual = row?.['Mes habitual'];
+            const meses = Array.isArray(mesHabitual) ? mesHabitual : (mesHabitual ? [mesHabitual] : []);
+            const sel = meses.includes(m);
+            return `<span class="tag-option${sel?' selected':''}" onclick="this.classList.toggle('selected')">${m}</span>`;
+          }).join('')}
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -1687,11 +1708,11 @@ function renderForm(row) {
     <!-- RECURRENT EDITIONS -->
     <div id="recurrent-fields" style="display:${isRecurrent?'block':'none'}">
       <div class="form-section-title">📅 Ediciones anuales</div>
-      <div class="editions-list" id="editions-list">${editionsHtml}</div>
-      <button class="btn-add-edition" onclick="addEdition()" style="margin-top:8px">
+      <button class="btn-add-edition" onclick="addEdition()" style="margin-bottom:12px">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Añadir edición anual
+        Añadir nueva edición anual
       </button>
+      <div class="editions-list" id="editions-list">${editionsHtml}</div>
     </div>
   `;
 
@@ -1729,6 +1750,12 @@ function editionFormHtml(ed, i) {
   </div>
   <div class="form-row">
     <div class="form-group full">
+      <label class="form-label">Lugar (esta edición)</label>
+      <input class="form-input ed-lugar" data-i="${i}" value="${ed.Lugar||''}" placeholder="Ciudad, País — deja vacío para usar el lugar general">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group full">
       <label class="form-label">Notas de esta edición</label>
       <textarea class="form-textarea ed-notas" data-i="${i}" placeholder="Detalles específicos de este año…">${ed.Notas||''}</textarea>
     </div>
@@ -1759,7 +1786,7 @@ function addEdition() {
     </div>
     <div class="edition-card-body open">${editionFormHtml({}, i)}</div>
   `;
-  list.appendChild(div);
+  list.prepend(div);
 }
 
 function removeEdition(i) {
@@ -1774,9 +1801,10 @@ function readEditions() {
     const estado = card.querySelector('.ed-estado')?.value;
     const inicio = card.querySelector('.ed-inicio')?.value;
     const fin    = card.querySelector('.ed-fin')?.value;
+    const lugar  = card.querySelector('.ed-lugar')?.value;
     const notas  = card.querySelector('.ed-notas')?.value;
     if (año || inicio) {
-      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, Notas: notas });
+      editions.push({ Año: año, Estado: estado, 'Fecha exacta (inicio)': inicio, 'Fecha exacta (fin)': fin, Lugar: lugar, Notas: notas });
     }
   });
   return editions;
@@ -1795,7 +1823,7 @@ function saveForm() {
     id: editingId || uid(),
     Nombre: nombre,
     Tipo: document.getElementById('f-tipo').value,
-    'Mes habitual': document.getElementById('f-mes').value,
+    'Mes habitual': [...document.querySelectorAll('#f-mes-tags .tag-option.selected')].map(el => el.textContent),
     Lugar: document.getElementById('f-lugar').value,
     URL: document.getElementById('f-url').value,
     Notas: document.getElementById('f-notas').value,
