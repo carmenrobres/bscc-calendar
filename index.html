@@ -365,6 +365,10 @@ td.name-cell a:hover { text-decoration: underline; }
 }
 .table-tab:hover { color: var(--bsc-blue); }
 .table-tab.active { color: var(--bsc-blue); border-bottom-color: var(--bsc-blue); font-weight: 600; }
+.table-tab.active.tab-funding { color: var(--green); border-bottom-color: var(--green); }
+/* funding table: green header */
+table.funding-table thead tr { background: var(--green); }
+table.funding-table th:hover { background: #155f3a; }
 
 /* row actions */
 .row-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
@@ -859,12 +863,12 @@ tbody tr:hover .row-actions { opacity: 1; }
     </div>
 
     <div class="filter-group">
-      <div class="filter-label">Público Objetivo</div>
-      <span class="filter-btn active" data-filter="public" data-val="" onclick="clearFilterMulti('public',this)">Todos</span>
+      <div class="filter-label">Audience</div>
+      <span class="filter-btn active" data-filter="public" data-val="" onclick="clearFilterMulti('public',this)">All</span>
       <span class="filter-btn" data-filter="public" data-val="Startup" onclick="toggleFilterMulti('public','Startup',this)">Startup</span>
       <span class="filter-btn" data-filter="public" data-val="SMEs" onclick="toggleFilterMulti('public','SMEs',this)">SMEs</span>
       <span class="filter-btn" data-filter="public" data-val="Research" onclick="toggleFilterMulti('public','Research',this)">Research</span>
-      <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Adm. Pública</span>
+      <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Public Administration</span>
     </div>
 
     <div class="filter-group">
@@ -1025,14 +1029,7 @@ function filteredRows() {
       }
     }
     if (filt.hidePast && isPast(row)) return false;
-    if (filt.equipo.length > 0) {
-      const rowEquipo = row.Equipo || [];
-      if (!filt.equipo.some(e => rowEquipo.includes(e))) return false;
-    }
-    if (filt.public.length > 0) {
-      const rowPublic = row.PublicObjectiu || [];
-      if (!filt.public.some(p => rowPublic.includes(p))) return false;
-    }
+    if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
       const hay = (row.Nombre||'') + (row.Notas||'') + (row['Equipo Líder']||'') + (row.Lugar||'');
@@ -1040,6 +1037,18 @@ function filteredRows() {
     }
     return true;
   });
+}
+
+function rowMatchesMultiFilters(row) {
+  if (filt.equipo.length > 0) {
+    const rowEquipo = row.Equipo || [];
+    if (!filt.equipo.some(e => rowEquipo.includes(e))) return false;
+  }
+  if (filt.public.length > 0) {
+    const rowPublic = row.PublicObjectiu || [];
+    if (!filt.public.some(p => rowPublic.includes(p))) return false;
+  }
+  return true;
 }
 
 // ─── FILTERS ──────────────────────────────────────────────────────────────────
@@ -1125,9 +1134,9 @@ function renderTable() {
   if (!allRows.length) return emptyState('No hay elementos que coincidan con los filtros.');
 
   const tabs = `<div class="table-tabs">
-    <button class="table-tab ${tableTab==='all'?'active':''}" onclick="setTableTab('all')">Todos (${allRows.length})</button>
-    <button class="table-tab ${tableTab==='eventos'?'active':''}" onclick="setTableTab('eventos')">Eventos (${allRows.filter(r=>r.Tipo==='Evento').length})</button>
-    <button class="table-tab ${tableTab==='funding'?'active':''}" onclick="setTableTab('funding')">Funding Calls (${allRows.filter(r=>r.Tipo==='Funding call').length})</button>
+    <button class="table-tab ${tableTab==='all'?'active':''}" onclick="setTableTab('all')">All (${allRows.length})</button>
+    <button class="table-tab ${tableTab==='eventos'?'active':''}" onclick="setTableTab('eventos')">Events (${allRows.filter(r=>r.Tipo==='Evento').length})</button>
+    <button class="table-tab ${tableTab==='funding'?'active tab-funding':''}" onclick="setTableTab('funding')">Funding Calls (${allRows.filter(r=>r.Tipo==='Funding call').length})</button>
   </div>`;
 
   const rows = tableTab === 'eventos' ? allRows.filter(r => r.Tipo === 'Evento')
@@ -1200,8 +1209,9 @@ function renderTable() {
   const lugarHeader = isEventos ? th('Lugar','Lugar') : '';
   const finLabel = isFunding ? 'Deadline' : 'Fin / Deadline';
 
+  const tableCls = isFunding ? 'funding-table' : '';
   const tableHtml = `<div class="table-wrap">
-    <table>
+    <table class="${tableCls}">
       <thead><tr>
         ${th('Nombre','Nombre')}
         ${tipoHeader}
@@ -1237,6 +1247,7 @@ function renderOrient() {
   const filtered = recRows.filter(row => {
     if (filt.tipo && row.Tipo !== filt.tipo) return false;
     if (filt.hidePast && isPast(row)) return false;
+    if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
       if (!(row.Nombre||'').toLowerCase().includes(q)) return false;
@@ -1290,6 +1301,8 @@ function renderCalendar() {
   const now2 = new Date(); now2.setHours(0,0,0,0);
   const events = [];
   D.rows.forEach(row => {
+    if (filt.tipo && row.Tipo !== filt.tipo) return;
+    if (!rowMatchesMultiFilters(row)) return;
     const rows_to_check = [];
     if (row.recurrent && row.editions) {
       row.editions.forEach(ed => rows_to_check.push({ ...row, ...ed, _parentNombre: row.Nombre }));
@@ -1392,6 +1405,7 @@ function renderGantt() {
   const filtered = entries.filter(row => {
     if (filt.tipo && row.Tipo !== filt.tipo) return false;
     if (filt.hidePast && isPast(row)) return false;
+    if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q && !(row.Nombre||'').toLowerCase().includes(filt.q.toLowerCase())) return false;
     return true;
   });
