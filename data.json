@@ -2,120 +2,6 @@
   "rows": [
     {
       "Año": "2026",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-11-05",
-      "Fecha exacta (inicio)": "2026-11-03",
-      "Lugar": "Barcelona, Cataluña, España",
-      "Mes habitual": "Noviembre",
-      "Nombre": "Smart City Expo World Congress 2026",
-      "Notas": "Annual global event on smart cities and urban innovation. Held at Fira de Barcelona Gran Via, this event brings together city leaders, policymakers and companies to share solutions across governance, mobility, energy and sustainability",
-      "Tipo": "Evento",
-      "URL": "https://www.smartcityexpo.com/",
-      "attachments": [],
-      "editions": [],
-      "id": "r1",
-      "recurrent": false
-    },
-    {
-      "Lugar": "Barcelona, Cataluña, España",
-      "Mes habitual": "Diciembre",
-      "Nombre": "Deep Learning Barcelona Symposium 2025",
-      "Notas": "Annual deep learning symposium held in Barcelona. Focus on research presentations from local and international groups. The 2025 edition takes place at Cosmocaixa Barcelona.",
-      "Tipo": "Evento",
-      "URL": "https://sites.google.com/view/dlbcn2025",
-      "attachments": [],
-      "editions": [],
-      "id": "r2",
-      "recurrent": true
-    },
-    {
-      "Año": "2025",
-      "Equipo Líder": "I-BD@bsc.es",
-      "Estado": "Listo",
-      "Fecha exacta (fin)": "2025-12-11",
-      "Fecha exacta (inicio)": "2025-12-10",
-      "Lugar": "Barcelona, Cataluña, España",
-      "Mes habitual": "Diciembre",
-      "Nombre": "Tech Spirit Barcelona 2025",
-      "Notas": "Evento de dos dias en Casa Llotja de Mar. Reune a founders, inversores y actores del ecosistema tech con keynotes, paneles y networking",
-      "Tipo": "Evento",
-      "URL": "https://www.techspirit.barcelona/",
-      "attachments": [],
-      "editions": [],
-      "id": "r3",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo Líder": "I-BD@bsc.es",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-11-12",
-      "Fecha exacta (inicio)": "2026-11-09",
-      "Lugar": "Lisboa, Portugal",
-      "Mes habitual": "Noviembre",
-      "Nombre": "Web Summit Lisbon 2026",
-      "Notas": "Annual technology conference in Lisbon drawing startups, investors, corporates and policymakers. It covers topics across technology, innovation and venture. Held at MEO Arena and Lisbon Exhibition & Congress Centre.",
-      "Tipo": "Evento",
-      "URL": "https://websummit.com/",
-      "attachments": [],
-      "editions": [],
-      "id": "r5",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-03-12",
-      "Fecha exacta (inicio)": "2026-03-10",
-      "Lugar": "",
-      "Mes habitual": "Marzo",
-      "Nombre": "EuroHPC Summit 2026",
-      "Notas": "Annual European high-performance computing summit, gathering HPC providers, users and policy makers across Europe.",
-      "Tipo": "Evento",
-      "URL": "",
-      "attachments": [],
-      "editions": [],
-      "id": "r6",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "Barcelona, Cataluña, España",
-      "Mes habitual": "Octubre",
-      "Nombre": "MareNostrum Hackathon 2026",
-      "Notas": "Barcelona Supercomputing Center hackathon around MareNostrum resources. Update dates when official confirmation is published.",
-      "Tipo": "Evento",
-      "URL": "",
-      "attachments": [],
-      "editions": [],
-      "id": "r7",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "Chicago, IL, Estados Unidos",
-      "Mes habitual": "Noviembre",
-      "Nombre": "Supercomputing SC26 (SC '26)",
-      "Notas": "Global HPC event with exhibition and technical program for high performance computing and related fields. Official SC26 dates should be published mid-2025.",
-      "Tipo": "Evento",
-      "URL": "",
-      "attachments": [],
-      "editions": [],
-      "id": "r8",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
       "Equipo Líder": "I-BD@bsc.es",
       "Estado": "Sin empezar",
       "Fecha exacta (fin)": "2026-10-28",
@@ -146,23 +32,6 @@
       "attachments": [],
       "editions": [],
       "id": "r10",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo Líder": "I-BD@bsc.es",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "",
-      "Mes habitual": "Septiembre",
-      "Nombre": "Cervera (Spanish national programme)",
-      "Notas": "Spanish national programme for technological innovation programmes led by technology centres.\n\nEligible: technology centres grouped in consortia\nRegion: Spain\nAmount: typical eligible project size ~€2M–€6M",
-      "Tipo": "Funding call",
-      "URL": "https://www.cdti.es/ayudas/proyectos-de-id-de-transferencia-tecnologica-cervera-0",
-      "attachments": [],
-      "editions": [],
-      "id": "r11",
       "recurrent": false
     },
     {
@@ -234,42 +103,261 @@
       "recurrent": false
     },
     {
-      "Lugar": "Barcelona",
-      "Mes habitual": "Marzo",
-      "Nombre": "Mobile World Congress",
-      "Notas": "",
+      "Equipo": [
+        "Innovation"
+      ],
+      "Lugar": "Europe",
+      "Mes habitual": "Junio",
+      "Nombre": "Risc V Summit",
+      "Notas": "Cumbre europea de referencia del ecosistema RISC-V (arquitectura de procesadores abierta). Reúne industria, academia, investigación y administraciones. Combina keynotes, demos, posters y networking. 1/3 de la comunidad global RISC-V está en Europa.\n",
+      "PublicObjectiu": [
+        "SMEs",
+        "Research"
+      ],
       "Tipo": "Evento",
-      "URL": "https://www.mwcbarcelona.com/",
-      "attachments": [],
+      "URL": "https://riscv-europe.org/",
       "editions": [
         {
-          "Año": "",
-          "Equipo Líder": "ibd@bsc.es",
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-06-12",
+          "Fecha exacta (inicio)": "2026-06-08",
+          "Notas": "Sede: Bolonia, Italia. Eventos laterales el 12 de junio.\n"
+        },
+        {
+          "Año": "2025",
           "Estado": "Listo",
-          "Fecha exacta (fin)": "2026-03-02",
-          "Fecha exacta (inicio)": "2026-03-02",
-          "Notas": ""
+          "Fecha exacta (fin)": "2025-05-15",
+          "Fecha exacta (inicio)": "2025-05-12",
+          "Notas": "Celebrado en La Cité des Sciences et de l'Industrie, París. Keynotes sobre RISC-V en IA, automoción y computación de alto rendimiento.\n"
         }
       ],
-      "id": "rsnt4pmea",
+      "id": "rghx9p7ts",
       "recurrent": true
     },
     {
-      "Año": "2027",
-      "Equipo Líder": "",
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "",
-      "Mes habitual": "",
-      "Nombre": "TESTEST",
-      "Notas": "",
+      "Equipo": [
+        "Innovation"
+      ],
+      "Lugar": "Fira Barcelona Gran Via, Hall 8",
+      "Mes habitual": "Mayo",
+      "Nombre": "IoT Solutions World Congress",
+      "Notas": "Evento líder mundial en IoT industrial, IA y transformación digital, organizado por Fira de Barcelona. Incluye el Barcelona Cybersecurity Congress (BCC) como evento colocado. Sectores clave: manufactura, salud, energía, ciudades inteligentes.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Research"
+      ],
       "Tipo": "Evento",
-      "URL": "",
-      "attachments": [],
-      "editions": [],
-      "id": "r4nkwgs63",
-      "recurrent": false
+      "URL": "https://www.iotsworldcongress.com/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "",
+          "Fecha exacta (inicio)": "",
+          "Notas": "Pendiente Confirmar Fecha Exacta. 10ª edición prevista en mayo 2026 en Fira Gran Via. Co-localizado de nuevo con BCC.\n"
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "",
+          "Fecha exacta (inicio)": "2025-12-13",
+          "Notas": "9ª edición. 11.000+ visitantes de 100+ países. Tracks: Digital Transformation, Emerging Technologies, IoT en entornos extremos.\n"
+        }
+      ],
+      "id": "rgg9axwjn",
+      "recurrent": true
+    },
+    {
+      "Equipo": [],
+      "Lugar": "Europa",
+      "Mes habitual": "Octubre",
+      "Nombre": "BioSpain",
+      "Notas": "Principal encuentro internacional de biotecnología en España, organizado por AseBio. Foco en salud, agroalimentación sostenible y soluciones climáticas. Desde 2025 pasa de bienal a anual. Combina congreso, exposición y reuniones 1-to-1.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Research"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://biospain.org/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-10-01",
+          "Fecha exacta (inicio)": "2026-09-29",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-10-09",
+          "Fecha exacta (inicio)": "2025-10-07",
+          "Notas": ""
+        }
+      ],
+      "id": "rfgcmx67v",
+      "recurrent": true
+    },
+    {
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation",
+        "Connects"
+      ],
+      "Lugar": "FYCMA, Palacio de Ferias y Congresos, Málaga",
+      "Mes habitual": "Febrero",
+      "Nombre": "Transfiere – Foro Europeo de C+T+I",
+      "Notas": "Principal foro español de transferencia de conocimiento e I+D+i. Organizado por el Ayuntamiento de Málaga, la Junta de Andalucía y el Ministerio de Ciencia. Reúne empresas, universidades, centros de investigación y administraciones públicas.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Research",
+        "Public Administrations"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://transfiere.fycma.com/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "No tenemos participación",
+          "Fecha exacta (fin)": "2026-02-26",
+          "Fecha exacta (inicio)": "2026-02-24",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-03-14",
+          "Fecha exacta (inicio)": "2025-03-12",
+          "Notas": ""
+        }
+      ],
+      "id": "rhi2chk1i",
+      "recurrent": true
+    },
+    {
+      "Equipo": [],
+      "Lugar": "Fira Barcelona Gran Via",
+      "Mes habitual": "Noviembre",
+      "Nombre": "Barcelona Deep Tech Summit",
+      "Notas": "Organizado por Barcelona Activa y el Ayuntamiento de Barcelona con respaldo de UB, UAB, UPC, UPF y UOC. Conecta startups deep tech, investigadores, inversores e instituciones. Centrado en IA avanzada, robótica, biotech y computación cuántica.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "Research",
+        "Public Administrations"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://barcelonadeeptechsummit.com/",
+      "editions": [
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-11-06",
+          "Fecha exacta (inicio)": "2025-11-04",
+          "Notas": ""
+        }
+      ],
+      "id": "ro1l8q9v1",
+      "recurrent": true
+    },
+    {
+      "Equipo": [],
+      "Lugar": "Fira Barcelona Gran Via, L'Hospitalet",
+      "Mes habitual": "Noviembre",
+      "Nombre": "Smart City Expo World Congress",
+      "Notas": "Principal evento mundial de innovación urbana, organizado por Fira de Barcelona. Reúne líderes de ciudades, gobiernos, empresas e investigadores para debatir IA, movilidad, energía y gobernanza urbana.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Research",
+        "Public Administrations"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://www.smartcityexpo.com/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-11-05",
+          "Fecha exacta (inicio)": "2026-11-03",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-11-06",
+          "Fecha exacta (inicio)": "2025-11-04",
+          "Notas": ""
+        }
+      ],
+      "id": "r2n6bp3t3",
+      "recurrent": true
+    },
+    {
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation",
+        "Connects"
+      ],
+      "Lugar": "Fira Gran Via, L'Hospitalet (Barcelona)",
+      "Mes habitual": "Marzo",
+      "Nombre": "MWC Barcelona / 4YFN",
+      "Notas": "Mayor congreso de conectividad y tecnología móvil del mundo. 4YFN es el espacio dedicado a startups e inversores dentro del MWC. Más de 109.000 asistentes y 2.900 expositores en 2025.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Public Administrations"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://www.mwcbarcelona.com/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2026-02-05",
+          "Fecha exacta (inicio)": "2026-03-02",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-03-06",
+          "Fecha exacta (inicio)": "2025-03-03",
+          "Notas": ""
+        }
+      ],
+      "id": "rn6gnbbk7",
+      "recurrent": true
+    },
+    {
+      "Equipo": [
+        "Innovation"
+      ],
+      "Lugar": "Casa Llotja de Mar, Barcelona",
+      "Mes habitual": "Diciembre",
+      "Nombre": "Tech Spirit Barcelona",
+      "Notas": "Evento anual del ecosistema tech de Barcelona. Keynotes, workshops y networking. Conecta startups, corporates e inversores. Organizado por Tech Barcelona y Cámara de Comercio de Barcelona.\n",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Research"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://techspirit.barcelona/",
+      "editions": [
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-12-11",
+          "Fecha exacta (inicio)": "2025-12-10",
+          "Notas": ""
+        }
+      ],
+      "id": "rpb43fduy",
+      "recurrent": true
     }
   ]
 }
