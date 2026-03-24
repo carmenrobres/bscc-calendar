@@ -2,18 +2,19 @@
   "rows": [
     {
       "Año": "2026",
-      "Equipo Líder": "I-BD@bsc.es",
+      "Equipo": [],
       "Estado": "Sin empezar",
       "Fecha exacta (fin)": "2026-10-28",
       "Fecha exacta (inicio)": "2026-05-12",
       "Lugar": "",
-      "Mes habitual": "Mayo",
+      "Mes habitual": [
+        "Mayo"
+      ],
       "Nombre": "EIC Pathfinder",
       "Notas": "Supports deep tech research at early TRL (1–4). Eligible are research teams or consortia with legal entities in EU Member States or Horizon Europe Associated Countries.\n\nEligible: research organisations, universities, SMEs, startups, consortia\nRegion: EU + Horizon Europe Associated Countries\nAmount: up to ~€4M (varies by sub-call)",
+      "PublicObjectiu": [],
       "Tipo": "Funding call",
       "URL": "https://eic.ec.europa.eu/eic-funding-opportunities/eic-pathfinder_en",
-      "attachments": [],
-      "editions": [],
       "id": "r9",
       "recurrent": false
     },
@@ -107,7 +108,10 @@
         "Innovation"
       ],
       "Lugar": "Europe",
-      "Mes habitual": "Junio",
+      "Mes habitual": [
+        "Mayo",
+        "Junio"
+      ],
       "Nombre": "Risc V Summit",
       "Notas": "Cumbre europea de referencia del ecosistema RISC-V (arquitectura de procesadores abierta). Reúne industria, academia, investigación y administraciones. Combina keynotes, demos, posters y networking. 1/3 de la comunidad global RISC-V está en Europa.\n",
       "PublicObjectiu": [
@@ -122,6 +126,7 @@
           "Estado": "Sin empezar",
           "Fecha exacta (fin)": "2026-06-12",
           "Fecha exacta (inicio)": "2026-06-08",
+          "Lugar": "",
           "Notas": "Sede: Bolonia, Italia. Eventos laterales el 12 de junio.\n"
         },
         {
@@ -129,6 +134,7 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-05-15",
           "Fecha exacta (inicio)": "2025-05-12",
+          "Lugar": "",
           "Notas": "Celebrado en La Cité des Sciences et de l'Industrie, París. Keynotes sobre RISC-V en IA, automoción y computación de alto rendimiento.\n"
         }
       ],
@@ -208,7 +214,10 @@
         "Connects"
       ],
       "Lugar": "FYCMA, Palacio de Ferias y Congresos, Málaga",
-      "Mes habitual": "Febrero",
+      "Mes habitual": [
+        "Febrero",
+        "Marzo"
+      ],
       "Nombre": "Transfiere – Foro Europeo de C+T+I",
       "Notas": "Principal foro español de transferencia de conocimiento e I+D+i. Organizado por el Ayuntamiento de Málaga, la Junta de Andalucía y el Ministerio de Ciencia. Reúne empresas, universidades, centros de investigación y administraciones públicas.\n",
       "PublicObjectiu": [
@@ -225,6 +234,7 @@
           "Estado": "No tenemos participación",
           "Fecha exacta (fin)": "2026-02-26",
           "Fecha exacta (inicio)": "2026-02-24",
+          "Lugar": "",
           "Notas": ""
         },
         {
@@ -232,6 +242,7 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-03-14",
           "Fecha exacta (inicio)": "2025-03-12",
+          "Lugar": "",
           "Notas": ""
         }
       ],
@@ -303,7 +314,10 @@
         "Connects"
       ],
       "Lugar": "Fira Gran Via, L'Hospitalet (Barcelona)",
-      "Mes habitual": "Marzo",
+      "Mes habitual": [
+        "Febrero",
+        "Marzo"
+      ],
       "Nombre": "MWC Barcelona / 4YFN",
       "Notas": "Mayor congreso de conectividad y tecnología móvil del mundo. 4YFN es el espacio dedicado a startups e inversores dentro del MWC. Más de 109.000 asistentes y 2.900 expositores en 2025.\n",
       "PublicObjectiu": [
@@ -319,6 +333,7 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2026-02-05",
           "Fecha exacta (inicio)": "2026-03-02",
+          "Lugar": "",
           "Notas": ""
         },
         {
@@ -326,6 +341,7 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-03-06",
           "Fecha exacta (inicio)": "2025-03-03",
+          "Lugar": "",
           "Notas": ""
         }
       ],
