@@ -327,6 +327,45 @@ td.name-cell a:hover { text-decoration: underline; }
 .date-cell { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-mid); white-space: nowrap; }
 .nodata { color: var(--text-light); font-style: italic; }
 
+/* team / public tags */
+.team-tag {
+  display: inline-block; padding: 2px 7px; border-radius: 10px;
+  font-size: 10px; font-weight: 600;
+  background: var(--bsc-blue-light); color: var(--bsc-blue);
+  white-space: nowrap; margin: 1px 1px 0;
+}
+.public-tag {
+  display: inline-block; padding: 2px 7px; border-radius: 10px;
+  font-size: 10px; font-weight: 600;
+  background: #fef3c7; color: #92400e;
+  white-space: nowrap; margin: 1px 1px 0;
+}
+
+/* tag selector in form */
+.tag-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-option {
+  display: inline-flex; align-items: center;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--grey-border);
+  background: white; color: var(--text-mid);
+  font-size: 12px; cursor: pointer;
+  transition: all 0.12s; user-select: none;
+}
+.tag-option:hover { border-color: var(--bsc-blue-mid); color: var(--bsc-blue); }
+.tag-option.selected { background: var(--bsc-blue); border-color: var(--bsc-blue); color: white; }
+.tag-option.selected-public { background: #d97706; border-color: #d97706; color: white; }
+
+/* table tabs */
+.table-tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid var(--grey-border); }
+.table-tab {
+  padding: 8px 20px; font-size: 13px; font-weight: 500; cursor: pointer;
+  border: none; background: none; color: var(--text-light);
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: all 0.15s;
+}
+.table-tab:hover { color: var(--bsc-blue); }
+.table-tab.active { color: var(--bsc-blue); border-bottom-color: var(--bsc-blue); font-weight: 600; }
+
 /* row actions */
 .row-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
 tbody tr:hover .row-actions { opacity: 1; }
@@ -812,6 +851,23 @@ tbody tr:hover .row-actions { opacity: 1; }
     </div>
 
     <div class="filter-group">
+      <div class="filter-label">Equipo BSC</div>
+      <span class="filter-btn active" data-filter="equipo" data-val="" onclick="clearFilterMulti('equipo',this)">Todos</span>
+      <span class="filter-btn" data-filter="equipo" data-val="BSC AI Factory" onclick="toggleFilterMulti('equipo','BSC AI Factory',this)">AI Factory</span>
+      <span class="filter-btn" data-filter="equipo" data-val="Innovation" onclick="toggleFilterMulti('equipo','Innovation',this)">Innovation</span>
+      <span class="filter-btn" data-filter="equipo" data-val="Connects" onclick="toggleFilterMulti('equipo','Connects',this)">Connects</span>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Público Objetivo</div>
+      <span class="filter-btn active" data-filter="public" data-val="" onclick="clearFilterMulti('public',this)">Todos</span>
+      <span class="filter-btn" data-filter="public" data-val="Startup" onclick="toggleFilterMulti('public','Startup',this)">Startup</span>
+      <span class="filter-btn" data-filter="public" data-val="SMEs" onclick="toggleFilterMulti('public','SMEs',this)">SMEs</span>
+      <span class="filter-btn" data-filter="public" data-val="Research" onclick="toggleFilterMulti('public','Research',this)">Research</span>
+      <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Adm. Pública</span>
+    </div>
+
+    <div class="filter-group">
       <div class="filter-label">Año</div>
       <div id="year-filters"></div>
     </div>
@@ -885,7 +941,8 @@ let sortAsc = true;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let ganttYear = new Date().getFullYear();
-let filt = { tipo: '', est: '', año: '', q: '', hidePast: false };
+let filt = { tipo: '', est: '', año: '', q: '', hidePast: false, equipo: [], public: [] };
+let tableTab = 'all'; // 'all' | 'eventos' | 'funding'
 let editingId = null;           // id being edited in modal
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
@@ -904,6 +961,8 @@ async function init() {
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const MONTHS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const ESTADOS = ['Sin empezar','En progreso','Listo','No tenemos participación'];
+const EQUIPOS = ['BSC AI Factory', 'Innovation', 'Connects'];
+const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations'];
 
 function uid() { return 'r' + Math.random().toString(36).substr(2,8); }
 
@@ -966,6 +1025,14 @@ function filteredRows() {
       }
     }
     if (filt.hidePast && isPast(row)) return false;
+    if (filt.equipo.length > 0) {
+      const rowEquipo = row.Equipo || [];
+      if (!filt.equipo.some(e => rowEquipo.includes(e))) return false;
+    }
+    if (filt.public.length > 0) {
+      const rowPublic = row.PublicObjectiu || [];
+      if (!filt.public.some(p => rowPublic.includes(p))) return false;
+    }
     if (filt.q) {
       const q = filt.q.toLowerCase();
       const hay = (row.Nombre||'') + (row.Notas||'') + (row['Equipo Líder']||'') + (row.Lugar||'');
@@ -996,6 +1063,23 @@ function setFilter(key, val, el) {
   render();
 }
 
+function toggleFilterMulti(key, val, el) {
+  const idx = filt[key].indexOf(val);
+  if (idx === -1) filt[key].push(val);
+  else filt[key].splice(idx, 1);
+  el.classList.toggle('active', filt[key].includes(val));
+  const todosBtn = document.querySelector(`[data-filter="${key}"][data-val=""]`);
+  if (todosBtn) todosBtn.classList.toggle('active', filt[key].length === 0);
+  render();
+}
+
+function clearFilterMulti(key, el) {
+  filt[key] = [];
+  document.querySelectorAll(`[data-filter="${key}"]`).forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
 function toggleHidePast(cb) {
   filt.hidePast = cb.checked;
   render();
@@ -1020,21 +1104,37 @@ function render() {
 }
 
 // ─── TABLE VIEW ───────────────────────────────────────────────────────────────
-function renderTable() {
-  const rows = filteredRows();
-  if (!rows.length) return emptyState('No hay elementos que coincidan con los filtros.');
+function teamTags(row) {
+  const eq = row.Equipo || [];
+  if (!eq.length) return '<span class="nodata">—</span>';
+  return eq.map(e => `<span class="team-tag">${e}</span>`).join('');
+}
+function publicTags(row) {
+  const p = row.PublicObjectiu || [];
+  if (!p.length) return '<span class="nodata">—</span>';
+  return p.map(v => `<span class="public-tag">${v}</span>`).join('');
+}
 
-  const cols = [
-    { key: 'Nombre', label: 'Nombre' },
-    { key: 'Tipo',   label: 'Tipo' },
-    { key: 'Recurrente', label: '' },
-    { key: 'Año',    label: 'Año/Edición' },
-    { key: 'Estado', label: 'Estado' },
-    { key: 'Fecha exacta (inicio)', label: 'Inicio' },
-    { key: 'Fecha exacta (fin)',    label: 'Fin / Deadline' },
-    { key: 'Equipo Líder', label: 'Equipo' },
-    { key: '_actions', label: '' },
-  ];
+function setTableTab(tab) {
+  tableTab = tab;
+  render();
+}
+
+function renderTable() {
+  const allRows = filteredRows();
+  if (!allRows.length) return emptyState('No hay elementos que coincidan con los filtros.');
+
+  const tabs = `<div class="table-tabs">
+    <button class="table-tab ${tableTab==='all'?'active':''}" onclick="setTableTab('all')">Todos (${allRows.length})</button>
+    <button class="table-tab ${tableTab==='eventos'?'active':''}" onclick="setTableTab('eventos')">Eventos (${allRows.filter(r=>r.Tipo==='Evento').length})</button>
+    <button class="table-tab ${tableTab==='funding'?'active':''}" onclick="setTableTab('funding')">Funding Calls (${allRows.filter(r=>r.Tipo==='Funding call').length})</button>
+  </div>`;
+
+  const rows = tableTab === 'eventos' ? allRows.filter(r => r.Tipo === 'Evento')
+             : tableTab === 'funding'  ? allRows.filter(r => r.Tipo === 'Funding call')
+             : allRows;
+
+  if (!rows.length) return tabs + emptyState('No hay elementos en esta categoría.');
 
   const sortedRows = [...rows].sort((a, b) => {
     let va = a[sortCol] || '';
@@ -1049,9 +1149,15 @@ function renderTable() {
     return `<th class="${isSorted?'sorted':''}" onclick="sortTable('${key}')">${label} <span class="sort-icon">${icon}</span></th>`;
   };
 
+  // Eventos table: Nombre | Recurrente | Año | Estado | Inicio | Fin | Lugar | Equipo BSC | Público | Equipo Líder | Actions
+  // Funding table: Nombre | Recurrente | Año | Estado | Inicio | Deadline | Equipo BSC | Público | Equipo Líder | Actions
+  // All table: Nombre | Tipo | Año | Estado | Inicio | Fin/Deadline | Equipo BSC | Público | Equipo Líder | Actions
+
+  const isEventos = tableTab === 'eventos';
+  const isFunding = tableTab === 'funding';
+
   const rows_html = sortedRows.map(row => {
     const past = isPast(row) ? ' past-row' : '';
-    // For recurrent rows, show latest edition status & dates
     let estado = row.Estado;
     let inicio = row['Fecha exacta (inicio)'];
     let fin    = row['Fecha exacta (fin)'];
@@ -1072,35 +1178,48 @@ function renderTable() {
          </div>`
       : `<div class="row-actions"><button class="row-btn" onclick="openDetailModal('${row.id}')">Ver</button></div>`;
 
+    const tipoCol = tableTab === 'all' ? `<td>${tipoBadge(row.Tipo)}</td>` : '';
+    const lugarCol = isEventos ? `<td style="font-size:12px;color:var(--text-light)">${row.Lugar||'<span class="nodata">—</span>'}</td>` : '';
+
     return `<tr class="${past}">
       <td class="name-cell">${nameCell}${recBadge}</td>
-      <td>${tipoBadge(row.Tipo)}</td>
-      <td></td>
+      ${tipoCol}
       <td><span class="year-pill">${año||'—'}</span></td>
       <td>${estadoBadge(estado)}</td>
       <td class="date-cell">${formatDate(inicio)}</td>
       <td class="date-cell">${formatDate(fin)}</td>
+      ${lugarCol}
+      <td style="font-size:11px">${teamTags(row)}</td>
+      <td style="font-size:11px">${publicTags(row)}</td>
       <td style="font-size:12px;color:var(--text-light)">${row['Equipo Líder']||'<span class="nodata">—</span>'}</td>
       <td>${actions}</td>
     </tr>`;
   }).join('');
 
-  return `<div class="table-wrap">
+  const tipoHeader = tableTab === 'all' ? th('Tipo','Tipo') : '';
+  const lugarHeader = isEventos ? th('Lugar','Lugar') : '';
+  const finLabel = isFunding ? 'Deadline' : 'Fin / Deadline';
+
+  const tableHtml = `<div class="table-wrap">
     <table>
       <thead><tr>
         ${th('Nombre','Nombre')}
-        ${th('Tipo','Tipo')}
-        <th></th>
+        ${tipoHeader}
         ${th('Año','Año')}
         ${th('Estado','Estado')}
         ${th('Fecha exacta (inicio)','Inicio')}
-        ${th('Fecha exacta (fin)','Fin / Deadline')}
-        ${th('Equipo Líder','Equipo')}
+        ${th('Fecha exacta (fin)',finLabel)}
+        ${lugarHeader}
+        <th>Equipo BSC</th>
+        <th>Público Objetivo</th>
+        ${th('Equipo Líder','Resp.')}
         <th></th>
       </tr></thead>
       <tbody>${rows_html}</tbody>
     </table>
   </div>`;
+
+  return tabs + tableHtml;
 }
 
 function sortTable(col) {
@@ -1387,6 +1506,13 @@ function openDetailModal(id) {
     ? '<a href="' + row.URL + '" target="_blank" class="btn btn-secondary btn-sm" style="margin-left:auto;text-decoration:none"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Web oficial</a>'
     : '';
 
+  const equipoHtml = (row.Equipo||[]).length
+    ? (row.Equipo||[]).map(e => `<span class="team-tag">${e}</span>`).join('')
+    : '<span style="font-size:12px;color:var(--text-light)">—</span>';
+  const publicHtml = (row.PublicObjectiu||[]).length
+    ? (row.PublicObjectiu||[]).map(p => `<span class="public-tag">${p}</span>`).join('')
+    : '<span style="font-size:12px;color:var(--text-light)">—</span>';
+
   document.getElementById('modal-body').innerHTML =
     '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">'
     + tipoBadge(row.Tipo)
@@ -1396,6 +1522,10 @@ function openDetailModal(id) {
     + '<div class="form-row">'
     + '<div class="form-group"><div class="detail-field-label">Mes habitual</div><div class="detail-field-value">' + (row['Mes habitual']||'—') + '</div></div>'
     + '<div class="form-group"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><div class="detail-field-label">Equipo BSC</div><div class="detail-field-value" style="margin-top:4px">' + equipoHtml + '</div></div>'
+    + '<div class="form-group"><div class="detail-field-label">Público Objetivo</div><div class="detail-field-value" style="margin-top:4px">' + publicHtml + '</div></div>'
     + '</div>'
     + singleInfo
     + (row.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas generales</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + row.Notas + '</div></div>' : '')
@@ -1483,6 +1613,28 @@ function renderForm(row) {
       <div class="form-group">
         <label class="form-label">URL</label>
         <input class="form-input" id="f-url" value="${row?.URL||''}" placeholder="https://...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full">
+        <label class="form-label">Equipo BSC</label>
+        <div class="tag-group" id="f-equipo-tags">
+          ${EQUIPOS.map(e => {
+            const sel = (row?.Equipo||[]).includes(e);
+            return `<span class="tag-option${sel?' selected':''}" onclick="this.classList.toggle('selected')">${e}</span>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full">
+        <label class="form-label">Público Objetivo</label>
+        <div class="tag-group" id="f-public-tags">
+          ${PUBLICS.map(p => {
+            const sel = (row?.PublicObjectiu||[]).includes(p);
+            return `<span class="tag-option${sel?' selected-public selected':''}" onclick="this.classList.toggle('selected');this.classList.toggle('selected-public',this.classList.contains('selected'))">${p}</span>`;
+          }).join('')}
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -1644,6 +1796,9 @@ function saveForm() {
 
   const isRecurrent = document.getElementById('recurrent-toggle').classList.contains('on');
 
+  const equipoSel = [...document.querySelectorAll('#f-equipo-tags .tag-option.selected')].map(el => el.textContent);
+  const publicSel = [...document.querySelectorAll('#f-public-tags .tag-option.selected')].map(el => el.textContent);
+
   const base = {
     id: editingId || uid(),
     Nombre: nombre,
@@ -1652,6 +1807,8 @@ function saveForm() {
     Lugar: document.getElementById('f-lugar').value,
     URL: document.getElementById('f-url').value,
     Notas: document.getElementById('f-notas').value,
+    Equipo: equipoSel,
+    PublicObjectiu: publicSel,
     recurrent: isRecurrent,
     attachments: [],
   };
