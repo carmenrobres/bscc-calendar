@@ -84,21 +84,6 @@ body {
 }
 #edit-toggle:hover { background: rgba(255,255,255,0.2); }
 #edit-toggle.active { background: var(--accent); border-color: var(--accent); }
-#save-btn {
-  background: #22c55e;
-  border: none;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  display: none; align-items: center; gap: 6px;
-  transition: background 0.15s;
-}
-#save-btn:hover { background: #16a34a; }
-#save-btn.visible { display: flex; }
 #save-status { font-size: 12px; color: rgba(255,255,255,0.7); }
 
 /* ── LAYOUT ── */
@@ -803,10 +788,6 @@ tbody tr:hover .row-actions { opacity: 1; }
   </div>
   <div id="header-right">
     <span id="save-status"></span>
-    <button id="save-btn" onclick="saveData()">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      Guardar
-    </button>
     <button id="edit-toggle" onclick="toggleEdit()">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       <span id="edit-label">Editar</span>
@@ -946,7 +927,7 @@ let editingId = null;           // id being edited in modal
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 async function init() {
   try {
-    const r = await fetch('data.json?t=' + Date.now());
+    const r = await fetch('data.json?t=' + Date.now(), { cache: 'no-store' });
     D = await r.json();
   } catch(e) {
     D = { rows: [] };
@@ -1109,11 +1090,8 @@ function render() {
 // ─── TABLE VIEW ───────────────────────────────────────────────────────────────
 // Returns per-team color palette based on first/priority team
 function getEquipoColor(row) {
-  const eq = row.Equipo || [];
-  if (eq.includes('BSC AI Factory')) return { bg: '#dbeafe', text: '#1e3a8a', solid: '#1e3a8a' };
-  if (eq.includes('Innovation'))     return { bg: '#ffedd5', text: '#c2410c', solid: '#ea580c' };
-  if (eq.includes('Connects'))       return { bg: '#cffafe', text: '#0e7490', solid: '#0891b2' };
-  return { bg: '#f3f4f6', text: '#6b7280', solid: '#9ca3af' };
+  if (row.Tipo === 'Funding call') return { bg: '#dcfce7', text: '#15803d', solid: '#16a34a' };
+  return { bg: '#dbeafe', text: '#1e3a8a', solid: '#2563eb' }; // Evento (default blue)
 }
 
 function teamTagClass(name) {
@@ -1176,7 +1154,7 @@ function renderTable() {
   const isFunding = tableTab === 'funding';
 
   const rows_html = sortedRows.map(row => {
-    const past = isPast(row) ? ' past-row' : '';
+    const past = (!row.recurrent && isPast(row)) ? ' past-row' : '';
     let estado = row.Estado;
     let inicio = row['Fecha exacta (inicio)'];
     let fin    = row['Fecha exacta (fin)'];
@@ -1205,12 +1183,12 @@ function renderTable() {
       <td class="name-cell">${nameCell}${recBadge}</td>
       ${tipoCol}
       <td><span class="year-pill">${año||'—'}</span></td>
-      <td>${estadoBadge(estado)}</td>
       <td class="date-cell">${formatDate(inicio)}</td>
       <td class="date-cell">${formatDate(fin)}</td>
       ${lugarCol}
       <td style="font-size:11px">${teamTags(row)}</td>
       <td style="font-size:11px">${publicTags(row)}</td>
+      <td>${estadoBadge(estado)}</td>
       <td>${actions}</td>
     </tr>`;
   }).join('');
@@ -1226,12 +1204,12 @@ function renderTable() {
         ${th('Nombre','Nombre')}
         ${tipoHeader}
         ${th('Año','Año')}
-        ${th('Estado','Estado')}
         ${th('Fecha exacta (inicio)','Inicio')}
         ${th('Fecha exacta (fin)',finLabel)}
         ${lugarHeader}
         <th>Equipo BSC</th>
         <th>Público Objetivo</th>
+        ${th('Estado','Estado')}
         <th></th>
       </tr></thead>
       <tbody>${rows_html}</tbody>
@@ -1452,7 +1430,7 @@ function renderGantt() {
   const todayLine = todayPct >= 0 ? `<div class="gantt-today-line" style="left:${todayPct}%"></div>` : '';
 
   const rowsHtml = filtered.map(row => {
-    const past = isPast(row) ? ' past-row' : '';
+    const past = (!row.recurrent && isPast(row)) ? ' past-row' : '';
     const inicio = row['Fecha exacta (inicio)'];
     const fin    = row['Fecha exacta (fin)'] || inicio;
     const left   = pct(inicio);
@@ -1854,8 +1832,7 @@ function saveForm() {
   buildYearFilters();
   closeModal();
   render();
-  showToast('Elemento guardado localmente. Usa "Guardar" para sincronizar.', 'success');
-  document.getElementById('save-btn').classList.add('visible');
+  showToast('Guardado localmente. Haz clic en "Guardar y salir" para sincronizar.', 'success');
 }
 
 function deleteRow(id) {
@@ -1863,8 +1840,7 @@ function deleteRow(id) {
   D.rows = D.rows.filter(r => r.id !== id);
   buildYearFilters();
   render();
-  document.getElementById('save-btn').classList.add('visible');
-  showToast('Elemento eliminado.', 'success');
+  showToast('Elemento eliminado. Haz clic en "Guardar y salir" para sincronizar.', 'success');
 }
 
 // ─── MODAL HELPERS ────────────────────────────────────────────────────────────
@@ -1953,7 +1929,6 @@ async function saveData() {
 
     if (res.status === 204 || res.ok) {
       document.getElementById('save-status').textContent = '✓ Guardado ' + new Date().toLocaleTimeString('es-ES');
-      document.getElementById('save-btn').classList.remove('visible');
       showToast('Datos enviados a GitHub correctamente.', 'success');
     } else {
       const err = await res.text();
