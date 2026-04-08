@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSC · Eventos & Funding Calls</title>
+<title>BSC I-BD · Eventos & Funding Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23003087'/><text x='3' y='22' font-family='sans-serif' font-weight='700' font-size='13' fill='white'>BSC</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -778,13 +779,14 @@ tbody tr:hover .row-actions { opacity: 1; }
 <!-- HEADER -->
 <header id="header">
   <div class="logo">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <rect width="28" height="28" rx="6" fill="rgba(255,255,255,0.15)"/>
-      <text x="5" y="20" font-family="IBM Plex Sans" font-weight="700" font-size="13" fill="white">BSC</text>
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="6" fill="rgba(255,255,255,0.15)"/>
+      <text x="4" y="22" font-family="IBM Plex Sans" font-weight="700" font-size="13" fill="white">BSC</text>
     </svg>
-    <span style="color:white;font-size:15px;font-weight:600">I-BD</span>
-    <span style="color:rgba(255,255,255,0.4)">·</span>
-    <span style="color:rgba(255,255,255,0.8);font-weight:400;font-size:13px">Eventos & Funding</span>
+    <div style="display:flex;flex-direction:column;gap:1px">
+      <span style="color:white;font-size:14px;font-weight:600;line-height:1.2">BSC I-BD</span>
+      <span style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:400;line-height:1.2">Eventos & Funding Calls</span>
+    </div>
   </div>
   <div id="header-right">
     <span id="save-status"></span>
@@ -844,6 +846,7 @@ tbody tr:hover .row-actions { opacity: 1; }
       <span class="filter-btn" data-filter="public" data-val="SMEs" onclick="toggleFilterMulti('public','SMEs',this)">SMEs</span>
       <span class="filter-btn" data-filter="public" data-val="Research" onclick="toggleFilterMulti('public','Research',this)">Research</span>
       <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Public Administration</span>
+      <span class="filter-btn" data-filter="public" data-val="Corporate" onclick="toggleFilterMulti('public','Corporate',this)">Corporate</span>
     </div>
 
     <div class="filter-group">
@@ -858,6 +861,13 @@ tbody tr:hover .row-actions { opacity: 1; }
     <span class="toggle-label">Ocultar pasados</span>
     <label class="toggle-switch">
       <input type="checkbox" id="hide-past-toggle" onchange="toggleHidePast(this)">
+      <span class="toggle-track"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Ocultar recurrentes sin fecha futura</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="hide-rec-nofuture-toggle" onchange="toggleHideRecNoFuture(this)">
       <span class="toggle-track"></span>
     </label>
   </div>
@@ -920,7 +930,7 @@ let sortAsc = true;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let ganttYear = new Date().getFullYear();
-let filt = { tipo: '', est: '', año: '', q: '', hidePast: false, equipo: [], public: [] };
+let filt = { tipo: '', est: '', año: '', q: '', hidePast: false, hideRecurrentNoFuture: false, equipo: [], public: [] };
 let tableTab = 'all'; // 'all' | 'eventos' | 'funding'
 let editingId = null;           // id being edited in modal
 
@@ -941,7 +951,7 @@ const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto
 const MONTHS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const ESTADOS = ['Sin empezar','En progreso','Listo','No tenemos participación'];
 const EQUIPOS = ['BSC AI Factory', 'Innovation', 'Connects'];
-const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations'];
+const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations', 'Corporate'];
 
 function uid() { return 'r' + Math.random().toString(36).substr(2,8); }
 
@@ -1003,7 +1013,8 @@ function filteredRows() {
         if (String(row.Año) !== filt.año) return false;
       }
     }
-    if (filt.hidePast && isPast(row)) return false;
+    if (filt.hidePast && !row.recurrent && isPast(row)) return false;
+    if (filt.hideRecurrentNoFuture && row.recurrent && !recurrentHasFutureDate(row)) return false;
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
@@ -1011,6 +1022,15 @@ function filteredRows() {
       if (!hay.toLowerCase().includes(q)) return false;
     }
     return true;
+  });
+}
+
+function recurrentHasFutureDate(row) {
+  if (!row.editions || !row.editions.length) return false;
+  const now = new Date();
+  return row.editions.some(e => {
+    const d = e['Fecha exacta (inicio)'] || e['Fecha exacta (fin)'];
+    return d && new Date(d + 'T00:00:00') >= now;
   });
 }
 
@@ -1066,6 +1086,10 @@ function clearFilterMulti(key, el) {
 
 function toggleHidePast(cb) {
   filt.hidePast = cb.checked;
+  render();
+}
+function toggleHideRecNoFuture(cb) {
+  filt.hideRecurrentNoFuture = cb.checked;
   render();
 }
 
@@ -1146,11 +1170,6 @@ function renderTable() {
     return `<th class="${isSorted?'sorted':''}" onclick="sortTable('${key}')">${label} <span class="sort-icon">${icon}</span></th>`;
   };
 
-  // Eventos table: Nombre | Recurrente | Año | Estado | Inicio | Fin | Lugar | Equipo BSC | Público | Actions
-  // Funding table: Nombre | Recurrente | Año | Estado | Inicio | Deadline | Equipo BSC | Público | Actions
-  // All table: Nombre | Tipo | Año | Estado | Inicio | Fin/Deadline | Equipo BSC | Público | Actions
-
-  const isEventos = tableTab === 'eventos';
   const isFunding = tableTab === 'funding';
 
   const rows_html = sortedRows.map(row => {
@@ -1175,40 +1194,32 @@ function renderTable() {
          </div>`
       : `<div class="row-actions"><button class="row-btn" onclick="openDetailModal('${row.id}')">Ver</button></div>`;
 
-    const tipoCol = tableTab === 'all' ? `<td>${tipoBadge(row.Tipo)}</td>` : '';
-    const lugarCol = isEventos ? `<td style="font-size:12px;color:var(--text-light)">${row.Lugar||'<span class="nodata">—</span>'}</td>` : '';
-
     const ec = getEquipoColor(row);
     return `<tr class="${past}" style="box-shadow: inset 4px 0 0 ${ec.solid}">
       <td class="name-cell">${nameCell}${recBadge}</td>
-      ${tipoCol}
-      <td><span class="year-pill">${año||'—'}</span></td>
+      <td>${tipoBadge(row.Tipo)}</td>
+      <td style="font-size:11px">${publicTags(row)}</td>
+      <td style="font-size:11px">${teamTags(row)}</td>
       <td class="date-cell">${formatDate(inicio)}</td>
       <td class="date-cell">${formatDate(fin)}</td>
-      ${lugarCol}
-      <td style="font-size:11px">${teamTags(row)}</td>
-      <td style="font-size:11px">${publicTags(row)}</td>
+      <td><span class="year-pill">${año||'—'}</span></td>
       <td>${estadoBadge(estado)}</td>
       <td>${actions}</td>
     </tr>`;
   }).join('');
 
-  const tipoHeader = tableTab === 'all' ? th('Tipo','Tipo') : '';
-  const lugarHeader = isEventos ? th('Lugar','Lugar') : '';
   const finLabel = isFunding ? 'Deadline' : 'Fin / Deadline';
-
   const tableCls = isFunding ? 'funding-table' : '';
   const tableHtml = `<div class="table-wrap">
     <table class="${tableCls}">
       <thead><tr>
         ${th('Nombre','Nombre')}
-        ${tipoHeader}
-        ${th('Año','Año')}
+        ${th('Tipo','Tipo')}
+        <th>Público Objetivo</th>
+        <th>Equipo BSC</th>
         ${th('Fecha exacta (inicio)','Inicio')}
         ${th('Fecha exacta (fin)',finLabel)}
-        ${lugarHeader}
-        <th>Equipo BSC</th>
-        <th>Público Objetivo</th>
+        ${th('Año','Año')}
         ${th('Estado','Estado')}
         <th></th>
       </tr></thead>
@@ -1233,7 +1244,7 @@ function renderOrient() {
 
   const filtered = recRows.filter(row => {
     if (filt.tipo && row.Tipo !== filt.tipo) return false;
-    if (filt.hidePast && isPast(row)) return false;
+    if (filt.hideRecurrentNoFuture && !recurrentHasFutureDate(row)) return false;
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
       const q = filt.q.toLowerCase();
@@ -1407,7 +1418,7 @@ function renderGantt() {
 
   const filtered = entries.filter(row => {
     if (filt.tipo && row.Tipo !== filt.tipo) return false;
-    if (filt.hidePast && isPast(row)) return false;
+    if (filt.hidePast && !row.recurrent && isPast(row)) return false;
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q && !(row.Nombre||'').toLowerCase().includes(filt.q.toLowerCase())) return false;
     return true;
