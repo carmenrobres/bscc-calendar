@@ -105,14 +105,10 @@
       "recurrent": false
     },
     {
-      "Año": "2026",
       "Equipo": [
         "Innovation"
       ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-06-11",
-      "Fecha exacta (inicio)": "2026-06-08",
-      "Lugar": "Bologna",
+      "Lugar": "Europe",
       "Mes habitual": [
         "Mayo",
         "Junio"
@@ -125,8 +121,26 @@
       ],
       "Tipo": "Evento",
       "URL": "https://riscv-europe.org/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-06-12",
+          "Fecha exacta (inicio)": "2026-06-08",
+          "Lugar": "",
+          "Notas": "Sede: Bolonia, Italia. Eventos laterales el 12 de junio.\n"
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-05-15",
+          "Fecha exacta (inicio)": "2025-05-12",
+          "Lugar": "",
+          "Notas": "Celebrado en La Cité des Sciences et de l'Industrie, París. Keynotes sobre RISC-V en IA, automoción y computación de alto rendimiento.\n"
+        }
+      ],
       "id": "rghx9p7ts",
-      "recurrent": false
+      "recurrent": true
     },
     {
       "Equipo": [
@@ -163,18 +177,9 @@
       "recurrent": true
     },
     {
-      "Año": "2026",
-      "Equipo": [
-        "Innovation",
-        "Connects"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-10-01",
-      "Fecha exacta (inicio)": "2026-09-29",
-      "Lugar": "Bilbao",
-      "Mes habitual": [
-        "Octubre"
-      ],
+      "Equipo": [],
+      "Lugar": "Europa",
+      "Mes habitual": "Octubre",
       "Nombre": "BioSpain",
       "Notas": "Principal encuentro internacional de biotecnología en España, organizado por AseBio. Foco en salud, agroalimentación sostenible y soluciones climáticas. Desde 2025 pasa de bienal a anual. Combina congreso, exposición y reuniones 1-to-1.\n",
       "PublicObjectiu": [
@@ -184,8 +189,24 @@
       ],
       "Tipo": "Evento",
       "URL": "https://biospain.org/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-10-01",
+          "Fecha exacta (inicio)": "2026-09-29",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-10-09",
+          "Fecha exacta (inicio)": "2025-10-07",
+          "Notas": ""
+        }
+      ],
       "id": "rfgcmx67v",
-      "recurrent": false
+      "recurrent": true
     },
     {
       "Equipo": [
@@ -230,18 +251,9 @@
       "recurrent": true
     },
     {
-      "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory",
-        "Innovation"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
+      "Equipo": [],
       "Lugar": "Fira Barcelona Gran Via",
-      "Mes habitual": [
-        "Noviembre"
-      ],
+      "Mes habitual": "Noviembre",
       "Nombre": "Barcelona Deep Tech Summit",
       "Notas": "Organizado por Barcelona Activa y el Ayuntamiento de Barcelona con respaldo de UB, UAB, UPC, UPF y UOC. Conecta startups deep tech, investigadores, inversores e instituciones. Centrado en IA avanzada, robótica, biotech y computación cuántica.\n",
       "PublicObjectiu": [
@@ -251,19 +263,22 @@
       ],
       "Tipo": "Evento",
       "URL": "https://barcelonadeeptechsummit.com/",
+      "editions": [
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-11-06",
+          "Fecha exacta (inicio)": "2025-11-04",
+          "Notas": ""
+        }
+      ],
       "id": "ro1l8q9v1",
-      "recurrent": false
+      "recurrent": true
     },
     {
-      "Año": "2026",
       "Equipo": [],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-11-05",
-      "Fecha exacta (inicio)": "2026-11-03",
       "Lugar": "Fira Barcelona Gran Via, L'Hospitalet",
-      "Mes habitual": [
-        "Noviembre"
-      ],
+      "Mes habitual": "Noviembre",
       "Nombre": "Smart City Expo World Congress",
       "Notas": "Principal evento mundial de innovación urbana, organizado por Fira de Barcelona. Reúne líderes de ciudades, gobiernos, empresas e investigadores para debatir IA, movilidad, energía y gobernanza urbana.\n",
       "PublicObjectiu": [
@@ -274,8 +289,24 @@
       ],
       "Tipo": "Evento",
       "URL": "https://www.smartcityexpo.com/",
+      "editions": [
+        {
+          "Año": "2026",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-11-05",
+          "Fecha exacta (inicio)": "2026-11-03",
+          "Notas": ""
+        },
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-11-06",
+          "Fecha exacta (inicio)": "2025-11-04",
+          "Notas": ""
+        }
+      ],
       "id": "r2n6bp3t3",
-      "recurrent": false
+      "recurrent": true
     },
     {
       "Equipo": [
@@ -301,7 +332,7 @@
         {
           "Año": "2026",
           "Estado": "Listo",
-          "Fecha exacta (fin)": "2026-03-05",
+          "Fecha exacta (fin)": "2026-02-05",
           "Fecha exacta (inicio)": "2026-03-02",
           "Lugar": "",
           "Notas": ""
@@ -319,17 +350,11 @@
       "recurrent": true
     },
     {
-      "Año": "2026",
       "Equipo": [
         "Innovation"
       ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
       "Lugar": "Casa Llotja de Mar, Barcelona",
-      "Mes habitual": [
-        "Diciembre"
-      ],
+      "Mes habitual": "Diciembre",
       "Nombre": "Tech Spirit Barcelona",
       "Notas": "Evento anual del ecosistema tech de Barcelona. Keynotes, workshops y networking. Conecta startups, corporates e inversores. Organizado por Tech Barcelona y Cámara de Comercio de Barcelona.\n",
       "PublicObjectiu": [
@@ -339,171 +364,32 @@
       ],
       "Tipo": "Evento",
       "URL": "https://techspirit.barcelona/",
+      "editions": [
+        {
+          "Año": "2025",
+          "Estado": "Listo",
+          "Fecha exacta (fin)": "2025-12-11",
+          "Fecha exacta (inicio)": "2025-12-10",
+          "Notas": ""
+        }
+      ],
       "id": "rpb43fduy",
-      "recurrent": false
+      "recurrent": true
     },
     {
       "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-04-20",
-      "Fecha exacta (inicio)": "2026-06-17",
-      "Lugar": "París",
-      "Mes habitual": [],
-      "Nombre": "VivaTech",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://vivatech.com/",
-      "id": "roh0vfatj",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-11-19",
-      "Fecha exacta (inicio)": "2026-11-18",
-      "Lugar": "Helsinki",
-      "Mes habitual": [],
-      "Nombre": "Slush",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://slush.org/",
-      "id": "r07shixaq",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-11-12",
-      "Fecha exacta (inicio)": "2026-11-09",
-      "Lugar": "Lisboa",
-      "Mes habitual": [],
-      "Nombre": "Web Summit",
-      "Notas": "",
-      "PublicObjectiu": [
-        "Startup"
-      ],
-      "Tipo": "Evento",
-      "URL": "https://websummit.com/2-for-1/?utm_source=google&utm_medium=cpc&utm_campaign=23511486645&utm_content=&utm_term=&gad_source=1&gad_campaignid=23516505515&gclid=Cj0KCQjwp7jOBhDGARIsABe7C4fND7E4JLDI75MHoYjX0UXHiaqdBfa9EUgLe1eLevALHsdijB1zP3YaAk71EALw_wcB",
-      "id": "rb1oht332",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory",
-        "Innovation"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-10-22",
-      "Fecha exacta (inicio)": "2026-10-20",
-      "Lugar": "Barcelona",
-      "Mes habitual": [],
-      "Nombre": "AI Congress (CIDAI)",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://aicongress.barcelona/#:~:text=20%2D21%2D22%20octubre%202026%20%2D%20AI%20Congress.",
-      "id": "r1em62jql",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "Connects"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-05-28",
-      "Fecha exacta (inicio)": "2026-05-27",
-      "Lugar": "Barcelona",
-      "Mes habitual": [],
-      "Nombre": "Health Revolution Congress",
-      "Notas": "- Innostroke\n- Spin Offs de Health\n-KAM de Biotech (Alberto Rodriguez)",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://healthrevolutioncongress.com/en/",
-      "id": "r5cx8r38m",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "Innovation",
-        "Connects"
-      ],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-10-30",
-      "Fecha exacta (inicio)": "2026-10-26",
-      "Lugar": "Maastricht, Països Baixos",
-      "Mes habitual": [],
-      "Nombre": "Big Science Business Forum (CDTI)",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://eventos.cdti.es/en/agenda/bsbf2026",
-      "id": "rf3ar1ku3",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [
-        "Innovation"
-      ],
+      "Equipo": [],
       "Estado": "Sin empezar",
       "Fecha exacta (fin)": "",
       "Fecha exacta (inicio)": "",
       "Lugar": "",
-      "Mes habitual": [
-        "Septiembre"
-      ],
-      "Nombre": "AI Summit Barcelona",
-      "Notas": "Contacted by Adam Hruska (Júlia i Sergi). Decidir si ens involucrem.",
+      "Mes habitual": [],
+      "Nombre": "test",
+      "Notas": "",
       "PublicObjectiu": [],
       "Tipo": "Evento",
       "URL": "",
-      "id": "rj0hku3he",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-06-05",
-      "Fecha exacta (inicio)": "2026-06-03",
-      "Lugar": "Madrid",
-      "Mes habitual": [],
-      "Nombre": "South Summit",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://www.southsummit.io/e/madrid?utm_term=south%20summit%20madrid&utm_campaign=BUS-ES-PERF-Ticketing-24-25-26&utm_source=google&utm_medium=cpc&gad_source=1&gad_campaignid=20993614710&gclid=Cj0KCQjwp7jOBhDGARIsABe7C4cKsqBOPp9uTQ2U99QcWkJROfZhlvyCrGHtWiL_GxjdAfB13sFqWW8aAkf-EALw_wcB",
-      "id": "rjyefta1z",
-      "recurrent": false
-    },
-    {
-      "Año": "2026",
-      "Equipo": [],
-      "Estado": "Sin empezar",
-      "Fecha exacta (fin)": "2026-04-16",
-      "Fecha exacta (inicio)": "2026-04-15",
-      "Lugar": "Madrid",
-      "Mes habitual": [],
-      "Nombre": "AMETIC AI Summit",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "https://www.ametic-ai-summit.es/",
-      "id": "rivt99ck2",
+      "id": "rg9w5nom3",
       "recurrent": false
     }
   ]
