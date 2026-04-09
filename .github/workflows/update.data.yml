@@ -30,4 +30,5 @@ jobs:
           git config user.name "BSC Calendar Bot"
           git config user.email "bot@bsc.es"
           git add data.json
-          git diff --staged --quiet && echo "No changes" || (git commit -m "Actualizar datos [skip ci]" && git push)
+          # Removed [skip ci] so it triggers the deployment workflow
+          git diff --staged --quiet && echo "No changes" || (git commit -m "Actualizar datos" && git push)
