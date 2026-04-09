@@ -177,11 +177,15 @@
       "recurrent": true
     },
     {
-      "Equipo": [],
-      "Lugar": "Europa",
-      "Mes habitual": "Octubre",
+      "Equipo": [
+        "Innovation"
+      ],
+      "Lugar": "España",
+      "Mes habitual": [
+        "Octubre"
+      ],
       "Nombre": "BioSpain",
-      "Notas": "Principal encuentro internacional de biotecnología en España, organizado por AseBio. Foco en salud, agroalimentación sostenible y soluciones climáticas. Desde 2025 pasa de bienal a anual. Combina congreso, exposición y reuniones 1-to-1.\n",
+      "Notas": "El mayor evento de biotecnología organizado por una asociación nacional del sector en Europa. 2.400+ profesionales, 1.065 organizaciones de 34 países, 140 inversores y 4.500 reuniones 1:1. Foco en salud, agroalimentación sostenible y soluciones climáticas. Cada edición cambia de ciudad en España.",
       "PublicObjectiu": [
         "Startup",
         "SMEs",
@@ -195,6 +199,7 @@
           "Estado": "Sin empezar",
           "Fecha exacta (fin)": "2026-10-01",
           "Fecha exacta (inicio)": "2026-09-29",
+          "Lugar": "Bilbao, País Vasco, España",
           "Notas": ""
         },
         {
@@ -202,6 +207,7 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-10-09",
           "Fecha exacta (inicio)": "2025-10-07",
+          "Lugar": "Barcelona",
           "Notas": ""
         }
       ],
@@ -251,9 +257,14 @@
       "recurrent": true
     },
     {
-      "Equipo": [],
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
       "Lugar": "Fira Barcelona Gran Via",
-      "Mes habitual": "Noviembre",
+      "Mes habitual": [
+        "Noviembre"
+      ],
       "Nombre": "Barcelona Deep Tech Summit",
       "Notas": "Organizado por Barcelona Activa y el Ayuntamiento de Barcelona con respaldo de UB, UAB, UPC, UPF y UOC. Conecta startups deep tech, investigadores, inversores e instituciones. Centrado en IA avanzada, robótica, biotech y computación cuántica.\n",
       "PublicObjectiu": [
@@ -269,16 +280,30 @@
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-11-06",
           "Fecha exacta (inicio)": "2025-11-04",
+          "Lugar": "",
           "Notas": ""
+        },
+        {
+          "Año": "",
+          "Estado": "Sin empezar",
+          "Fecha exacta (fin)": "2026-11-06",
+          "Fecha exacta (inicio)": "2026-11-04",
+          "Lugar": "Barcelona, Cataluña, España",
+          "Notas": "Punt de trobada del ecosistema deep tech europeu: startups, spin-offs, investigadors, inversors i corporacions. Fira Barcelona Montjuïc. Foco en computació avançada, IA, salut digital, sostenibilitat i semiconductors. BSC participa amb Factory i serveis — plataforma ideal per presentar spin-offs. Coincideix amb Smart City Expo (setmana del 3-6 novembre BCN)."
         }
       ],
       "id": "ro1l8q9v1",
       "recurrent": true
     },
     {
-      "Equipo": [],
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
       "Lugar": "Fira Barcelona Gran Via, L'Hospitalet",
-      "Mes habitual": "Noviembre",
+      "Mes habitual": [
+        "Noviembre"
+      ],
       "Nombre": "Smart City Expo World Congress",
       "Notas": "Principal evento mundial de innovación urbana, organizado por Fira de Barcelona. Reúne líderes de ciudades, gobiernos, empresas e investigadores para debatir IA, movilidad, energía y gobernanza urbana.\n",
       "PublicObjectiu": [
@@ -295,13 +320,15 @@
           "Estado": "Sin empezar",
           "Fecha exacta (fin)": "2026-11-05",
           "Fecha exacta (inicio)": "2026-11-03",
-          "Notas": ""
+          "Lugar": "",
+          "Notas": "El mayor evento mundial de innovación urbana. Fira Barcelona Gran Via. 25.000+ asistentes, 850+ ciudades, 135+ países. Temas clave: IoT, ciberseguridad, IA, movilidad, sostenibilidad. BSC con booth — reciclar demo de Earth. Proyectos candidatos: Factory con Public Organisations. Presencia en redes sociales importante."
         },
         {
           "Año": "2025",
           "Estado": "Listo",
           "Fecha exacta (fin)": "2025-11-06",
           "Fecha exacta (inicio)": "2025-11-04",
+          "Lugar": "",
           "Notas": ""
         }
       ],
@@ -375,6 +402,228 @@
       ],
       "id": "rpb43fduy",
       "recurrent": true
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-06-20",
+      "Fecha exacta (inicio)": "2026-06-17",
+      "Lugar": "París, Francia",
+      "Mes habitual": [
+        "Junio"
+      ],
+      "Nombre": "VivaTech 2026",
+      "Notas": "El mayor evento europeo de startups y tecnología, en su 10ª edición. Reúne startups, grandes corporaciones, inversores e instituciones públicas en torno a IA, sostenibilidad, movilidad y deeptech. Posible colaboración con BSC AI Factory Francia. Más de 180.000 asistentes y 14.000 startups en edición anterior.",
+      "PublicObjectiu": [
+        "Startup",
+        "Public Administrations",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://vivatech.com/",
+      "id": "ro35vmlke",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-11-19",
+      "Fecha exacta (inicio)": "2026-11-18",
+      "Lugar": "Helsinki, Finlandia",
+      "Mes habitual": [
+        "Noviembre"
+      ],
+      "Nombre": "Slush",
+      "Notas": "El evento de startups más centrado en fundadores del mundo. Reúne más de 13.000 asistentes, 6.000 startups y 3.500 inversores en Helsinki. Foco en deeptech, IA, healthtech y fintech. Sistema de matchmaking 1:1 con inversores. Posible colaboración con BSC AI Factory.",
+      "PublicObjectiu": [
+        "Startup",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://slush.org",
+      "id": "rchxibkgl",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-11-12",
+      "Fecha exacta (inicio)": "2026-11-09",
+      "Lugar": "Lisboa, Portugal",
+      "Mes habitual": [
+        "Noviembre"
+      ],
+      "Nombre": "Web Summit",
+      "Notas": "La mayor conferencia tecnológica del mundo. Reúne más de 70.000 asistentes de 160+ países, 2.000+ startups y 900+ ponentes en Lisboa. Cubre IA, fintech, healthtech, deeptech y sostenibilidad. Incluye programa específico para startups con competición PITCH y acceso a inversores.",
+      "PublicObjectiu": [
+        "Startup",
+        "Research",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://websummit.com",
+      "id": "r3jggcz66",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-10-22",
+      "Fecha exacta (inicio)": "2026-10-21",
+      "Lugar": "Barcelona, Cataluña, España",
+      "Mes habitual": [
+        "Octubre"
+      ],
+      "Nombre": "AI Congress Barcelona (CIDAI)",
+      "Notas": "Congrés de referència sobre IA i empresa a Catalunya, organitzat pel CIDAI i Eurecat en el marc de la estratègia Catalonia.AI. El BSC és col·laborador oficial. Foco en tendències, casos d'èxit empresarials i sobirania de la IA. Auditori L'Illa. Ideal per a presentar serveis de Factory i visibilitzar spin-offs.",
+      "PublicObjectiu": [
+        "Research",
+        "Public Administrations",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://aicongress.barcelona",
+      "id": "rg9x55ym9",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-05-28",
+      "Fecha exacta (inicio)": "2026-05-27",
+      "Lugar": "Barcelona, Cataluña, España",
+      "Mes habitual": [
+        "Mayo"
+      ],
+      "Nombre": "Health Revolution Congress",
+      "Notas": "La major cimera europea en salut digital, organitzada pel Barcelona Health Hub al Recinte Modernista de Sant Pau (Patrimoni UNESCO). 3.000+ assistents, lideradors, startups, inversors i responsables polítics. Foco en IA en salut, healthtech i transformació digital sanitària.",
+      "PublicObjectiu": [
+        "Startup",
+        "Research",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://healthrevolutioncongress.com",
+      "id": "rbrcc0mgh",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "",
+      "Fecha exacta (inicio)": "",
+      "Lugar": "Madrid, España",
+      "Mes habitual": [
+        "Diciembre"
+      ],
+      "Nombre": "Big Science Industry Forum Spain (BSIFS",
+      "Notas": "Primer foro nacional de la Industria de la Ciencia en España, organizado por CDTI, INDUCIENCIA e INEUSTAR. Conecta empresas españolas con grandes infraestructuras científicas internacionales (CERN, ITER, ESA, ESO). Foco en contratación industrial, transferencia tecnológica y deep tech. Inaugurado en 2025 por la ministra Diana Morant. Fechas 2026 pendientes de confirmar.",
+      "PublicObjectiu": [
+        "Research",
+        "Public Administrations",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://www.bsifs2025.es",
+      "id": "ryikjppv0",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-09-23",
+      "Fecha exacta (inicio)": "2026-09-22",
+      "Lugar": "Fira de Barcelona (Montjuïc), España",
+      "Mes habitual": [
+        "Septiembre"
+      ],
+      "Nombre": "AI Summit Barcelona",
+      "Notas": "Considerado uno de los eventos de IA más grandes de Europa. El summit principal se celebra dentro de la \"AI Week Barcelona\" (16 al 23 de septiembre) e incluye demostraciones de IA en tiempo real, zonas de networking, hackathons y ponencias de líderes tecnológicos mundiales. Se centra en infraestructura nativa de IA, asistentes personales y aplicaciones industriales.",
+      "PublicObjectiu": [
+        "Research",
+        "Public Administrations",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://aisummitbarcelona.com/",
+      "id": "rlc0hembz",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "Innovation",
+        "Connects"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-06-05",
+      "Fecha exacta (inicio)": "2026-06-03",
+      "Lugar": "La Nave (Madrid), España",
+      "Mes habitual": [
+        "Junio"
+      ],
+      "Nombre": "South Summit",
+      "Notas": "Considerado el evento líder de innovación y emprendimiento en el sur de Europa. Reúne a las startups más disruptivas con inversores internacionales y grandes corporaciones que buscan innovación abierta. Incluye la famosa Startup Competition y verticales dedicados a salud, sostenibilidad y fintech.",
+      "PublicObjectiu": [
+        "Startup",
+        "SMEs",
+        "Public Administrations",
+        "Corporate"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://www.southsummit.io/",
+      "id": "rl2txn0pw",
+      "recurrent": false
+    },
+    {
+      "Año": "2026",
+      "Equipo": [
+        "BSC AI Factory",
+        "Innovation"
+      ],
+      "Estado": "Sin empezar",
+      "Fecha exacta (fin)": "2026-04-16",
+      "Fecha exacta (inicio)": "2026-04-15",
+      "Lugar": "Madrid, España (Sede: Auditorio Banco Santander, Calle de Juan Ignacio Luca de Tena, 11)",
+      "Mes habitual": [
+        "Abril"
+      ],
+      "Nombre": "AMETIC AI Summit",
+      "Notas": "Es el principal encuentro sectorial sobre Inteligencia Artificial en España. Organizado por AMETIC, el evento reúne a líderes empresariales, representantes institucionales y expertos para debatir sobre la soberanía tecnológica, la ética en la IA y su impacto en sectores estratégicos como la salud, la industria 4.0 y la ciberseguridad. Incluye la entrega de los Premios IA con Impacto Social.",
+      "PublicObjectiu": [
+        "SMEs",
+        "Research",
+        "Public Administrations"
+      ],
+      "Tipo": "Evento",
+      "URL": "https://www.ametic-ai-summit.es/",
+      "id": "rcsqlfxt1",
+      "recurrent": false
     }
   ]
 }
