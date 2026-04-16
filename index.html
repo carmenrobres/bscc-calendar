@@ -29,6 +29,8 @@
   --white: #ffffff;
   --sidebar-w: 240px;
   --header-h: 56px;
+  --section-h: 44px;
+  --top-h: calc(var(--header-h) + var(--section-h));
   --radius: 8px;
   --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,48,135,0.10);
@@ -87,11 +89,44 @@ body {
 #edit-toggle.active { background: var(--accent); border-color: var(--accent); }
 #save-status { font-size: 12px; color: rgba(255,255,255,0.7); }
 
+/* ── SECTION TABS ── */
+#section-tabs {
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0;
+  z-index: 90;
+  background: white;
+  border-bottom: 2px solid var(--grey-border);
+  display: flex;
+  align-items: stretch;
+  padding-left: var(--sidebar-w);
+  height: var(--section-h);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.section-tab {
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+.section-tab:hover { color: var(--bsc-blue); }
+.section-tab.active { color: var(--bsc-blue); border-bottom-color: var(--bsc-blue); font-weight: 600; }
+.section-tab.active.tab-internal { color: #7c3aed; border-bottom-color: #7c3aed; }
+.section-tab.active.tab-funding { color: var(--green); border-bottom-color: var(--green); }
+
 /* ── LAYOUT ── */
 #app {
   display: flex;
-  margin-top: var(--header-h);
-  min-height: calc(100vh - var(--header-h));
+  margin-top: var(--top-h);
+  min-height: calc(100vh - var(--top-h));
 }
 
 /* ── SIDEBAR ── */
@@ -100,7 +135,7 @@ body {
   background: var(--white);
   border-right: 1px solid var(--grey-border);
   position: fixed;
-  top: var(--header-h);
+  top: var(--top-h);
   bottom: 0;
   left: 0;
   overflow-y: auto;
@@ -214,7 +249,7 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   position: sticky;
-  top: var(--header-h);
+  top: var(--top-h);
   z-index: 40;
 }
 #search-box {
@@ -304,6 +339,7 @@ td.name-cell a:hover { text-decoration: underline; }
   font-size: 11px; font-weight: 500; white-space: nowrap;
 }
 .tipo-evento { background: #dbeafe; color: #1e40af; }
+.tipo-internal { background: #ede9fe; color: #5b21b6; }
 .tipo-funding { background: #d1fae5; color: #065f46; }
 
 .estado-badge {
@@ -496,12 +532,30 @@ tbody tr:hover .row-actions { opacity: 1; }
   margin-bottom: 2px;
   cursor: pointer;
   transition: opacity 0.1s;
+  overflow: hidden;
 }
-.cal-event:hover { opacity: 0.8; }
+.cal-event:hover { opacity: 0.85; }
+/* Continuous multi-day event bars */
+.cal-event-start {
+  border-radius: 3px 0 0 3px;
+  margin-right: -7px;
+  padding-right: 2px;
+}
+.cal-event-end {
+  border-radius: 0 3px 3px 0;
+  margin-left: -7px;
+  padding-left: 2px;
+}
+.cal-event-middle {
+  border-radius: 0;
+  margin-left: -7px;
+  margin-right: -7px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
 .cal-event-name {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.cal-event-cont .cal-event-name { opacity: 0.75; }
 .cal-event-tags { margin-top: 2px; line-height: 1; }
 .cal-team-mini {
   display: inline-block;
@@ -515,6 +569,7 @@ tbody tr:hover .row-actions { opacity: 1; }
 .cal-tag-innovation { background: #ffedd5; color: #c2410c; }
 .cal-tag-connects   { background: #cffafe; color: #0e7490; }
 .cal-evento { background: #dbeafe; color: #1e40af; }
+.cal-internal { background: #ede9fe; color: #5b21b6; }
 .cal-funding { background: #d1fae5; color: #065f46; }
 .cal-funding-end { background: #fef3c7; color: #92400e; }
 
@@ -824,6 +879,13 @@ tbody tr:hover .row-actions { opacity: 1; }
   </div>
 </header>
 
+<!-- SECTION TABS -->
+<div id="section-tabs">
+  <div class="section-tab active" id="st-external" onclick="setSection('external')">External Events</div>
+  <div class="section-tab tab-internal" id="st-internal" onclick="setSection('internal')">Internal Events</div>
+  <div class="section-tab tab-funding" id="st-funding" onclick="setSection('funding')">Funding Calls</div>
+</div>
+
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sidebar-section">
@@ -852,13 +914,6 @@ tbody tr:hover .row-actions { opacity: 1; }
     <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 8px 6px">
       <div class="sidebar-label" style="padding:0">Filtros</div>
       <button class="reset-filters-btn" onclick="resetFilters()">↺ Reset</button>
-    </div>
-
-    <div class="filter-group">
-      <div class="filter-label">Tipo</div>
-      <span class="filter-btn active" data-filter="tipo" data-val="" onclick="setFilter('tipo','',this)">Todos</span>
-      <span class="filter-btn" data-filter="tipo" data-val="Evento" onclick="setFilter('tipo','Evento',this)">Evento</span>
-      <span class="filter-btn" data-filter="tipo" data-val="Funding call" onclick="setFilter('tipo','Funding call',this)">Funding</span>
     </div>
 
     <div class="filter-group">
@@ -960,8 +1015,9 @@ let sortAsc = true;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let ganttYear = new Date().getFullYear();
-let filt = { tipo: '', est: '', año: '', q: '', hidePast: false, hideRecurrentNoFuture: false, equipo: [], public: [] };
+let filt = { est: '', año: '', q: '', hidePast: false, hideRecurrentNoFuture: false, equipo: [], public: [] };
 let tableTab = 'all'; // 'all' | 'eventos' | 'funding'
+let currentSection = 'external'; // 'external' | 'internal' | 'funding'
 let editingId = null;           // id being edited in modal
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
@@ -1015,8 +1071,11 @@ function estadoBadge(est) {
 }
 
 function tipoBadge(tipo) {
-  const cls = tipo === 'Funding call' ? 'tipo-funding' : 'tipo-evento';
-  return `<span class="tipo-badge ${cls}">${tipo||'—'}</span>`;
+  const cls = tipo === 'Funding call' ? 'tipo-funding'
+            : tipo === 'Internal Event' ? 'tipo-internal'
+            : 'tipo-evento';
+  const label = tipo === 'Evento' ? 'External Event' : (tipo || '—');
+  return `<span class="tipo-badge ${cls}">${label}</span>`;
 }
 
 function formatDate(d) {
@@ -1027,7 +1086,10 @@ function formatDate(d) {
 
 function filteredRows() {
   return D.rows.filter(row => {
-    if (filt.tipo && row.Tipo !== filt.tipo) return false;
+    // Section filter (top-level navigation)
+    if (currentSection === 'external' && row.Tipo !== 'Evento') return false;
+    if (currentSection === 'internal' && row.Tipo !== 'Internal Event') return false;
+    if (currentSection === 'funding'  && row.Tipo !== 'Funding call') return false;
     if (filt.est) {
       // For recurrent: check any edition
       if (row.recurrent && row.editions?.length) {
@@ -1124,13 +1186,13 @@ function toggleHideRecNoFuture(cb) {
 }
 
 function resetFilters() {
-  filt.tipo = ''; filt.est = ''; filt.año = '';
+  filt.est = ''; filt.año = '';
   filt.hidePast = false; filt.hideRecurrentNoFuture = false;
   filt.equipo = []; filt.public = [];
   document.getElementById('search-input').value = '';
   document.getElementById('hide-past-toggle').checked = false;
   document.getElementById('hide-rec-nofuture-toggle').checked = false;
-  ['tipo','equipo','public'].forEach(key => {
+  ['equipo','public'].forEach(key => {
     document.querySelectorAll(`[data-filter="${key}"]`).forEach(b => b.classList.remove('active'));
     const all = document.querySelector(`[data-filter="${key}"][data-val=""]`);
     if (all) all.classList.add('active');
@@ -1150,6 +1212,14 @@ function setView(v) {
   render();
 }
 
+function setSection(s) {
+  currentSection = s;
+  document.querySelectorAll('.section-tab').forEach(el => {
+    el.classList.toggle('active', el.id === 'st-' + s);
+  });
+  render();
+}
+
 function render() {
   filt.q = document.getElementById('search-input').value;
   const vc = document.getElementById('view-content');
@@ -1162,8 +1232,9 @@ function render() {
 // ─── TABLE VIEW ───────────────────────────────────────────────────────────────
 // Returns per-team color palette based on first/priority team
 function getEquipoColor(row) {
-  if (row.Tipo === 'Funding call') return { bg: '#dcfce7', text: '#15803d', solid: '#16a34a' };
-  return { bg: '#dbeafe', text: '#1e3a8a', solid: '#2563eb' }; // Evento (default blue)
+  if (row.Tipo === 'Funding call')   return { bg: '#dcfce7', text: '#15803d', solid: '#16a34a' };
+  if (row.Tipo === 'Internal Event') return { bg: '#ede9fe', text: '#5b21b6', solid: '#7c3aed' };
+  return { bg: '#dbeafe', text: '#1e3a8a', solid: '#2563eb' }; // External Event (default blue)
 }
 
 function teamTagClass(name) {
@@ -1190,20 +1261,8 @@ function setTableTab(tab) {
 }
 
 function renderTable() {
-  const allRows = filteredRows();
-  if (!allRows.length) return emptyState('No hay elementos que coincidan con los filtros.');
-
-  const tabs = `<div class="table-tabs">
-    <button class="table-tab ${tableTab==='all'?'active':''}" onclick="setTableTab('all')">All (${allRows.length})</button>
-    <button class="table-tab ${tableTab==='eventos'?'active':''}" onclick="setTableTab('eventos')">Events (${allRows.filter(r=>r.Tipo==='Evento').length})</button>
-    <button class="table-tab ${tableTab==='funding'?'active tab-funding':''}" onclick="setTableTab('funding')">Funding Calls (${allRows.filter(r=>r.Tipo==='Funding call').length})</button>
-  </div>`;
-
-  const rows = tableTab === 'eventos' ? allRows.filter(r => r.Tipo === 'Evento')
-             : tableTab === 'funding'  ? allRows.filter(r => r.Tipo === 'Funding call')
-             : allRows;
-
-  if (!rows.length) return tabs + emptyState('No hay elementos en esta categoría.');
+  const rows = filteredRows();
+  if (!rows.length) return emptyState('No hay elementos que coincidan con los filtros.');
 
   const sortedRows = [...rows].sort((a, b) => {
     let va = a[sortCol] || '';
@@ -1218,7 +1277,7 @@ function renderTable() {
     return `<th class="${isSorted?'sorted':''}" onclick="sortTable('${key}')">${label} <span class="sort-icon">${icon}</span></th>`;
   };
 
-  const isFunding = tableTab === 'funding';
+  const isFunding = currentSection === 'funding';
 
   const rows_html = sortedRows.map(row => {
     const past = (!row.recurrent && isPast(row)) ? ' past-row' : '';
@@ -1275,7 +1334,7 @@ function renderTable() {
     </table>
   </div>`;
 
-  return tabs + tableHtml;
+  return tableHtml;
 }
 
 function sortTable(col) {
@@ -1291,7 +1350,10 @@ function renderOrient() {
   if (!recRows.length) return emptyState('No hay elementos recurrentes. Marca un elemento como recurrente al editarlo para que aparezca aquí.');
 
   const filtered = recRows.filter(row => {
-    if (filt.tipo && row.Tipo !== filt.tipo) return false;
+    // Apply section filter
+    if (currentSection === 'external' && row.Tipo !== 'Evento') return false;
+    if (currentSection === 'internal' && row.Tipo !== 'Internal Event') return false;
+    if (currentSection === 'funding'  && row.Tipo !== 'Funding call') return false;
     if (filt.hideRecurrentNoFuture && !recurrentHasFutureDate(row)) return false;
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q) {
@@ -1328,10 +1390,11 @@ function renderOrient() {
       return `<div class="orient-month-cell"></div>`;
     }).join('');
 
-    const badge = row.Tipo === 'Funding call' ? 'tipo-funding' : 'tipo-evento';
+    const badge = row.Tipo === 'Funding call' ? 'tipo-funding' : row.Tipo === 'Internal Event' ? 'tipo-internal' : 'tipo-evento';
+    const badgeLabel = row.Tipo === 'Funding call' ? 'FC' : row.Tipo === 'Internal Event' ? 'INT' : 'EXT';
     return `<div class="orient-row">
       <div class="orient-name-cell" style="cursor:pointer" onclick="openDetailModal('${row.id}')">
-        <span class="tipo-badge ${badge}" style="font-size:10px;padding:2px 6px">${row.Tipo === 'Funding call' ? 'FC' : 'EV'}</span>
+        <span class="tipo-badge ${badge}" style="font-size:10px;padding:2px 6px">${badgeLabel}</span>
         <span style="font-size:13px">${row.Nombre}</span>
       </div>
       ${cells}
@@ -1369,7 +1432,10 @@ function renderCalendar() {
   const now2 = new Date(); now2.setHours(0,0,0,0);
   const events = [];
   D.rows.forEach(row => {
-    if (filt.tipo && row.Tipo !== filt.tipo) return;
+    // Apply section filter
+    if (currentSection === 'external' && row.Tipo !== 'Evento') return;
+    if (currentSection === 'internal' && row.Tipo !== 'Internal Event') return;
+    if (currentSection === 'funding'  && row.Tipo !== 'Funding call') return;
     if (!rowMatchesMultiFilters(row)) return;
     const rows_to_check = [];
     if (row.recurrent && row.editions) {
@@ -1394,17 +1460,28 @@ function renderCalendar() {
         if (startDate <= monthEnd && endDate >= monthStart) {
           const rangeStart = startDate < monthStart ? new Date(monthStart) : new Date(startDate);
           const rangeEnd   = endDate   > monthEnd   ? new Date(monthEnd)   : new Date(endDate);
+          const isSingleDay = startDate.getTime() === endDate.getTime();
+          let firstVisible = true;
           for (let cur = new Date(rangeStart); cur <= rangeEnd; cur.setDate(cur.getDate() + 1)) {
             const isStart = cur.getTime() === startDate.getTime();
             const isEnd   = cur.getTime() === endDate.getTime();
+            const isFirstVisible = firstVisible;
+            // Also show label at the start of each new week row (Monday)
+            const dow = (cur.getDay() + 6) % 7; // Mon=0
+            const isRowStart = dow === 0 && !isFirstVisible;
             events.push({
               day: cur.getDate(),
               label: r.Nombre || r._parentNombre,
               tipo: r.Tipo,
               kind: isStart ? 'start' : (isEnd ? 'end' : 'middle'),
               isStart,
+              isFirstVisible,
+              isRowStart,
+              isSingleDay,
+              continuesPastMonth: !isEnd && endDate > monthEnd,
               row: r
             });
+            firstVisible = false;
           }
         }
       }
@@ -1426,10 +1503,25 @@ function renderCalendar() {
       const cc = getEquipoColor(e.row);
       const bg  = cc.bg;
       const col = cc.text;
-      const isCont = e.kind === 'middle' || e.kind === 'end';
-      const displayLabel = isCont ? '↳ ' + e.label : e.label;
+
+      // Determine continuous bar CSS class for multi-day events
+      let barClass = '';
+      if (!e.isSingleDay) {
+        const prevConn = e.kind === 'middle' || e.kind === 'end';
+        const nextConn = e.kind === 'start' || e.kind === 'middle';
+        if (prevConn && nextConn) barClass = 'cal-event-middle';
+        else if (prevConn)        barClass = 'cal-event-end';
+        else if (nextConn)        barClass = 'cal-event-start';
+      }
+
+      // Show label only on first visible day of the event or at start of a new week row
+      const showLabel = e.isFirstVisible || e.isRowStart;
       const tagsHtml = e.isStart ? calTeamTagsHtml(e.row) : '';
-      return `<div class="cal-event${isCont?' cal-event-cont':''}" style="background:${bg};color:${col}" title="${e.label}" onclick="openDetailModal('${e.row.id}')"><div class="cal-event-name">${displayLabel}</div>${tagsHtml}</div>`;
+      const nameHtml = showLabel
+        ? `<div class="cal-event-name">${e.label}</div>`
+        : `<div class="cal-event-name" style="visibility:hidden;height:0;margin:0;padding:0">·</div>`;
+
+      return `<div class="cal-event${barClass?' '+barClass:''}" style="background:${bg};color:${col}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${nameHtml}${tagsHtml}</div>`;
     }).join('');
     daysHtml += `<div class="cal-day${isToday?' today':''}">
       <div class="cal-day-num">${d}</div>
@@ -1487,7 +1579,10 @@ function renderGantt() {
   });
 
   const filtered = entries.filter(row => {
-    if (filt.tipo && row.Tipo !== filt.tipo) return false;
+    // Apply section filter
+    if (currentSection === 'external' && row.Tipo !== 'Evento') return false;
+    if (currentSection === 'internal' && row.Tipo !== 'Internal Event') return false;
+    if (currentSection === 'funding'  && row.Tipo !== 'Funding call') return false;
     if (filt.hidePast && !row.recurrent && isPast(row)) return false;
     if (!rowMatchesMultiFilters(row)) return false;
     if (filt.q && !(row.Nombre||'').toLowerCase().includes(filt.q.toLowerCase())) return false;
@@ -1632,7 +1727,11 @@ function openDetailModal(id) {
 function openAddModal() {
   editingId = null;
   document.getElementById('modal-title').textContent = 'Nuevo elemento';
-  renderForm(null);
+  // Pre-fill tipo based on current section
+  const defaultTipo = currentSection === 'internal' ? 'Internal Event'
+                    : currentSection === 'funding'   ? 'Funding call'
+                    : 'Evento';
+  renderForm({ Tipo: defaultTipo });
   openModal();
 }
 
@@ -1682,8 +1781,9 @@ function renderForm(row) {
       <div class="form-group">
         <label class="form-label">Tipo</label>
         <select class="form-select" id="f-tipo">
-          <option value="Evento" ${row?.Tipo==='Evento'?'selected':''}>Evento</option>
-          <option value="Funding call" ${row?.Tipo==='Funding call'?'selected':''}>Funding call</option>
+          <option value="Evento" ${row?.Tipo==='Evento'?'selected':''}>External Event</option>
+          <option value="Internal Event" ${row?.Tipo==='Internal Event'?'selected':''}>Internal Event</option>
+          <option value="Funding call" ${row?.Tipo==='Funding call'?'selected':''}>Funding Call</option>
         </select>
       </div>
       <div class="form-group full">
