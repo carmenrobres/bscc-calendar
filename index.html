@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSC I-BD · Eventos & Funding Calls</title>
+<title>BSC I-BD · Events & Funding Calls</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23003087'/><text x='3' y='22' font-family='sans-serif' font-weight='700' font-size='13' fill='white'>BSC</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -884,7 +884,7 @@ tbody tr:hover .row-actions { opacity: 1; }
          alt="BSC" style="height:34px;width:auto;border-radius:4px;object-fit:contain;background:white;padding:2px 4px;">
     <div style="display:flex;flex-direction:column;gap:1px">
       <span style="color:white;font-size:14px;font-weight:600;line-height:1.2">BSC I-BD</span>
-      <span style="color:white;font-size:11px;font-weight:400;line-height:1.2;opacity:0.85">Eventos & Funding Calls</span>
+      <span style="color:white;font-size:11px;font-weight:400;line-height:1.2;opacity:0.85">Events & Funding Calls</span>
     </div>
   </div>
   <nav id="section-tabs">
@@ -896,7 +896,7 @@ tbody tr:hover .row-actions { opacity: 1; }
     <span id="save-status"></span>
     <button id="edit-toggle" onclick="toggleEdit()">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      <span id="edit-label">Editar</span>
+      <span id="edit-label">Edit</span>
     </button>
   </div>
 </header>
@@ -904,22 +904,22 @@ tbody tr:hover .row-actions { opacity: 1; }
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sidebar-section">
-    <div class="sidebar-label">Vistas</div>
+    <div class="sidebar-label">Views</div>
     <div class="sidebar-nav-item active" data-view="table" onclick="setView('table')">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
-      Tabla
+      Table
     </div>
     <div class="sidebar-nav-item" data-view="orient" onclick="setView('orient')">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="12" height="4" rx="1"/><rect x="3" y="16" width="15" height="4" rx="1"/></svg>
-      Diagrama orientativo
+      Orientative Diagram
     </div>
     <div class="sidebar-nav-item" data-view="calendar" onclick="setView('calendar')">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-      Calendario exacto
+      Exact Calendar
     </div>
     <div class="sidebar-nav-item" data-view="gantt" onclick="setView('gantt')">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      Diagrama exacto
+      Gantt Chart
     </div>
   </div>
 
@@ -932,8 +932,8 @@ tbody tr:hover .row-actions { opacity: 1; }
     </div>
 
     <div class="filter-group">
-      <div class="filter-label">Equipo BSC</div>
-      <span class="filter-btn active" data-filter="equipo" data-val="" onclick="clearFilterMulti('equipo',this)">Todos</span>
+      <div class="filter-label">BSC Team</div>
+      <span class="filter-btn active" data-filter="equipo" data-val="" onclick="clearFilterMulti('equipo',this)">All</span>
       <span class="filter-btn" data-filter="equipo" data-val="BSC AI Factory" onclick="toggleFilterMulti('equipo','BSC AI Factory',this)">AI Factory</span>
       <span class="filter-btn" data-filter="equipo" data-val="Innovation" onclick="toggleFilterMulti('equipo','Innovation',this)">Innovation</span>
       <span class="filter-btn" data-filter="equipo" data-val="Connects" onclick="toggleFilterMulti('equipo','Connects',this)">Connects</span>
@@ -950,7 +950,7 @@ tbody tr:hover .row-actions { opacity: 1; }
     </div>
 
     <div class="filter-group">
-      <div class="filter-label">Año</div>
+      <div class="filter-label">Year</div>
       <div id="year-filters"></div>
     </div>
   </div>
@@ -958,14 +958,14 @@ tbody tr:hover .row-actions { opacity: 1; }
   <div class="sidebar-divider"></div>
 
   <div class="toggle-row">
-    <span class="toggle-label">Ocultar pasados</span>
+    <span class="toggle-label">Hide past events</span>
     <label class="toggle-switch">
       <input type="checkbox" id="hide-past-toggle" onchange="toggleHidePast(this)">
       <span class="toggle-track"></span>
     </label>
   </div>
   <div class="toggle-row">
-    <span class="toggle-label">Ocultar recurrentes sin fecha futura</span>
+    <span class="toggle-label">Hide recurring without future date</span>
     <label class="toggle-switch">
       <input type="checkbox" id="hide-rec-nofuture-toggle" onchange="toggleHideRecNoFuture(this)">
       <span class="toggle-track"></span>
@@ -979,11 +979,11 @@ tbody tr:hover .row-actions { opacity: 1; }
     <div id="toolbar">
       <div id="search-box">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="search-input" type="text" placeholder="Buscar eventos, funding calls…" oninput="render()">
+        <input id="search-input" type="text" placeholder="Search events, funding calls…" oninput="render()">
       </div>
       <button id="add-btn" onclick="openAddModal()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Añadir
+        Add
       </button>
     </div>
     <div id="view-content"></div>
@@ -994,7 +994,7 @@ tbody tr:hover .row-actions { opacity: 1; }
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
   <div class="modal" id="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modal-title">Nuevo elemento</div>
+      <div class="modal-title" id="modal-title">New item</div>
       <button class="modal-close" onclick="closeModal()">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -1048,9 +1048,9 @@ async function init() {
 }
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
-const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const MONTHS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-const ESTADOS = ['Sin empezar','En progreso','Listo','No tenemos participación'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const ESTADOS = ['Not started','In progress','Done','No participation'];
 const EQUIPOS = ['BSC AI Factory', 'Innovation', 'Connects'];
 const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations', 'Corporate'];
 
@@ -1069,15 +1069,15 @@ function isPast(row) {
 }
 
 function getEstadoClass(est) {
-  if (est === 'En progreso') return 'est-progreso';
-  if (est === 'Listo') return 'est-listo';
-  if (est === 'No tenemos participación') return 'est-no';
+  if (est === 'In progress') return 'est-progreso';
+  if (est === 'Done') return 'est-listo';
+  if (est === 'No participation') return 'est-no';
   return 'est-sin';
 }
 function getDotClass(est) {
-  if (est === 'En progreso') return 'dot-progreso';
-  if (est === 'Listo') return 'dot-listo';
-  if (est === 'No tenemos participación') return 'dot-no';
+  if (est === 'In progress') return 'dot-progreso';
+  if (est === 'Done') return 'dot-listo';
+  if (est === 'No participation') return 'dot-no';
   return 'dot-sin';
 }
 
@@ -1096,7 +1096,7 @@ function tipoBadge(tipo) {
 function formatDate(d) {
   if (!d) return '<span class="nodata">—</span>';
   const dt = new Date(d + 'T00:00:00');
-  return dt.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+  return dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 function filteredRows() {
@@ -1163,7 +1163,7 @@ function buildYearFilters() {
   const container = document.getElementById('year-filters');
   const sorted = [...years].sort().reverse();
   container.innerHTML =
-    `<span class="filter-btn active" data-filter="año" data-val="" onclick="setFilter('año','',this)">Todos</span>` +
+    `<span class="filter-btn active" data-filter="año" data-val="" onclick="setFilter('año','',this)">All</span>` +
     sorted.map(y => `<span class="filter-btn" data-filter="año" data-val="${y}" onclick="setFilter('año','${y}',this)">${y}</span>`).join('');
 }
 
@@ -1285,7 +1285,7 @@ function setTableTab(tab) {
 
 function renderTable() {
   const rows = filteredRows();
-  if (!rows.length) return emptyState('No hay elementos que coincidan con los filtros.');
+  if (!rows.length) return emptyState('No items match the current filters.');
 
   const sortedRows = [...rows].sort((a, b) => {
     let va = a[sortCol] || '';
@@ -1316,13 +1316,13 @@ function renderTable() {
       año    = row.editions.map(e=>e.Año).filter(Boolean).sort().reverse().join(', ');
     }
     const nameCell = `<span style="cursor:pointer;color:var(--bsc-blue);font-weight:500" onclick="openDetailModal('${row.id}')">${row.Nombre}</span>`;
-    const recBadge = row.recurrent ? `<span class="recurrent-badge">↺ Recurrente</span>` : '';
+    const recBadge = row.recurrent ? `<span class="recurrent-badge">↺ Recurring</span>` : '';
     const actions = edit
       ? `<div class="row-actions">
-           <button class="row-btn" onclick="openEditModal('${row.id}')">Editar</button>
-           <button class="row-btn danger" onclick="deleteRow('${row.id}')">Eliminar</button>
+           <button class="row-btn" onclick="openEditModal('${row.id}')">Edit</button>
+           <button class="row-btn danger" onclick="deleteRow('${row.id}')">Delete</button>
          </div>`
-      : `<div class="row-actions"><button class="row-btn" onclick="openDetailModal('${row.id}')">Ver</button></div>`;
+      : `<div class="row-actions"><button class="row-btn" onclick="openDetailModal('${row.id}')">View</button></div>`;
 
     const ec = getEquipoColor(row);
     return `<tr class="${past}" style="box-shadow: inset 4px 0 0 ${ec.solid}">
@@ -1338,19 +1338,19 @@ function renderTable() {
     </tr>`;
   }).join('');
 
-  const finLabel = isFunding ? 'Deadline' : 'Fin / Deadline';
+  const finLabel = isFunding ? 'Deadline' : 'End / Deadline';
   const tableCls = isFunding ? 'funding-table' : '';
   const tableHtml = `<div class="table-wrap">
     <table class="${tableCls}">
       <thead><tr>
-        ${th('Nombre','Nombre')}
-        ${th('Tipo','Tipo')}
-        <th>Público Objetivo</th>
-        <th>Equipo BSC</th>
-        ${th('Fecha exacta (inicio)','Inicio')}
+        ${th('Nombre','Name')}
+        ${th('Tipo','Type')}
+        <th>Target Audience</th>
+        <th>BSC Team</th>
+        ${th('Fecha exacta (inicio)','Start')}
         ${th('Fecha exacta (fin)',finLabel)}
-        ${th('Año','Año')}
-        ${th('Estado','Estado')}
+        ${th('Año','Year')}
+        ${th('Estado','Status')}
         <th></th>
       </tr></thead>
       <tbody>${rows_html}</tbody>
@@ -1370,7 +1370,7 @@ function sortTable(col) {
 function renderOrient() {
   // Only recurrent items
   const recRows = D.rows.filter(row => row.recurrent);
-  if (!recRows.length) return emptyState('No hay elementos recurrentes. Marca un elemento como recurrente al editarlo para que aparezca aquí.');
+  if (!recRows.length) return emptyState('No recurring items. Mark an item as recurring when editing it to make it appear here.');
 
   const filtered = recRows.filter(row => {
     // Apply section filter
@@ -1386,7 +1386,7 @@ function renderOrient() {
     return true;
   });
 
-  if (!filtered.length) return emptyState('No hay elementos recurrentes que coincidan.');
+  if (!filtered.length) return emptyState('No recurring items match the current filters.');
 
   // Sort by earliest typical month (January first)
   filtered.sort((a, b) => {
@@ -1426,7 +1426,7 @@ function renderOrient() {
 
   return `<div class="orient-grid">
     <div class="orient-header">
-      <div class="orient-header-cell">Nombre</div>
+      <div class="orient-header-cell">Name</div>
       ${monthHeaders}
     </div>
     ${rowsHtml}
@@ -1572,7 +1572,7 @@ function renderCalendar() {
   }
 
   // ── Render day cells ──────────────────────────────────────────────────────
-  const weekdays = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const weekdays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const wdHtml = weekdays.map(d => `<div class="cal-wd">${d}</div>`).join('');
 
   let daysHtml = '';
@@ -1686,7 +1686,7 @@ function renderGantt() {
       <button class="cal-btn" onclick="ganttYear--;render()">‹</button>
       <span class="gantt-year-label">${ganttYear}</span>
       <button class="cal-btn" onclick="ganttYear++;render()">›</button>
-    </div>` + emptyState(`No hay eventos con fechas exactas en ${ganttYear}.`);
+    </div>` + emptyState(`No events with exact dates in ${ganttYear}.`);
 
   const monthHeads = MONTHS_SHORT.map(m => `<div class="gantt-month-head">${m}</div>`).join('');
 
@@ -1723,12 +1723,12 @@ function renderGantt() {
     <button class="cal-btn" onclick="ganttYear--;render()">‹</button>
     <span class="gantt-year-label">${ganttYear}</span>
     <button class="cal-btn" onclick="ganttYear++;render()">›</button>
-    ${todayPct >= 0 ? '<span style="font-size:12px;color:var(--red);margin-left:8px">● Hoy</span>' : ''}
+    ${todayPct >= 0 ? '<span style="font-size:12px;color:var(--red);margin-left:8px">● Today</span>' : ''}
   </div>
   <div class="gantt-wrap">
     <div class="gantt-container">
       <div class="gantt-header">
-        <div class="gantt-name-col">Nombre</div>
+        <div class="gantt-name-col">Name</div>
         <div class="gantt-months">${monthHeads}</div>
       </div>
       ${rowsHtml}
@@ -1747,21 +1747,21 @@ function openDetailModal(id) {
   let editionsHtml = '';
   if (row.recurrent && row.editions?.length) {
     const sortedEds = [...row.editions].sort((a,b) => (b.Año||0)-(a.Año||0));
-    editionsHtml = '<div class="detail-editions"><div class="form-section-title">📅 Ediciones anuales</div>';
+    editionsHtml = '<div class="detail-editions"><div class="form-section-title">📅 Annual editions</div>';
     sortedEds.forEach((ed, i) => {
       const edId = 'det-ed-' + i;
       editionsHtml += '<div class="edition-card" style="margin-bottom:8px">'
         + '<div class="edition-card-header" onclick="document.getElementById(\'' + edId + '\').classList.toggle(\'open\')">'
-        + '<span class="edition-year">' + (ed.Año||'Sin año') + '</span>'
+        + '<span class="edition-year">' + (ed.Año||'No year') + '</span>'
         + estadoBadge(ed.Estado)
         + '</div>'
         + '<div class="edition-card-body open" id="' + edId + '">'
         + '<div class="form-row">'
-        + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (inicio)']) + '</div></div>'
-        + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (fin)']) + '</div></div>'
+        + '<div class="form-group"><div class="detail-field-label">Start</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (inicio)']) + '</div></div>'
+        + '<div class="form-group"><div class="detail-field-label">End / Deadline</div><div class="detail-field-value">' + formatDate(ed['Fecha exacta (fin)']) + '</div></div>'
         + '</div>'
-        + (ed.Lugar ? '<div class="form-row"><div class="form-group full"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + ed.Lugar + '</div></div></div>' : '')
-        + (ed.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas de esta edición</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + ed.Notas + '</div></div>' : '')
+        + (ed.Lugar ? '<div class="form-row"><div class="form-group full"><div class="detail-field-label">Location</div><div class="detail-field-value">' + ed.Lugar + '</div></div></div>' : '')
+        + (ed.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notes for this edition</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + ed.Notas + '</div></div>' : '')
         + '</div></div>';
     });
     editionsHtml += '</div>';
@@ -1770,14 +1770,20 @@ function openDetailModal(id) {
   // Single-entry info (non-recurrent)
   const singleInfo = !row.recurrent
     ? '<div class="form-row">'
-      + '<div class="form-group"><div class="detail-field-label">Inicio</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (inicio)']) + '</div></div>'
-      + '<div class="form-group"><div class="detail-field-label">Fin / Deadline</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (fin)']) + '</div></div>'
+      + '<div class="form-group"><div class="detail-field-label">Start</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (inicio)']) + '</div></div>'
+      + '<div class="form-group"><div class="detail-field-label">End / Deadline</div><div class="detail-field-value">' + formatDate(row['Fecha exacta (fin)']) + '</div></div>'
       + '</div>'
-      + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Año</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
+      + (row.Tipo === 'Internal Event' && (row['Hora inicio'] || row['Hora fin'])
+        ? '<div class="form-row">'
+          + '<div class="form-group"><div class="detail-field-label">Start Time</div><div class="detail-field-value">' + (row['Hora inicio']||'—') + '</div></div>'
+          + '<div class="form-group"><div class="detail-field-label">End Time</div><div class="detail-field-value">' + (row['Hora fin']||'—') + '</div></div>'
+          + '</div>'
+        : '')
+      + '<div class="form-row"><div class="form-group"><div class="detail-field-label">Year</div><div class="detail-field-value">' + (row.Año||'—') + '</div></div></div>'
     : '';
 
   const urlBtn = row.URL
-    ? '<a href="' + row.URL + '" target="_blank" class="btn btn-secondary btn-sm" style="margin-left:auto;text-decoration:none"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Web oficial</a>'
+    ? '<a href="' + row.URL + '" target="_blank" class="btn btn-secondary btn-sm" style="margin-left:auto;text-decoration:none"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Official website</a>'
     : '';
 
   const equipoHtml = (row.Equipo||[]).length
@@ -1790,25 +1796,25 @@ function openDetailModal(id) {
   document.getElementById('modal-body').innerHTML =
     '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">'
     + tipoBadge(row.Tipo)
-    + (row.recurrent ? '<span class="recurrent-badge">↺ Recurrente</span>' : estadoBadge(row.Estado))
+    + (row.recurrent ? '<span class="recurrent-badge">↺ Recurring</span>' : estadoBadge(row.Estado))
     + urlBtn
     + '</div>'
     + '<div class="form-row">'
-    + '<div class="form-group"><div class="detail-field-label">Mes habitual</div><div class="detail-field-value">' + (Array.isArray(row['Mes habitual']) ? (row['Mes habitual'].join(', ')||'—') : (row['Mes habitual']||'—')) + '</div></div>'
-    + '<div class="form-group"><div class="detail-field-label">Lugar</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
+    + (row.Tipo !== 'Internal Event' ? '<div class="form-group"><div class="detail-field-label">Usual Month</div><div class="detail-field-value">' + (Array.isArray(row['Mes habitual']) ? (row['Mes habitual'].join(', ')||'—') : (row['Mes habitual']||'—')) + '</div></div>' : '')
+    + '<div class="form-group"><div class="detail-field-label">Location</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
     + '</div>'
     + '<div class="form-row">'
-    + '<div class="form-group"><div class="detail-field-label">Equipo BSC</div><div class="detail-field-value" style="margin-top:4px">' + equipoHtml + '</div></div>'
-    + '<div class="form-group"><div class="detail-field-label">Público Objetivo</div><div class="detail-field-value" style="margin-top:4px">' + publicHtml + '</div></div>'
+    + '<div class="form-group"><div class="detail-field-label">BSC Team</div><div class="detail-field-value" style="margin-top:4px">' + equipoHtml + '</div></div>'
+    + '<div class="form-group"><div class="detail-field-label">Target Audience</div><div class="detail-field-value" style="margin-top:4px">' + publicHtml + '</div></div>'
     + '</div>'
     + singleInfo
-    + (row.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">Notas generales</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + row.Notas + '</div></div>' : '')
+    + (row.Notas ? '<div class="detail-field" style="margin-bottom:10px"><div class="detail-field-label">General Notes</div><div class="detail-field-value" style="white-space:pre-wrap;font-size:13px;background:var(--grey-light);padding:8px;border-radius:6px">' + row.Notas + '</div></div>' : '')
     + editionsHtml;
 
   document.getElementById('modal-footer').innerHTML = edit
-    ? '<button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>'
-      + '<button class="btn btn-primary" onclick="closeModal();openEditModal(\'' + id + '\')">Editar</button>'
-    : '<button class="btn btn-primary" onclick="closeModal()">Cerrar</button>';
+    ? '<button class="btn btn-secondary" onclick="closeModal()">Close</button>'
+      + '<button class="btn btn-primary" onclick="closeModal();openEditModal(\'' + id + '\')">Edit</button>'
+    : '<button class="btn btn-primary" onclick="closeModal()">Close</button>';
 
   openModal();
 }
@@ -1816,7 +1822,7 @@ function openDetailModal(id) {
 // ─── ADD / EDIT MODAL ─────────────────────────────────────────────────────────
 function openAddModal() {
   editingId = null;
-  document.getElementById('modal-title').textContent = 'Nuevo elemento';
+  document.getElementById('modal-title').textContent = 'New item';
   // Pre-fill tipo based on current section
   const defaultTipo = currentSection === 'internal' ? 'Internal Event'
                     : currentSection === 'funding'   ? 'Funding call'
@@ -1828,7 +1834,7 @@ function openAddModal() {
 function openEditModal(id) {
   editingId = id;
   const row = D.rows.find(r => r.id === id);
-  document.getElementById('modal-title').textContent = 'Editar: ' + row.Nombre;
+  document.getElementById('modal-title').textContent = 'Edit: ' + row.Nombre;
   renderForm(row);
   openModal();
 }
@@ -1843,7 +1849,7 @@ function renderForm(row) {
         <span class="edition-year">${ed.Año||'Nueva edición'}</span>
         ${estadoBadge(ed.Estado)}
         <div class="edition-actions" onclick="event.stopPropagation()">
-          <button class="btn btn-sm btn-danger" onclick="removeEdition(${i})">Eliminar</button>
+          <button class="btn btn-sm btn-danger" onclick="removeEdition(${i})">Remove</button>
         </div>
       </div>
       <div class="edition-card-body open">
@@ -1851,34 +1857,39 @@ function renderForm(row) {
       </div>
     </div>`).join('');
 
+  const isInternal = currentSection === 'internal';
+  const lockedTipo = currentSection === 'internal' ? 'Internal Event'
+                   : currentSection === 'funding'   ? 'Funding call'
+                   : 'Evento';
+  const lockedTipoLabel = currentSection === 'internal' ? 'Internal Event'
+                        : currentSection === 'funding'   ? 'Funding Call'
+                        : 'External Event';
+
   document.getElementById('modal-body').innerHTML = `
     <div class="recurrent-toggle ${isRecurrent?'on':''}" id="recurrent-toggle" onclick="toggleRecurrent()"
-         style="display:${currentSection === 'internal' ? 'none' : 'flex'}">
+         style="display:${isInternal ? 'none' : 'flex'}">
       <div class="rt-track"></div>
       <div>
-        <div class="rt-label">Elemento recurrente</div>
-        <div class="rt-desc">Se repite cada año — aparece en el diagrama orientativo</div>
+        <div class="rt-label">Recurring item</div>
+        <div class="rt-desc">Repeats every year — appears in the orientative diagram</div>
       </div>
     </div>
 
-    <div class="form-section-title">Información general</div>
+    <div class="form-section-title">General Information</div>
     <div class="form-row">
       <div class="form-group full">
-        <label class="form-label">Nombre *</label>
-        <input class="form-input" id="f-nombre" value="${row?.Nombre||''}" placeholder="Nombre del evento o funding call">
+        <label class="form-label">Name *</label>
+        <input class="form-input" id="f-nombre" value="${row?.Nombre||''}" placeholder="Event or funding call name">
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Tipo</label>
-        <select class="form-select" id="f-tipo">
-          <option value="Evento" ${row?.Tipo==='Evento'?'selected':''}>External Event</option>
-          <option value="Internal Event" ${row?.Tipo==='Internal Event'?'selected':''}>Internal Event</option>
-          <option value="Funding call" ${row?.Tipo==='Funding call'?'selected':''}>Funding Call</option>
-        </select>
+        <label class="form-label">Type</label>
+        <input class="form-input" id="f-tipo" value="${lockedTipo}" readonly style="background:var(--grey-light);color:var(--text-mid);cursor:default" title="${lockedTipoLabel}">
+        <input type="hidden" id="f-tipo-value" value="${lockedTipo}">
       </div>
-      <div class="form-group full">
-        <label class="form-label">Mes habitual <span style="font-size:11px;color:var(--text-light);font-weight:400">(puede seleccionar varios)</span></label>
+      ${!isInternal ? `<div class="form-group full">
+        <label class="form-label">Usual month <span style="font-size:11px;color:var(--text-light);font-weight:400">(multiple selection)</span></label>
         <div class="tag-group" id="f-mes-tags">
           ${MONTHS.map(m => {
             const mesHabitual = row?.['Mes habitual'];
@@ -1887,12 +1898,12 @@ function renderForm(row) {
             return `<span class="tag-option${sel?' selected':''}" onclick="this.classList.toggle('selected')">${m}</span>`;
           }).join('')}
         </div>
-      </div>
+      </div>` : '<div id="f-mes-tags" style="display:none"></div>'}
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Lugar</label>
-        <input class="form-input" id="f-lugar" value="${row?.Lugar||''}" placeholder="Ciudad, País">
+        <label class="form-label">Location</label>
+        <input class="form-input" id="f-lugar" value="${row?.Lugar||''}" placeholder="City, Country">
       </div>
       <div class="form-group">
         <label class="form-label">URL</label>
@@ -1901,7 +1912,7 @@ function renderForm(row) {
     </div>
     <div class="form-row">
       <div class="form-group full">
-        <label class="form-label">Equipo BSC</label>
+        <label class="form-label">BSC Team</label>
         <div class="tag-group" id="f-equipo-tags">
           ${EQUIPOS.map(e => {
             const sel = (row?.Equipo||[]).includes(e);
@@ -1912,7 +1923,7 @@ function renderForm(row) {
     </div>
     <div class="form-row">
       <div class="form-group full">
-        <label class="form-label">Público Objetivo</label>
+        <label class="form-label">Target Audience</label>
         <div class="tag-group" id="f-public-tags">
           ${PUBLICS.map(p => {
             const sel = (row?.PublicObjectiu||[]).includes(p);
@@ -1923,21 +1934,21 @@ function renderForm(row) {
     </div>
     <div class="form-row">
       <div class="form-group full">
-        <label class="form-label">Notas generales</label>
-        <textarea class="form-textarea" id="f-notas" placeholder="Descripción, contexto, información general…">${row?.Notas||''}</textarea>
+        <label class="form-label">General Notes</label>
+        <textarea class="form-textarea" id="f-notas" placeholder="Description, context, general information…">${row?.Notas||''}</textarea>
       </div>
     </div>
 
     <!-- NON-RECURRENT FIELDS -->
     <div id="non-recurrent-fields" style="display:${isRecurrent?'none':'block'}">
-      <div class="form-section-title">Información anual</div>
+      ${!isInternal ? '<div class="form-section-title">Annual Information</div>' : ''}
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Año</label>
+          <label class="form-label">Year</label>
           <input class="form-input" id="f-año" type="number" value="${row?.Año||new Date().getFullYear()}" placeholder="2026">
         </div>
         <div class="form-group">
-          <label class="form-label">Estado</label>
+          <label class="form-label">Status</label>
           <select class="form-select" id="f-estado">
             ${ESTADOS.map(e => `<option value="${e}" ${row?.Estado===e?'selected':''}>${e}</option>`).join('')}
           </select>
@@ -1945,32 +1956,42 @@ function renderForm(row) {
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Fecha inicio</label>
+          <label class="form-label">Start Date</label>
           <input class="form-input" id="f-inicio" type="date" value="${row?.['Fecha exacta (inicio)']||''}">
         </div>
         <div class="form-group">
-          <label class="form-label">Fecha fin / Deadline</label>
+          <label class="form-label">End Date / Deadline</label>
           <input class="form-input" id="f-fin" type="date" value="${row?.['Fecha exacta (fin)']||''}">
         </div>
       </div>
+      ${isInternal ? `<div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Start Time</label>
+          <input class="form-input" id="f-hora-inicio" type="time" value="${row?.['Hora inicio']||''}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">End Time</label>
+          <input class="form-input" id="f-hora-fin" type="time" value="${row?.['Hora fin']||''}">
+        </div>
+      </div>` : ''}
     </div>
 
     <!-- RECURRENT EDITIONS -->
     <div id="recurrent-fields" style="display:${isRecurrent?'block':'none'}">
-      <div class="form-section-title">📅 Ediciones anuales</div>
+      <div class="form-section-title">📅 Annual editions</div>
       <button class="btn-add-edition" onclick="addEdition()" style="margin-bottom:12px">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Añadir nueva edición anual
+        Add new annual edition
       </button>
       <div class="editions-list" id="editions-list">${editionsHtml}</div>
     </div>
   `;
 
   document.getElementById('modal-footer').innerHTML = `
-    <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
     <button class="btn btn-primary" onclick="saveForm()">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-      Guardar
+      Save
     </button>
   `;
 }
@@ -1978,11 +1999,11 @@ function renderForm(row) {
 function editionFormHtml(ed, i) {
   return `<div class="form-row">
     <div class="form-group">
-      <label class="form-label">Año</label>
+      <label class="form-label">Year</label>
       <input class="form-input ed-año" data-i="${i}" type="number" value="${ed.Año||''}" placeholder="2026">
     </div>
     <div class="form-group">
-      <label class="form-label">Estado</label>
+      <label class="form-label">Status</label>
       <select class="form-select ed-estado" data-i="${i}">
         ${ESTADOS.map(e => `<option value="${e}" ${ed.Estado===e?'selected':''}>${e}</option>`).join('')}
       </select>
@@ -1990,24 +2011,24 @@ function editionFormHtml(ed, i) {
   </div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">Fecha inicio</label>
+      <label class="form-label">Start Date</label>
       <input class="form-input ed-inicio" data-i="${i}" type="date" value="${ed['Fecha exacta (inicio)']||''}">
     </div>
     <div class="form-group">
-      <label class="form-label">Fecha fin / Deadline</label>
+      <label class="form-label">End Date / Deadline</label>
       <input class="form-input ed-fin" data-i="${i}" type="date" value="${ed['Fecha exacta (fin)']||''}">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group full">
-      <label class="form-label">Lugar (esta edición)</label>
-      <input class="form-input ed-lugar" data-i="${i}" value="${ed.Lugar||''}" placeholder="Ciudad, País — deja vacío para usar el lugar general">
+      <label class="form-label">Location (this edition)</label>
+      <input class="form-input ed-lugar" data-i="${i}" value="${ed.Lugar||''}" placeholder="City, Country — leave empty to use general location">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group full">
-      <label class="form-label">Notas de esta edición</label>
-      <textarea class="form-textarea ed-notas" data-i="${i}" placeholder="Detalles específicos de este año…">${ed.Notas||''}</textarea>
+      <label class="form-label">Notes for this edition</label>
+      <textarea class="form-textarea ed-notas" data-i="${i}" placeholder="Specific details for this year…">${ed.Notas||''}</textarea>
     </div>
   </div>`;
 }
@@ -2029,9 +2050,9 @@ function addEdition() {
   div.id = `ed-${i}`;
   div.innerHTML = `
     <div class="edition-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
-      <span class="edition-year">Nueva edición</span>
+      <span class="edition-year">New edition</span>
       <div class="edition-actions" onclick="event.stopPropagation()">
-        <button class="btn btn-sm btn-danger" onclick="this.closest('.edition-card').remove()">Eliminar</button>
+        <button class="btn btn-sm btn-danger" onclick="this.closest('.edition-card').remove()">Remove</button>
       </div>
     </div>
     <div class="edition-card-body open">${editionFormHtml({}, i)}</div>
@@ -2062,7 +2083,7 @@ function readEditions() {
 
 function saveForm() {
   const nombre = document.getElementById('f-nombre').value.trim();
-  if (!nombre) { showToast('El nombre es obligatorio.', 'error'); return; }
+  if (!nombre) { showToast('Name is required.', 'error'); return; }
 
   const isRecurrent = document.getElementById('recurrent-toggle').classList.contains('on');
 
@@ -2072,7 +2093,7 @@ function saveForm() {
   const base = {
     id: editingId || uid(),
     Nombre: nombre,
-    Tipo: document.getElementById('f-tipo').value,
+    Tipo: document.getElementById('f-tipo-value').value,
     'Mes habitual': [...document.querySelectorAll('#f-mes-tags .tag-option.selected')].map(el => el.textContent),
     Lugar: document.getElementById('f-lugar').value,
     URL: document.getElementById('f-url').value,
@@ -2092,6 +2113,10 @@ function saveForm() {
     base.Estado = document.getElementById('f-estado').value;
     base['Fecha exacta (inicio)'] = document.getElementById('f-inicio').value;
     base['Fecha exacta (fin)']    = document.getElementById('f-fin').value;
+    if (currentSection === 'internal') {
+      base['Hora inicio'] = document.getElementById('f-hora-inicio')?.value || '';
+      base['Hora fin']    = document.getElementById('f-hora-fin')?.value || '';
+    }
   }
 
   if (editingId) {
@@ -2104,15 +2129,15 @@ function saveForm() {
   buildYearFilters();
   closeModal();
   render();
-  showToast('Guardado localmente. Haz clic en "Guardar y salir" para sincronizar.', 'success');
+  showToast('Saved locally. Click "Save & Exit" to sync.', 'success');
 }
 
 function deleteRow(id) {
-  if (!confirm('¿Eliminar este elemento?')) return;
+  if (!confirm('Delete this item?')) return;
   D.rows = D.rows.filter(r => r.id !== id);
   buildYearFilters();
   render();
-  showToast('Elemento eliminado. Haz clic en "Guardar y salir" para sincronizar.', 'success');
+  showToast('Item deleted. Click "Save & Exit" to sync.', 'success');
 }
 
 // ─── MODAL HELPERS ────────────────────────────────────────────────────────────
@@ -2132,16 +2157,16 @@ function closeModalOnOverlay(e) {
 function toggleEdit() {
   if (!edit) {
     // Ask for password
-    document.getElementById('modal-title').textContent = 'Acceso de edición';
+    document.getElementById('modal-title').textContent = 'Edit access';
     document.getElementById('modal-body').innerHTML =
-      '<p style="color:var(--text-mid);margin-bottom:14px;font-size:13px">Introduce la contraseña para activar el modo edición.</p>'
+      '<p style="color:var(--text-mid);margin-bottom:14px;font-size:13px">Enter the password to activate edit mode.</p>'
       + '<div class="pw-form">'
-      + '<input class="form-input" id="pw-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==\"Enter\")checkPw()">'
+      + '<input class="form-input" id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==\"Enter\")checkPw()">'
       + '<div class="pw-error" id="pw-error"></div>'
       + '</div>';
     document.getElementById('modal-footer').innerHTML =
-      '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'
-      + '<button class="btn btn-primary" onclick="checkPw()">Entrar</button>';
+      '<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>'
+      + '<button class="btn btn-primary" onclick="checkPw()">Enter</button>';
     openModal();
     setTimeout(() => document.getElementById('pw-input')?.focus(), 100);
   } else {
@@ -2154,7 +2179,7 @@ async function saveAndExitEdit() {
   // Exit edit mode first
   edit = false;
   document.getElementById('edit-toggle').classList.remove('active');
-  document.getElementById('edit-label').textContent = 'Editar';
+  document.getElementById('edit-label').textContent = 'Edit';
   document.getElementById('add-btn').classList.remove('visible');
   render();
   // Then save to GitHub
@@ -2167,12 +2192,12 @@ function checkPw() {
     edit = true;
     closeModal();
     document.getElementById('edit-toggle').classList.add('active');
-    document.getElementById('edit-label').textContent = 'Guardar y salir';
+    document.getElementById('edit-label').textContent = 'Save & Exit';
     document.getElementById('add-btn').classList.add('visible');
     render();
-    showToast('Modo edición activado.', 'success');
+    showToast('Edit mode activated.', 'success');
   } else {
-    document.getElementById('pw-error').textContent = 'Contraseña incorrecta.';
+    document.getElementById('pw-error').textContent = 'Incorrect password.';
     document.getElementById('pw-input').value = '';
   }
 }
@@ -2181,12 +2206,12 @@ function checkPw() {
 async function saveData() {
   let token = localStorage.getItem(DISPATCH_TOKEN_KEY);
   if (!token) {
-    token = prompt('Introduce el GitHub Personal Access Token (scope: repo):');
+    token = prompt('Enter your GitHub Personal Access Token (scope: repo):');
     if (!token) return;
     localStorage.setItem(DISPATCH_TOKEN_KEY, token);
   }
 
-  document.getElementById('save-status').textContent = 'Guardando…';
+  document.getElementById('save-status').textContent = 'Saving…';
 
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
@@ -2200,21 +2225,21 @@ async function saveData() {
     });
 
     if (res.status === 204 || res.ok) {
-      document.getElementById('save-status').textContent = '✓ Guardado ' + new Date().toLocaleTimeString('es-ES');
-      showToast('Datos enviados a GitHub correctamente.', 'success');
+      document.getElementById('save-status').textContent = '✓ Saved ' + new Date().toLocaleTimeString('en-GB');
+      showToast('Data sent to GitHub successfully.', 'success');
     } else {
       const err = await res.text();
       document.getElementById('save-status').textContent = '';
       if (res.status === 401) {
         localStorage.removeItem(DISPATCH_TOKEN_KEY);
-        showToast('Token inválido. Inténtalo de nuevo.', 'error');
+        showToast('Invalid token. Please try again.', 'error');
       } else {
         showToast('Error ' + res.status + ': ' + err, 'error');
       }
     }
   } catch(e) {
     document.getElementById('save-status').textContent = '';
-    showToast('Error de red: ' + e.message, 'error');
+    showToast('Network error: ' + e.message, 'error');
   }
 }
 
@@ -2232,7 +2257,7 @@ function showToast(msg, type='') {
 function emptyState(msg) {
   return `<div class="empty-state">
     <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15h8M9.5 9.5h.01M14.5 9.5h.01"/></svg>
-    <h3>Sin resultados</h3>
+    <h3>No results</h3>
     <p>${msg}</p>
   </div>`;
 }
