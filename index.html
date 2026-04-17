@@ -16,6 +16,11 @@
   --accent-hover: #0060d0;
   --green: #1a7a4a;
   --green-bg: #e6f4ed;
+  /* Per-section theme (default = external = dark blue) */
+  --theme:       #003087;
+  --theme-mid:   #0050c8;
+  --theme-light: #e8eef8;
+  --theme-xlight:#f2f5fc;
   --yellow: #8a6200;
   --yellow-bg: #fef8e7;
   --red: #b91c1c;
@@ -33,6 +38,22 @@
   --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,48,135,0.10);
 }
+
+/* ── SECTION THEME OVERRIDES ── */
+body[data-section="internal"] {
+  --theme:       #0284c7;
+  --theme-mid:   #0369a1;
+  --theme-light: #e0f2fe;
+  --theme-xlight:#f0f9ff;
+}
+body[data-section="funding"] {
+  --theme:       #1a7a4a;
+  --theme-mid:   #15803d;
+  --theme-light: #e6f4ed;
+  --theme-xlight:#f0faf4;
+}
+/* Hide orient nav item when in internal section */
+body[data-section="internal"] [data-view="orient"] { display: none; }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -152,8 +173,8 @@ body {
   user-select: none;
   margin-bottom: 2px;
 }
-.sidebar-nav-item:hover { background: var(--bsc-blue-xlight); color: var(--bsc-blue); }
-.sidebar-nav-item.active { background: var(--bsc-blue-light); color: var(--bsc-blue); font-weight: 500; }
+.sidebar-nav-item:hover { background: var(--theme-xlight); color: var(--theme); }
+.sidebar-nav-item.active { background: var(--theme-light); color: var(--theme); font-weight: 500; }
 .sidebar-nav-item svg { flex-shrink: 0; opacity: 0.7; }
 .sidebar-nav-item.active svg { opacity: 1; }
 
@@ -173,8 +194,8 @@ body {
   margin: 2px;
   transition: all 0.12s;
 }
-.filter-btn:hover { border-color: var(--bsc-blue-mid); color: var(--bsc-blue); }
-.filter-btn.active { background: var(--bsc-blue); border-color: var(--bsc-blue); color: white; }
+.filter-btn:hover { border-color: var(--theme-mid); color: var(--theme); }
+.filter-btn.active { background: var(--theme); border-color: var(--theme); color: white; }
 .reset-filters-btn {
   background: white;
   border: 1px solid var(--grey-border);
@@ -291,7 +312,7 @@ body {
 /* ── TABLE VIEW ── */
 .table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
 table { width: 100%; border-collapse: collapse; background: white; }
-thead tr { background: var(--bsc-blue); color: white; }
+thead tr { background: var(--theme); color: white; }
 th {
   padding: 10px 14px;
   text-align: left;
@@ -310,7 +331,7 @@ tbody tr {
   border-bottom: 1px solid var(--grey-border);
   transition: background 0.1s;
 }
-tbody tr:hover { background: var(--bsc-blue-xlight); }
+tbody tr:hover { background: var(--theme-xlight); }
 tbody tr.past-row { opacity: 0.55; }
 td { padding: 10px 14px; vertical-align: middle; }
 td.name-cell { font-weight: 500; max-width: 220px; }
@@ -419,7 +440,7 @@ tbody tr:hover .row-actions { opacity: 1; }
 .orient-header {
   display: grid;
   grid-template-columns: 220px repeat(12, 1fr);
-  background: var(--bsc-blue);
+  background: var(--theme);
   color: white;
 }
 .orient-header-cell {
@@ -437,7 +458,7 @@ tbody tr:hover .row-actions { opacity: 1; }
   border-bottom: 1px solid var(--grey-border);
   transition: background 0.1s;
 }
-.orient-row:hover { background: var(--bsc-blue-xlight); }
+.orient-row:hover { background: var(--theme-xlight); }
 .orient-name-cell {
   padding: 10px 16px;
   font-weight: 500;
@@ -482,7 +503,7 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 .cal-weekdays {
   display: grid; grid-template-columns: repeat(7, 1fr);
-  background: var(--bsc-blue);
+  background: var(--theme);
 }
 .cal-wd {
   padding: 8px;
@@ -500,9 +521,9 @@ tbody tr:hover .row-actions { opacity: 1; }
   background: white;
   transition: background 0.1s;
 }
-.cal-day:hover { background: var(--bsc-blue-xlight); }
+.cal-day:hover { background: var(--theme-xlight); }
 .cal-day.other-month { background: #fafafa; }
-.cal-day.today { background: #eff6ff; }
+.cal-day.today { background: var(--theme-xlight); }
 .cal-day-num {
   font-size: 12px; font-weight: 500;
   color: var(--text-light);
@@ -510,7 +531,7 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 .cal-day.today .cal-day-num {
   width: 22px; height: 22px;
-  background: var(--bsc-blue);
+  background: var(--theme);
   color: white;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -518,15 +539,15 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 .cal-event {
   font-size: 10px; font-weight: 500;
-  padding: 2px 5px; border-radius: 3px;
+  padding: 0 5px; border-radius: 3px;
   margin-bottom: 2px;
   cursor: pointer;
   transition: opacity 0.1s;
   overflow: hidden;
-  line-height: 1.5;
-  min-height: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
+  gap: 3px;
 }
 .cal-event:hover { opacity: 0.85; }
 /* Continuous multi-day event bars */
@@ -581,8 +602,8 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 .gantt-header {
   display: flex;
-  border-bottom: 2px solid var(--bsc-blue);
-  background: var(--bsc-blue);
+  border-bottom: 2px solid var(--theme);
+  background: var(--theme);
   color: white;
   border-radius: var(--radius) var(--radius) 0 0;
   overflow: hidden;
@@ -603,7 +624,7 @@ tbody tr:hover .row-actions { opacity: 1; }
   align-items: center;
   transition: background 0.1s;
 }
-.gantt-row:hover { background: var(--bsc-blue-xlight); }
+.gantt-row:hover { background: var(--theme-xlight); }
 .gantt-row.past-row { opacity: 0.5; }
 .gantt-row-name {
   width: 220px; flex-shrink: 0;
@@ -786,8 +807,8 @@ tbody tr:hover .row-actions { opacity: 1; }
   display: inline-flex; align-items: center; gap: 6px;
   transition: all 0.15s;
 }
-.btn-primary { background: var(--bsc-blue); color: white; }
-.btn-primary:hover { background: var(--bsc-blue-mid); }
+.btn-primary { background: var(--theme); color: white; }
+.btn-primary:hover { background: var(--theme-mid); }
 .btn-secondary { background: white; color: var(--text-mid); border: 1px solid var(--grey-border); }
 .btn-secondary:hover { background: var(--grey-light); }
 .btn-danger { background: #fee2e2; color: #b91c1c; }
@@ -854,18 +875,16 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 </style>
 </head>
-<body>
+<body data-section="external">
 
 <!-- HEADER -->
 <header id="header">
   <div class="logo">
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <rect width="32" height="32" rx="6" fill="rgba(255,255,255,0.15)"/>
-      <text x="4" y="22" font-family="IBM Plex Sans" font-weight="700" font-size="13" fill="white">BSC</text>
-    </svg>
+    <img src="https://www.bsc.es/sites/default/files/public/bscw2/content/project/logos/AG003700-BSC-Logo_1.jpg"
+         alt="BSC" style="height:34px;width:auto;border-radius:4px;object-fit:contain;background:white;padding:2px 4px;">
     <div style="display:flex;flex-direction:column;gap:1px">
       <span style="color:white;font-size:14px;font-weight:600;line-height:1.2">BSC I-BD</span>
-      <span style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:400;line-height:1.2">Eventos & Funding Calls</span>
+      <span style="color:white;font-size:11px;font-weight:400;line-height:1.2;opacity:0.85">Eventos & Funding Calls</span>
     </div>
   </div>
   <nav id="section-tabs">
@@ -1210,9 +1229,17 @@ function setView(v) {
 
 function setSection(s) {
   currentSection = s;
+  document.body.dataset.section = s;
   document.querySelectorAll('.section-tab').forEach(el => {
     el.classList.toggle('active', el.id === 'st-' + s);
   });
+  // Internal Events has no recurrent items → orient diagram not applicable
+  if (s === 'internal' && currentView === 'orient') {
+    currentView = 'table';
+    document.querySelectorAll('.sidebar-nav-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.view === 'table');
+    });
+  }
   render();
 }
 
@@ -1414,8 +1441,8 @@ function calTeamTagsHtml(row) {
   const eq = row.Equipo || [];
   if (!eq.length) return '';
   const cls = { 'BSC AI Factory': 'cal-tag-factory', 'Innovation': 'cal-tag-innovation', 'Connects': 'cal-tag-connects' };
-  const lbl = { 'BSC AI Factory': 'AI Factory', 'Innovation': 'Innovation', 'Connects': 'Connects' };
-  return '<div class="cal-event-tags">' + eq.map(e => `<span class="cal-team-mini ${cls[e]||''}">${lbl[e]||e}</span>`).join('') + '</div>';
+  const lbl = { 'BSC AI Factory': 'AI', 'Innovation': 'INN', 'Connects': 'CON' };
+  return eq.map(e => `<span class="cal-team-mini ${cls[e]||''}" style="flex-shrink:0">${lbl[e]||e.substring(0,3)}</span>`).join('');
 }
 
 function renderCalendar() {
@@ -1539,8 +1566,9 @@ function renderCalendar() {
       else if (prevConn)        barClass = 'cal-event-end';
       else if (nextConn)        barClass = 'cal-event-start';
     }
-    const nameHtml = `<div class="cal-event-name">${showLabel ? e.label : '&nbsp;'}</div>`;
-    return `<div class="cal-event${barClass?' '+barClass:''}" style="background:${cc.bg};color:${cc.text}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${nameHtml}</div>`;
+    const tagsHtml = showLabel ? calTeamTagsHtml(e.row) : '';
+    const nameHtml = `<div class="cal-event-name">${showLabel ? e.label : ''}</div>`;
+    return `<div class="cal-event${barClass?' '+barClass:''}" style="background:${cc.bg};color:${cc.text}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${tagsHtml}${nameHtml}</div>`;
   }
 
   // ── Render day cells ──────────────────────────────────────────────────────
@@ -1824,7 +1852,8 @@ function renderForm(row) {
     </div>`).join('');
 
   document.getElementById('modal-body').innerHTML = `
-    <div class="recurrent-toggle ${isRecurrent?'on':''}" id="recurrent-toggle" onclick="toggleRecurrent()">
+    <div class="recurrent-toggle ${isRecurrent?'on':''}" id="recurrent-toggle" onclick="toggleRecurrent()"
+         style="display:${currentSection === 'internal' ? 'none' : 'flex'}">
       <div class="rt-track"></div>
       <div>
         <div class="rt-label">Elemento recurrente</div>
