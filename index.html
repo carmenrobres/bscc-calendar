@@ -29,8 +29,6 @@
   --white: #ffffff;
   --sidebar-w: 240px;
   --header-h: 56px;
-  --section-h: 44px;
-  --top-h: calc(var(--header-h) + var(--section-h));
   --radius: 8px;
   --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,48,135,0.10);
@@ -89,44 +87,36 @@ body {
 #edit-toggle.active { background: var(--accent); border-color: var(--accent); }
 #save-status { font-size: 12px; color: rgba(255,255,255,0.7); }
 
-/* ── SECTION TABS ── */
+/* ── SECTION TABS (inside header) ── */
 #section-tabs {
-  position: fixed;
-  top: var(--header-h);
-  left: 0; right: 0;
-  z-index: 90;
-  background: white;
-  border-bottom: 2px solid var(--grey-border);
   display: flex;
   align-items: stretch;
-  padding-left: var(--sidebar-w);
-  height: var(--section-h);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  height: 100%;
+  margin-left: 16px;
 }
 .section-tab {
-  padding: 0 24px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.6);
   cursor: pointer;
   border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
   transition: all 0.15s;
   white-space: nowrap;
   user-select: none;
 }
-.section-tab:hover { color: var(--bsc-blue); }
-.section-tab.active { color: var(--bsc-blue); border-bottom-color: var(--bsc-blue); font-weight: 600; }
-.section-tab.active.tab-internal { color: #7c3aed; border-bottom-color: #7c3aed; }
-.section-tab.active.tab-funding { color: var(--green); border-bottom-color: var(--green); }
+.section-tab:hover { color: rgba(255,255,255,0.9); }
+.section-tab.active { color: white; border-bottom-color: white; font-weight: 600; }
+.section-tab.active.tab-internal { border-bottom-color: #c4b5fd; }
+.section-tab.active.tab-funding  { border-bottom-color: #6ee7b7; }
 
 /* ── LAYOUT ── */
 #app {
   display: flex;
-  margin-top: var(--top-h);
-  min-height: calc(100vh - var(--top-h));
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
 }
 
 /* ── SIDEBAR ── */
@@ -135,7 +125,7 @@ body {
   background: var(--white);
   border-right: 1px solid var(--grey-border);
   position: fixed;
-  top: var(--top-h);
+  top: var(--header-h);
   bottom: 0;
   left: 0;
   overflow-y: auto;
@@ -249,7 +239,7 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   position: sticky;
-  top: var(--top-h);
+  top: var(--header-h);
   z-index: 40;
 }
 #search-box {
@@ -555,6 +545,10 @@ tbody tr:hover .row-actions { opacity: 1; }
 }
 .cal-event-name {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cal-event-placeholder {
+  height: 18px;
+  margin-bottom: 2px;
 }
 .cal-event-tags { margin-top: 2px; line-height: 1; }
 .cal-team-mini {
@@ -870,6 +864,11 @@ tbody tr:hover .row-actions { opacity: 1; }
       <span style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:400;line-height:1.2">Eventos & Funding Calls</span>
     </div>
   </div>
+  <nav id="section-tabs">
+    <div class="section-tab active" id="st-external" onclick="setSection('external')">External Events</div>
+    <div class="section-tab tab-internal" id="st-internal" onclick="setSection('internal')">Internal Events</div>
+    <div class="section-tab tab-funding" id="st-funding" onclick="setSection('funding')">Funding Calls</div>
+  </nav>
   <div id="header-right">
     <span id="save-status"></span>
     <button id="edit-toggle" onclick="toggleEdit()">
@@ -878,13 +877,6 @@ tbody tr:hover .row-actions { opacity: 1; }
     </button>
   </div>
 </header>
-
-<!-- SECTION TABS -->
-<div id="section-tabs">
-  <div class="section-tab active" id="st-external" onclick="setSection('external')">External Events</div>
-  <div class="section-tab tab-internal" id="st-internal" onclick="setSection('internal')">Internal Events</div>
-  <div class="section-tab tab-funding" id="st-funding" onclick="setSection('funding')">Funding Calls</div>
-</div>
 
 <!-- SIDEBAR -->
 <div id="sidebar">
@@ -1488,47 +1480,114 @@ function renderCalendar() {
     });
   });
 
+  // ── Build week rows ────────────────────────────────────────────────────────
+  // weekRows[rowIdx] = array of day-numbers in that row (null for padding cells)
+  const weekRows = [];
+  let curRow = Array(startDow).fill(null);
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    curRow.push(d);
+    if (curRow.length === 7) { weekRows.push(curRow); curRow = []; }
+  }
+  if (curRow.length) weekRows.push(curRow);
+
+  // ── Assign tracks per week row for multi-day events ───────────────────────
+  // trackMap[rowIdx][eventId] = trackIndex (integer slot)
+  const trackMap = weekRows.map(() => ({}));
+
+  weekRows.forEach((rowDays, rowIdx) => {
+    const validDays = rowDays.filter(Boolean);
+
+    // Collect unique multi-day events visible in this row
+    const seen = {};
+    events.forEach(e => {
+      if (!e.isSingleDay && validDays.includes(e.day) && !seen[e.row.id]) {
+        const daysInRow = events.filter(x => x.row.id === e.row.id && validDays.includes(x.day)).map(x => x.day);
+        seen[e.row.id] = {
+          id: e.row.id,
+          startDay: Math.min(...daysInRow),
+          endDay:   Math.max(...daysInRow),
+        };
+      }
+    });
+    // Sort by start day then ID for deterministic ordering
+    const sorted = Object.values(seen).sort((a, b) =>
+      a.startDay !== b.startDay ? a.startDay - b.startDay : a.id.localeCompare(b.id)
+    );
+
+    // First-fit track assignment
+    const trackTail = []; // trackTail[t] = last endDay occupying track t
+    sorted.forEach(ev => {
+      let t = trackTail.findIndex(tail => tail < ev.startDay);
+      if (t === -1) { t = trackTail.length; trackTail.push(-Infinity); }
+      trackTail[t] = ev.endDay;
+      trackMap[rowIdx][ev.id] = t;
+    });
+  });
+
+  // ── Helper: render one event bar ──────────────────────────────────────────
+  function renderBar(e, showLabel) {
+    const cc = getEquipoColor(e.row);
+    const prevConn = e.kind === 'middle' || e.kind === 'end';
+    const nextConn = e.kind === 'start' || e.kind === 'middle';
+    let barClass = '';
+    if (!e.isSingleDay) {
+      if (prevConn && nextConn) barClass = 'cal-event-middle';
+      else if (prevConn)        barClass = 'cal-event-end';
+      else if (nextConn)        barClass = 'cal-event-start';
+    }
+    const tagsHtml = e.isStart ? calTeamTagsHtml(e.row) : '';
+    const nameHtml = `<div class="cal-event-name">${showLabel ? e.label : ''}</div>`;
+    return `<div class="cal-event${barClass?' '+barClass:''}" style="background:${cc.bg};color:${cc.text}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${nameHtml}${tagsHtml}</div>`;
+  }
+
+  // ── Render day cells ──────────────────────────────────────────────────────
   const weekdays = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
   const wdHtml = weekdays.map(d => `<div class="cal-wd">${d}</div>`).join('');
 
   let daysHtml = '';
-  // Empty cells before first day
   for (let i = 0; i < startDow; i++) {
     daysHtml += `<div class="cal-day other-month"></div>`;
   }
-  for (let d = 1; d <= lastDay.getDate(); d++) {
-    const isToday = now.getDate() === d && now.getMonth() === calMonth && now.getFullYear() === calYear;
-    const dayEvents = events.filter(e => e.day === d);
-    const evHtml = dayEvents.map(e => {
-      const cc = getEquipoColor(e.row);
-      const bg  = cc.bg;
-      const col = cc.text;
 
-      // Determine continuous bar CSS class for multi-day events
-      let barClass = '';
-      if (!e.isSingleDay) {
-        const prevConn = e.kind === 'middle' || e.kind === 'end';
-        const nextConn = e.kind === 'start' || e.kind === 'middle';
-        if (prevConn && nextConn) barClass = 'cal-event-middle';
-        else if (prevConn)        barClass = 'cal-event-end';
-        else if (nextConn)        barClass = 'cal-event-start';
+  weekRows.forEach((rowDays, rowIdx) => {
+    const tmap = trackMap[rowIdx];
+    // Max track used in this row (for placeholders)
+    const maxTrack = Object.keys(tmap).length
+      ? Math.max(...Object.values(tmap))
+      : -1;
+
+    rowDays.forEach(d => {
+      if (d === null) return; // padding already added above as other-month
+      const isToday = now.getDate() === d && now.getMonth() === calMonth && now.getFullYear() === calYear;
+      const dayEvents = events.filter(e => e.day === d);
+      const multiDay  = dayEvents.filter(e => !e.isSingleDay);
+      const singleDay = dayEvents.filter(e =>  e.isSingleDay);
+
+      let evHtml = '';
+
+      // Render tracked slots (multi-day events, in fixed vertical positions)
+      for (let t = 0; t <= maxTrack; t++) {
+        const e = multiDay.find(ev => tmap[ev.row.id] === t);
+        if (e) {
+          // Show label on the leftmost visible day of this event in this row
+          const isFirstInRow = e.day === Math.min(...multiDay.filter(ev => tmap[ev.row.id] === t).map(ev => ev.day));
+          evHtml += renderBar(e, e.isFirstVisible || (e.isRowStart && isFirstInRow));
+        } else {
+          evHtml += `<div class="cal-event-placeholder"></div>`;
+        }
       }
 
-      // Show label only on first visible day of the event or at start of a new week row
-      const showLabel = e.isFirstVisible || e.isRowStart;
-      const tagsHtml = e.isStart ? calTeamTagsHtml(e.row) : '';
-      const nameHtml = showLabel
-        ? `<div class="cal-event-name">${e.label}</div>`
-        : `<div class="cal-event-name" style="visibility:hidden;height:0;margin:0;padding:0">·</div>`;
+      // Single-day events below
+      singleDay.forEach(e => { evHtml += renderBar(e, true); });
 
-      return `<div class="cal-event${barClass?' '+barClass:''}" style="background:${bg};color:${col}" title="${e.label}" onclick="openDetailModal('${e.row.id}')">${nameHtml}${tagsHtml}</div>`;
-    }).join('');
-    daysHtml += `<div class="cal-day${isToday?' today':''}">
-      <div class="cal-day-num">${d}</div>
-      ${evHtml}
-    </div>`;
-  }
-  // Fill remaining cells
+      daysHtml += `<div class="cal-day${isToday?' today':''}">
+        <div class="cal-day-num">${d}</div>
+        ${evHtml}
+      </div>`;
+    });
+  });
+
+  // Fill trailing empty cells
   const totalCells = startDow + lastDay.getDate();
   const remainder = (7 - (totalCells % 7)) % 7;
   for (let i = 0; i < remainder; i++) daysHtml += `<div class="cal-day other-month"></div>`;
