@@ -873,6 +873,18 @@ tbody tr:hover .row-actions { opacity: 1; }
   background: var(--bsc-blue-light); color: var(--bsc-blue);
   font-family: 'IBM Plex Mono', monospace;
 }
+/* scope badges */
+.scope-badge {
+  display: inline-block;
+  padding: 2px 7px; border-radius: 10px;
+  font-size: 11px; font-weight: 500; white-space: nowrap;
+}
+.scope-international { background: #fef3c7; color: #92400e; }
+.scope-europe        { background: #dbeafe; color: #1e40af; }
+.scope-spain         { background: #fce7f3; color: #9d174d; }
+.scope-catalonia     { background: #ede9fe; color: #5b21b6; }
+.scope-barcelona     { background: #d1fae5; color: #065f46; }
+.scope-empty         { background: var(--grey-light); color: var(--text-light); }
 </style>
 </head>
 <body data-section="external">
@@ -945,8 +957,19 @@ tbody tr:hover .row-actions { opacity: 1; }
       <span class="filter-btn" data-filter="public" data-val="Startup" onclick="toggleFilterMulti('public','Startup',this)">Startup</span>
       <span class="filter-btn" data-filter="public" data-val="SMEs" onclick="toggleFilterMulti('public','SMEs',this)">SMEs</span>
       <span class="filter-btn" data-filter="public" data-val="Research" onclick="toggleFilterMulti('public','Research',this)">Research</span>
-      <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Public Administration</span>
+      <span class="filter-btn" data-filter="public" data-val="Public Administrations" onclick="toggleFilterMulti('public','Public Administrations',this)">Public Admin</span>
       <span class="filter-btn" data-filter="public" data-val="Corporate" onclick="toggleFilterMulti('public','Corporate',this)">Corporate</span>
+      <span class="filter-btn" data-filter="public" data-val="Institutional" onclick="toggleFilterMulti('public','Institutional',this)">Institutional</span>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Scope</div>
+      <span class="filter-btn active" data-filter="scope" data-val="" onclick="clearFilterMulti('scope',this)">All</span>
+      <span class="filter-btn" data-filter="scope" data-val="International" onclick="toggleFilterMulti('scope','International',this)">International</span>
+      <span class="filter-btn" data-filter="scope" data-val="Europe" onclick="toggleFilterMulti('scope','Europe',this)">Europe</span>
+      <span class="filter-btn" data-filter="scope" data-val="Spain" onclick="toggleFilterMulti('scope','Spain',this)">Spain</span>
+      <span class="filter-btn" data-filter="scope" data-val="Catalonia" onclick="toggleFilterMulti('scope','Catalonia',this)">Catalonia</span>
+      <span class="filter-btn" data-filter="scope" data-val="Barcelona" onclick="toggleFilterMulti('scope','Barcelona',this)">Barcelona</span>
     </div>
 
     <div class="filter-group">
@@ -1030,7 +1053,7 @@ let sortAsc = true;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let ganttYear = new Date().getFullYear();
-let filt = { est: '', año: '', q: '', hidePast: false, hideRecurrentNoFuture: false, equipo: [], public: [] };
+let filt = { est: '', año: '', q: '', hidePast: false, hideRecurrentNoFuture: false, equipo: [], public: [], scope: [] };
 let tableTab = 'all'; // 'all' | 'eventos' | 'funding'
 let currentSection = 'external'; // 'external' | 'internal' | 'funding'
 let editingId = null;           // id being edited in modal
@@ -1049,10 +1072,17 @@ async function init() {
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const ESTADOS = ['Not started','In progress','Done','No participation'];
 const EQUIPOS = ['BSC AI Factory', 'Innovation', 'Connects'];
-const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations', 'Corporate'];
+const PUBLICS = ['Startup', 'SMEs', 'Research', 'Public Administrations', 'Corporate', 'Institutional'];
+const SCOPES  = ['International', 'Europe', 'Spain', 'Catalonia', 'Barcelona'];
+
+function monthIndex(m) {
+  const i = MONTHS.indexOf(m);
+  return i >= 0 ? i : MONTHS_ES.indexOf(m);
+}
 
 function uid() { return 'r' + Math.random().toString(36).substr(2,8); }
 
@@ -1091,6 +1121,17 @@ function tipoBadge(tipo) {
             : 'tipo-evento';
   const label = tipo === 'Evento' ? 'External Event' : (tipo || '—');
   return `<span class="tipo-badge ${cls}">${label}</span>`;
+}
+
+function scopeBadge(ambito) {
+  if (!ambito) return '<span class="scope-badge scope-empty">—</span>';
+  const cls = ambito === 'International' ? 'scope-international'
+            : ambito === 'Europe'        ? 'scope-europe'
+            : ambito === 'Spain'         ? 'scope-spain'
+            : ambito === 'Catalonia'     ? 'scope-catalonia'
+            : ambito === 'Barcelona'     ? 'scope-barcelona'
+            : 'scope-empty';
+  return `<span class="scope-badge ${cls}">${ambito}</span>`;
 }
 
 function getEditionYear(ed) {
@@ -1156,6 +1197,9 @@ function rowMatchesMultiFilters(row) {
     const rowPublic = row.PublicObjectiu || [];
     if (!filt.public.some(p => rowPublic.includes(p))) return false;
   }
+  if (filt.scope.length > 0) {
+    if (!filt.scope.includes(row.Ambito || '')) return false;
+  }
   return true;
 }
 
@@ -1209,11 +1253,11 @@ function toggleHideRecNoFuture(cb) {
 function resetFilters() {
   filt.est = ''; filt.año = '';
   filt.hidePast = false; filt.hideRecurrentNoFuture = false;
-  filt.equipo = []; filt.public = [];
+  filt.equipo = []; filt.public = []; filt.scope = [];
   document.getElementById('search-input').value = '';
   document.getElementById('hide-past-toggle').checked = false;
   document.getElementById('hide-rec-nofuture-toggle').checked = false;
-  ['equipo','public'].forEach(key => {
+  ['equipo','public','scope'].forEach(key => {
     document.querySelectorAll(`[data-filter="${key}"]`).forEach(b => b.classList.remove('active'));
     const all = document.querySelector(`[data-filter="${key}"][data-val=""]`);
     if (all) all.classList.add('active');
@@ -1333,6 +1377,7 @@ function renderTable() {
     const ec = getEquipoColor(row);
     return `<tr class="${past}" style="box-shadow: inset 4px 0 0 ${ec.solid}">
       <td class="name-cell">${nameCell}${recBadge}</td>
+      <td>${scopeBadge(row.Ambito)}</td>
       <td style="font-size:11px">${publicTags(row)}</td>
       <td style="font-size:11px">${teamTags(row)}</td>
       <td class="date-cell">${formatDate(inicio)}</td>
@@ -1349,6 +1394,7 @@ function renderTable() {
     <table class="${tableCls}">
       <thead><tr>
         ${th('Nombre','Name')}
+        ${th('Ambito','Scope')}
         <th>Target Audience</th>
         <th>BSC Team</th>
         ${th('Fecha exacta (inicio)','Start')}
@@ -1397,7 +1443,7 @@ function renderOrient() {
     const getMinIdx = row => {
       const m = row['Mes habitual'];
       const arr = Array.isArray(m) ? m : (m ? [m] : []);
-      const idxs = arr.map(x => MONTHS.indexOf(x)).filter(i => i >= 0);
+      const idxs = arr.map(x => monthIndex(x)).filter(i => i >= 0);
       return idxs.length ? Math.min(...idxs) : 12;
     };
     return getMinIdx(a) - getMinIdx(b);
@@ -1407,7 +1453,7 @@ function renderOrient() {
   const rowsHtml = filtered.map(row => {
     const mesHabitual = row['Mes habitual'];
     const mesIdxs = (Array.isArray(mesHabitual) ? mesHabitual : (mesHabitual ? [mesHabitual] : []))
-      .map(m => MONTHS.indexOf(m)).filter(i => i >= 0);
+      .map(m => monthIndex(m)).filter(i => i >= 0);
     const oc = getEquipoColor(row);
     const cells = MONTHS.map((_, i) => {
       if (mesIdxs.includes(i)) {
@@ -1808,6 +1854,9 @@ function openDetailModal(id) {
     + '<div class="form-group"><div class="detail-field-label">Location</div><div class="detail-field-value">' + (row.Lugar||'—') + '</div></div>'
     + '</div>'
     + '<div class="form-row">'
+    + '<div class="form-group"><div class="detail-field-label">Scope</div><div class="detail-field-value" style="margin-top:4px">' + scopeBadge(row.Ambito) + '</div></div>'
+    + '</div>'
+    + '<div class="form-row">'
     + '<div class="form-group"><div class="detail-field-label">BSC Team</div><div class="detail-field-value" style="margin-top:4px">' + equipoHtml + '</div></div>'
     + '<div class="form-group"><div class="detail-field-label">Target Audience</div><div class="detail-field-value" style="margin-top:4px">' + publicHtml + '</div></div>'
     + '</div>'
@@ -1909,6 +1958,15 @@ function renderForm(row) {
         <label class="form-label">Location</label>
         <input class="form-input" id="f-lugar" value="${row?.Lugar||''}" placeholder="City, Country">
       </div>
+      <div class="form-group">
+        <label class="form-label">Scope</label>
+        <select class="form-select" id="f-ambito">
+          <option value="">— Select scope —</option>
+          ${SCOPES.map(s => `<option value="${s}" ${row?.Ambito===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
       <div class="form-group">
         <label class="form-label">URL</label>
         <input class="form-input" id="f-url" value="${row?.URL||''}" placeholder="https://...">
@@ -2100,6 +2158,7 @@ function saveForm() {
     Tipo: document.getElementById('f-tipo-value').value,
     'Mes habitual': [...document.querySelectorAll('#f-mes-tags .tag-option.selected')].map(el => el.textContent),
     Lugar: document.getElementById('f-lugar').value,
+    Ambito: document.getElementById('f-ambito').value,
     URL: document.getElementById('f-url').value,
     Notas: document.getElementById('f-notas').value,
     Equipo: equipoSel,
