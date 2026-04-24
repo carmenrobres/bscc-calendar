@@ -2288,8 +2288,8 @@ async function saveData() {
     });
 
     if (res.status === 204 || res.ok) {
-      document.getElementById('save-status').textContent = '✓ Saved ' + new Date().toLocaleTimeString('en-GB');
-      showToast('Data sent to GitHub successfully.', 'success');
+      document.getElementById('save-status').textContent = '✓ PR creat ' + new Date().toLocaleTimeString('en-GB');
+      showToast('S\'ha creat una proposta de canvi (PR) a GitHub. Cal aprovar-la per publicar els canvis.', 'success');
     } else {
       const err = await res.text();
       document.getElementById('save-status').textContent = '';
