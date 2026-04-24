@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -25,10 +26,36 @@ jobs:
             fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf8');
             console.log('data.json written with', data.rows ? data.rows.length : 0, 'rows');
 
-      - name: Commit and push
-        run: |
-          git config user.name "BSC Calendar Bot"
-          git config user.email "bot@bsc.es"
-          git add data.json
-          # Removed [skip ci] so it triggers the deployment workflow
-          git diff --staged --quiet && echo "No changes" || (git commit -m "Actualizar datos" && git push)
+      - name: Create branch and PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.DATA_TOKEN }}
+          script: |
+            const { execSync } = require('child_process');
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+            const branch = `data-update/${timestamp}`;
+
+            execSync('git config user.name "BSC Calendar Bot"');
+            execSync('git config user.email "bot@bsc.es"');
+            execSync(`git checkout -b ${branch}`);
+            execSync('git add data.json');
+
+            const diff = execSync('git diff --staged --stat').toString().trim();
+            if (!diff) {
+              console.log('No changes to data.json, skipping PR.');
+              return;
+            }
+
+            execSync(`git commit -m "Proposta d'actualització de dades (${timestamp})"`);
+            execSync(`git push origin ${branch}`);
+
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Actualizar datos – ${timestamp}`,
+              body: 'Actualización de `data.json` generada desde el formulario web. Revisa los cambios y aprueba el PR para publicarlos.',
+              head: branch,
+              base: 'main',
+            });
+
+            console.log('PR created:', pr.data.html_url);
