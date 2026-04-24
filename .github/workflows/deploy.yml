@@ -25,10 +25,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject token into HTML
-        env:
-          DATA_TOKEN: ${{ secrets.DATA_TOKEN }}
-        run: sed -i "s/__DATA_TOKEN__/${DATA_TOKEN}/g" index.html
+      - - name: Inject secrets into HTML
+          env:
+            DATA_TOKEN: ${{ secrets.DATA_TOKEN }}
+            PASSWORD: ${{ secrets.PASSWORD }}
+          run: |
+            sed -i "s/__DATA_TOKEN__/${DATA_TOKEN}/g" index.html
+            sed -i "s/__PASSWORD__/${PASSWORD}/g" index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
