@@ -634,53 +634,6 @@
       "editions": [],
       "id": "rcsqlfxt1",
       "recurrent": false
-    },
-    {
-      "Ambito": "Europe",
-      "Año": "2026",
-      "Equipo": [
-        "BSC AI Factory",
-        "Innovation",
-        "Connects"
-      ],
-      "Estado": "In progress",
-      "Fecha exacta (fin)": "2026-05-10",
-      "Fecha exacta (inicio)": "2026-04-22",
-      "Lugar": "PANAMA",
-      "Mes habitual": [
-        "January",
-        "February",
-        "November",
-        "December"
-      ],
-      "Nombre": "PIC: OPALA (Z)",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Funding call",
-      "URL": "",
-      "editions": [],
-      "id": "rfbfhvl0z",
-      "recurrent": false
-    },
-    {
-      "Ambito": "",
-      "Año": "2026",
-      "Equipo": [],
-      "Estado": "Not started",
-      "Fecha exacta (fin)": "2026-05-10",
-      "Fecha exacta (inicio)": "2026-05-10",
-      "Lugar": "",
-      "Mes habitual": [
-        "May"
-      ],
-      "Nombre": "MY BIRTHDAY PARTY",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "",
-      "editions": [],
-      "id": "rcdgpboum",
-      "recurrent": false
     }
   ]
 }
