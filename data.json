@@ -658,26 +658,8 @@
       "PublicObjectiu": [],
       "Tipo": "Funding call",
       "URL": "",
+      "editions": [],
       "id": "rfbfhvl0z",
-      "recurrent": false
-    },
-    {
-      "Ambito": "Catalonia",
-      "Año": "2026",
-      "Equipo": [],
-      "Estado": "Not started",
-      "Fecha exacta (fin)": "2026-04-10",
-      "Fecha exacta (inicio)": "2026-05-10",
-      "Lugar": "Barcelona",
-      "Mes habitual": [
-        "May"
-      ],
-      "Nombre": "MY BIRTHDAY",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Funding call",
-      "URL": "",
-      "id": "rpuw04nhf",
       "recurrent": false
     },
     {
@@ -696,6 +678,7 @@
       "PublicObjectiu": [],
       "Tipo": "Evento",
       "URL": "",
+      "editions": [],
       "id": "rcdgpboum",
       "recurrent": false
     }
