@@ -500,6 +500,7 @@
       ],
       "Tipo": "Evento",
       "URL": "https://aicongress.barcelona",
+      "editions": [],
       "id": "rg9x55ym9",
       "recurrent": false
     },
@@ -631,23 +632,6 @@
       "URL": "https://www.ametic-ai-summit.es/",
       "editions": [],
       "id": "rcsqlfxt1",
-      "recurrent": false
-    },
-    {
-      "Ambito": "",
-      "Año": "2026",
-      "Equipo": [],
-      "Estado": "Not started",
-      "Fecha exacta (fin)": "",
-      "Fecha exacta (inicio)": "",
-      "Lugar": "",
-      "Mes habitual": [],
-      "Nombre": "test",
-      "Notas": "",
-      "PublicObjectiu": [],
-      "Tipo": "Evento",
-      "URL": "",
-      "id": "r574kv1f9",
       "recurrent": false
     }
   ]
