@@ -633,6 +633,23 @@
       "editions": [],
       "id": "rcsqlfxt1",
       "recurrent": false
+    },
+    {
+      "Ambito": "",
+      "Año": "2026",
+      "Equipo": [],
+      "Estado": "Not started",
+      "Fecha exacta (fin)": "",
+      "Fecha exacta (inicio)": "",
+      "Lugar": "",
+      "Mes habitual": [],
+      "Nombre": "TEST",
+      "Notas": "",
+      "PublicObjectiu": [],
+      "Tipo": "Evento",
+      "URL": "",
+      "id": "rk2cidrrq",
+      "recurrent": false
     }
   ]
 }
